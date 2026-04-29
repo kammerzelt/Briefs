@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editorial Intelligence Brief — Feed Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0a1628; --navy-mid: #0f2847; --navy-light: #153a6b;
+    --accent-blue: #4a9eff; --accent-teal: #1db88a; --accent-amber: #f0a030; --accent-red: #e05050;
+    --text-primary: #f0f4ff; --text-secondary: #8ba0c0; --text-muted: #546880;
+    --border: rgba(74,158,255,0.15); --card-bg: rgba(15,40,71,0.6);
+  }
+  body { font-family:'Inter',sans-serif; background:var(--navy); color:var(--text-primary); font-size:13px; line-height:1.6; -webkit-font-smoothing:antialiased; max-width:860px; margin:0 auto; padding:32px 24px 64px; }
+
+  .report-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:28px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+  .logo-bracket { font-size:13px; font-weight:500; color:var(--accent-blue); letter-spacing:-0.5px; }
+  .logo-sep { color:var(--text-muted); margin:0 6px; }
+  .product-name { font-size:11px; font-weight:600; color:var(--accent-blue); letter-spacing:1.5px; text-transform:uppercase; }
+  .brand-mark { display:flex; align-items:center; gap:12px; }
+  .report-meta { text-align:right; }
+  .pub-name { font-size:15px; font-weight:600; }
+  .report-title { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+  .report-issue { font-size:11px; color:var(--text-muted); margin-top:4px; }
+
+  .intro-strip { background:rgba(21,58,107,0.4); border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .intro-greeting { font-size:14px; font-weight:500; }
+  .intro-sub { font-size:12px; color:var(--text-secondary); margin-top:3px; max-width:520px; line-height:1.5; }
+  .period-badge { background:rgba(74,158,255,0.12); border:1px solid rgba(74,158,255,0.3); border-radius:6px; padding:6px 14px; font-size:11px; font-weight:600; color:var(--accent-blue); letter-spacing:0.5px; white-space:nowrap; text-transform:uppercase; }
+
+  .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:32px; }
+  .stat-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:16px 18px; }
+  .stat-label { font-size:10px; font-weight:600; color:var(--text-muted); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:8px; }
+  .stat-value { font-size:20px; font-weight:300; color:var(--text-primary); letter-spacing:-0.5px; line-height:1.2; }
+  .stat-delta { font-size:11px; font-weight:500; margin-top:6px; }
+  .delta-up { color:var(--accent-teal); } .delta-warn { color:var(--accent-amber); } .delta-red { color:var(--accent-red); }
+  .stat-context { font-size:10px; color:var(--text-muted); margin-top:2px; }
+
+  .section { margin-bottom:32px; }
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .section-lg { display:flex; align-items:center; gap:10px; }
+  .section-num { width:22px; height:22px; border-radius:50%; background:var(--accent-blue); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--navy); flex-shrink:0; }
+  .section-title { font-size:13px; font-weight:600; }
+  .section-subtitle { font-size:11px; color:var(--text-secondary); margin-top:1px; }
+  .section-tag { font-size:10px; font-weight:600; color:var(--accent-blue); letter-spacing:0.8px; text-transform:uppercase; }
+
+  .card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:20px; }
+
+  .tag-pill { display:inline-block; font-size:10px; font-weight:600; letter-spacing:0.5px; padding:2px 8px; border-radius:4px; }
+  .tag-ma { background:rgba(224,80,80,0.1); color:var(--accent-red); border:1px solid rgba(224,80,80,0.2); }
+  .tag-pr { background:rgba(29,184,138,0.08); color:var(--accent-teal); border:1px solid rgba(29,184,138,0.15); }
+  .tag-conf { background:rgba(240,160,48,0.1); color:var(--accent-amber); border:1px solid rgba(240,160,48,0.2); }
+  .tag-verified { background:rgba(29,184,138,0.1); color:var(--accent-teal); border:1px solid rgba(29,184,138,0.2); }
+  .tag-reg { background:rgba(74,158,255,0.1); color:var(--accent-blue); border:1px solid rgba(74,158,255,0.2); }
+
+  /* Signal rows */
+  .signal-row { display:flex; gap:14px; padding:16px 0; border-bottom:1px solid rgba(74,158,255,0.07); }
+  .signal-row:last-child { border-bottom:none; padding-bottom:0; }
+  .signal-left { display:flex; flex-direction:column; gap:6px; align-items:flex-start; min-width:90px; flex-shrink:0; }
+  .signal-badge { font-size:10px; font-weight:700; padding:3px 9px; border-radius:4px; white-space:nowrap; }
+  .badge-urgent { background:rgba(224,80,80,0.15); color:var(--accent-red); }
+  .badge-rising { background:rgba(240,160,48,0.15); color:var(--accent-amber); }
+  .badge-emerging { background:rgba(74,158,255,0.12); color:var(--accent-blue); }
+  .signal-source { font-size:10px; color:var(--text-muted); line-height:1.4; }
+  .signal-content { flex:1; }
+  .signal-title { font-size:12px; font-weight:600; margin-bottom:4px; color:var(--text-primary); }
+  .signal-body { font-size:11px; color:var(--text-secondary); line-height:1.6; margin-bottom:6px; }
+  .signal-gap { background:rgba(74,158,255,0.06); border:1px solid rgba(74,158,255,0.15); border-radius:6px; padding:7px 11px; font-size:11px; color:var(--text-secondary); line-height:1.5; }
+  .signal-gap-label { font-size:10px; font-weight:700; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:2px; }
+
+  /* Action cards */
+  .action-card { border-radius:10px; border:1px solid; padding:18px 20px; margin-bottom:10px; }
+  .action-card.act-now { background:rgba(224,80,80,0.06); border-color:rgba(224,80,80,0.25); }
+  .action-card.act-soon { background:rgba(240,160,48,0.06); border-color:rgba(240,160,48,0.2); }
+  .action-card.act-strategic { background:rgba(74,158,255,0.06); border-color:rgba(74,158,255,0.2); }
+  .action-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
+  .priority-tag { font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; padding:3px 9px; border-radius:4px; flex-shrink:0; }
+  .p-urgent { background:rgba(224,80,80,0.15); color:var(--accent-red); }
+  .p-soon { background:rgba(240,160,48,0.15); color:var(--accent-amber); }
+  .p-strategic { background:rgba(74,158,255,0.15); color:var(--accent-blue); }
+  .action-title { font-size:13px; font-weight:600; line-height:1.4; margin-right:12px; }
+  .action-body { font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:10px; }
+  .action-meta { display:flex; gap:20px; flex-wrap:wrap; }
+  .meta-item { display:flex; flex-direction:column; gap:2px; }
+  .meta-label { font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.7px; }
+  .meta-value { font-size:12px; font-weight:500; }
+  .mv-red { color:var(--accent-red); } .mv-amber { color:var(--accent-amber); } .mv-blue { color:var(--accent-blue); } .mv-teal { color:var(--accent-teal); }
+
+  /* Method note */
+  .method-note { background:rgba(21,58,107,0.35); border:1px solid var(--border); border-radius:8px; padding:11px 15px; font-size:11px; color:var(--text-muted); line-height:1.6; margin-bottom:14px; }
+  .method-note strong { color:var(--text-secondary); }
+
+  /* Horizon */
+  .horizon-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .horizon-item { background:rgba(21,58,107,0.4); border-radius:8px; padding:13px 15px; }
+  .horizon-title { font-size:12px; font-weight:600; color:var(--text-primary); margin-bottom:4px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .horizon-body { font-size:11px; color:var(--text-secondary); line-height:1.5; }
+
+  /* Teaser */
+  .teaser-strip { background:rgba(21,58,107,0.5); border:1px solid rgba(74,158,255,0.25); border-radius:10px; padding:20px 24px; margin-bottom:32px; }
+  .teaser-eyebrow { font-size:10px; font-weight:700; color:var(--accent-blue); letter-spacing:1.2px; text-transform:uppercase; margin-bottom:8px; }
+  .teaser-headline { font-size:15px; font-weight:500; line-height:1.4; margin-bottom:10px; }
+  .teaser-body { font-size:12px; color:var(--text-secondary); line-height:1.7; }
+
+  /* Chat */
+  #chat-messages { padding:16px 20px; display:flex; flex-direction:column; gap:12px; min-height:80px; max-height:360px; overflow-y:auto; }
+
+  .report-footer { margin-top:36px; padding-top:20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .footer-brand { font-size:11px; color:var(--text-muted); }
+  .footer-note { font-size:10px; color:var(--text-muted); text-align:right; max-width:380px; line-height:1.5; }
+
+  @media(max-width:620px){ .summary-grid{grid-template-columns:repeat(2,1fr);} .horizon-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="brand-mark">
+    <span class="logo-bracket">{ parameter : 1 }</span>
+    <span class="logo-sep">|</span>
+    <span class="product-name">Publishing Intelligence</span>
+  </div>
+  <div class="report-meta">
+    <div class="pub-name">Feed Strategy</div>
+    <div class="report-title">Editorial Intelligence Brief</div>
+    <div class="report-issue">April 2026 &nbsp;·&nbsp; Jackie Roembke, Editor-in-Chief &nbsp;·&nbsp; feedstrategy.com</div>
+  </div>
+</div>
+
+<div class="intro-strip">
+  <div>
+    <div class="intro-greeting">Jackie — here's what your industry is signaling this month that hasn't made it into editorial yet.</div>
+    <div class="intro-sub">Five signal sources monitored: press releases and M&A filings, trade association communications, conference agendas, regulatory activity, and coverage patterns across competing titles. Every gap claim was verified against your public archive before inclusion.</div>
+  </div>
+  <div class="period-badge">April 2026</div>
+</div>
+
+<div class="summary-grid">
+  <div class="stat-card">
+    <div class="stat-label">Industry signals tracked</div>
+    <div class="stat-value">5</div>
+    <div class="stat-delta delta-up">Sources this month</div>
+    <div class="stat-context">PR · M&A · Conf · Reg · Coverage</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Verified coverage gaps</div>
+    <div class="stat-value">3</div>
+    <div class="stat-delta delta-warn">Checked vs. your archive</div>
+    <div class="stat-context">Not found in published sitemap</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Highest urgency signal</div>
+    <div class="stat-value">China vitamins</div>
+    <div class="stat-delta delta-red">AFIA → White House</div>
+    <div class="stat-context">Every manufacturer affected</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">First-mover window</div>
+    <div class="stat-value">ADM × Alltech</div>
+    <div class="stat-delta delta-warn">No full profile exists</div>
+    <div class="stat-context">JV closed Q1 2026</div>
+  </div>
+</div>
+
+<!-- METHODOLOGY -->
+<div class="method-note">
+  <strong>How this was built:</strong> Feed Strategy's public sitemap (~400 URLs) was parsed and used to verify every coverage gap claim before inclusion. Signal strength (Urgent / Rising / Emerging) reflects qualitative assessment of industry attention based on source type and recency — not statistical search volume. Sources cited are publicly verifiable.
+</div>
+
+<!-- SECTION 1: INDUSTRY SIGNALS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-lg">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Industry Signals — What's Moving Right Now</div>
+        <div class="section-subtitle">Developments from press releases, M&A activity, regulatory filings, and association communications. Each sourced and checkable.</div>
+      </div>
+    </div>
+    <div class="section-tag">This month</div>
+  </div>
+
+  <div class="card">
+
+    <div class="signal-row">
+      <div class="signal-left">
+        <div class="signal-badge badge-urgent">Urgent</div>
+        <div class="signal-source">AFIA letter<br>to White House<br>April 2026</div>
+      </div>
+      <div class="signal-content">
+        <div class="signal-title">China vitamin and amino acid dependency — AFIA has formally escalated to the President</div>
+        <div class="signal-body">China produces approximately 80% of vitamins used in US animal and human food production. The American Feed Industry Association sent a formal letter to President Trump flagging food security risks from this concentration. With tariffs active and escalating, this has moved from a strategic concern to an operational problem for every feed manufacturer in your readership. Your December 2025 manufacturers outlook piece noted it in passing. No standalone feature exists in your archive addressing what formulators and procurement teams should be doing right now.</div>
+        <div class="signal-gap">
+          <div class="signal-gap-label">Coverage gap</div>
+          The formulator and mill manager response — which vitamins carry the most supply risk, what substitution or buffering strategies exist, where domestic or alternative-origin supply is developing. That piece does not exist anywhere in trade press and it is squarely Feed Strategy's lane.
+        </div>
+      </div>
+    </div>
+
+    <div class="signal-row">
+      <div class="signal-left">
+        <div class="signal-badge badge-urgent">Urgent</div>
+        <div class="signal-source">M&A filing<br>Q1 2026<br>close</div>
+      </div>
+      <div class="signal-content">
+        <div class="signal-title">ADM × Alltech JV — North America's new #3 feed producer has no trade profile yet</div>
+        <div class="signal-body">The joint venture combining ADM Animal Nutrition and Alltech's US and Canadian feed manufacturing businesses closed Q1 2026, creating a Top 3 North American producer. As of late 2025 the combined entity name had not been publicly announced — meaning the first full profile has not been written by any trade title. Your December 2025 outlook piece mentioned the JV in passing. The standalone profile — combined facilities, leadership structure, formulation philosophy, competitive implications for every other manufacturer in the market — remains unwritten.</div>
+        <div class="signal-gap">
+          <div class="signal-gap-label">First-mover window</div>
+          The moment the entity name goes public, the race to publish the full profile begins. Feed Strategy is the natural home for it. Getting sourcing in place now means publishing within days of the announcement rather than weeks.
+        </div>
+      </div>
+    </div>
+
+    <div class="signal-row">
+      <div class="signal-left">
+        <div class="signal-badge badge-rising">Rising</div>
+        <div class="signal-source">USDA filings<br>FDA emergency<br>authorization</div>
+      </div>
+      <div class="signal-content">
+        <div class="signal-title">New World screwworm — the feed and mill operations angle is uncovered</div>
+        <div class="signal-body">USDA has sought a FIFRA pesticide exemption and FDA authorized emergency use of F10 ointment in response to New World screwworm. Other trade titles have covered this from the policy and veterinary angles. Feed Strategy has a dedicated biosecurity section and no screwworm coverage. Screwworm outbreaks disrupt livestock movement in affected regions — which directly affects feed demand patterns, ingredient procurement timelines, and mill planning for manufacturers serving those markets.</div>
+        <div class="signal-gap">
+          <div class="signal-gap-label">Coverage gap</div>
+          What does a screwworm outbreak scenario mean operationally for feed manufacturers — procurement, inventory buffers, customer communication planning? That thread has not been written and it is Feed Strategy's distinctive lens applied to a story everyone else is covering from a different angle.
+        </div>
+      </div>
+    </div>
+
+    <div class="signal-row">
+      <div class="signal-left">
+        <div class="signal-badge badge-rising">Rising</div>
+        <div class="signal-source">Alltech<br>Agri-Food<br>Outlook 2026</div>
+      </div>
+      <div class="signal-content">
+        <div class="signal-title">Alltech 2026 Agri-Food Outlook — the 2026 edition has not been covered in your archive</div>
+        <div class="signal-body">Alltech released its 15th annual Agri-Food Outlook with data from 38,837 feed mills across 142 countries — reporting 1.44 billion metric tons of global feed production, up 2.9%, with China growing 4.8% driven by a structural shift from on-farm to commercial feed. Feed Strategy has covered past Alltech Outlook editions and owns the WATT Top Feed Companies franchise. The 2026 version has been picked up by commodity and dairy titles but a Feed Strategy feature anchored to the manufacturing and formulation implications has not yet appeared in your archive.</div>
+        <div class="signal-gap">
+          <div class="signal-gap-label">Story angle</div>
+          The most actionable insight is structural: China's growth isn't more animals — it's commercial feed replacing on-farm mixing. What does that shift mean for global ingredient demand, trade flows, and competitive dynamics for North American manufacturers? That's a Feed Strategy story.
+        </div>
+      </div>
+    </div>
+
+    <div class="signal-row">
+      <div class="signal-left">
+        <div class="signal-badge badge-rising">Rising</div>
+        <div class="signal-source">Press release<br>April 2026<br>Brazil</div>
+      </div>
+      <div class="signal-content">
+        <div class="signal-title">Fevara PLC acquires Macal — first Southern Hemisphere presence for sustainable supplement company</div>
+        <div class="signal-body">Fevara PLC, a global sustainable livestock supplement company, entered into an agreement to acquire Domino Industria E Comercio LTDA (trading as Macal), establishing its first presence in the Southern Hemisphere and entry into the Brazilian market. Brazil is the world's #3 feed producer. No coverage found in Feed Strategy or other major trade titles.</div>
+        <div class="signal-gap">
+          <div class="signal-gap-label">Story angle</div>
+          Why Brazil, why now — and what it signals about where European supplement companies see the next phase of growth in global livestock markets. Connects to Feed Strategy's existing Latin America and sustainability coverage threads.
+        </div>
+      </div>
+    </div>
+
+    <div class="signal-row">
+      <div class="signal-left">
+        <div class="signal-badge badge-emerging">Emerging</div>
+        <div class="signal-source">NGFA / AFIA<br>2026 priority<br>programming</div>
+      </div>
+      <div class="signal-content">
+        <div class="signal-title">FEED Act — 2026 status update warranted on legislation Feed Strategy already owns</div>
+        <div class="signal-body">Feed Strategy covered the FEED Act's introduction at the House level in 2024. The legislation — which would allow feed ingredients to claim production efficiency and animal health benefits, closing the competitive gap with EU, South American, and Australian manufacturers — has been a stated NGFA and AFIA priority for 2026 with bipartisan Congressional support. No 2026 status and implications piece exists in your archive.</div>
+        <div class="signal-gap">
+          <div class="signal-gap-label">Coverage angle</div>
+          A 2026 update — where the legislation stands, what passage would mean practically for formulators, what the timeline looks like — serves your regulatory-watching readership and builds on a story you already own rather than starting from scratch.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION 2: CONFERENCE FORWARD SIGNALS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-lg">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Conference Forward Signals — What Practitioners Are Paying to Discuss</div>
+        <div class="section-subtitle">Topics that appeared on 2026 conference agendas are a 6–12 month leading indicator of practitioner demand. These haven't fully made it into trade editorial yet.</div>
+      </div>
+    </div>
+    <div class="section-tag">Forward signal</div>
+  </div>
+
+  <div class="card">
+    <div class="horizon-grid">
+      <div class="horizon-item">
+        <div class="horizon-title">API integration across disconnected feed supply chain systems <span class="tag-pill tag-conf">IPPE 2026</span></div>
+        <div class="horizon-body">A dedicated session covered connecting inventory, delivery, animal movement, and sourcing platforms without adding new logins — reducing coordination time through shared APIs. Feed Strategy has strong data-driven operations coverage but this specific "connect what you already have" angle for mill managers is open. Conference sessions signal that practitioners are asking "how do I implement this" — not "should I consider it."</div>
+      </div>
+      <div class="horizon-item">
+        <div class="horizon-title">Rendered ingredients reframed through sustainability lens <span class="tag-pill tag-conf">Rendering Symp.</span></div>
+        <div class="horizon-body">The 2026 International Rendering Symposium focused on science-based communication for rendered ingredients and optimizing their role in a sustainable feed future. As alternative proteins compete for the sustainability narrative, rendering's story needs to be retold in the same data language Feed Strategy already uses for emissions and circularity. No recent piece in your archive takes this angle.</div>
+      </div>
+      <div class="horizon-item">
+        <div class="horizon-title">Mycotoxin detection advances — follow-up demand confirmed <span class="tag-pill tag-conf">NGFA 2026</span></div>
+        <div class="horizon-body">NGFA announced dedicated 2026 mycotoxin programming. Feed Strategy's own data confirms the demand: blood biomarker-based mycotoxin detection was one of your top-read articles of 2025. Confirmed audience engagement plus confirmed industry programming is a rare combination — a follow-up series builds on a demonstrated winner.</div>
+      </div>
+      <div class="horizon-item">
+        <div class="horizon-title">Precision swine nutrition — practitioner demand building <span class="tag-pill tag-conf">Multiple 2026</span></div>
+        <div class="horizon-body">Multiple 2026 events including IPPE and AFIA programming are featuring precision swine nutrition sessions. Feed Strategy's Nutrition Editor Mavromichalis has strong authority here but coverage is episodic. A structured column or series would establish consistent ownership of a topic where practitioner demand is clearly building across multiple conference venues simultaneously.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: EDITORIAL PRIORITIES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-lg">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Editorial Priorities — Three Moves This Cycle</div>
+        <div class="section-subtitle">Ranked by urgency of the signal, size of the coverage gap, and fit with Feed Strategy's editorial lane.</div>
+      </div>
+    </div>
+    <div class="section-tag">Act now</div>
+  </div>
+
+  <div class="action-card act-now">
+    <div class="action-header">
+      <div class="action-title">Assign the China vitamin supply chain story this week — AFIA has escalated to the White House and the formulator response piece doesn't exist anywhere</div>
+      <div class="priority-tag p-urgent">This week</div>
+    </div>
+    <div class="action-body">Every manufacturer in your readership is affected right now. The policy story is being covered by commodity and agribusiness titles. The piece that nobody has written — from any trade title — is the formulator response guide: which vitamins carry the most supply risk, what substitution strategies are available, where alternative supply is developing, how procurement teams should be adjusting now. That is unambiguously Feed Strategy's lane. The window to own this story is closing as other titles catch up to the operational implications.</div>
+    <div class="action-meta">
+      <div class="meta-item"><div class="meta-label">Audience reach</div><div class="meta-value mv-red">Every manufacturer</div></div>
+      <div class="meta-item"><div class="meta-label">Gap status</div><div class="meta-value mv-red">Open across all trade press</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value mv-red">Deep-dive + sourcing guide</div></div>
+      <div class="meta-item"><div class="meta-label">Source</div><div class="meta-value mv-red">AFIA · NGFA · formulators</div></div>
+    </div>
+  </div>
+
+  <div class="action-card act-soon">
+    <div class="action-header">
+      <div class="action-title">Set up ADM × Alltech sourcing now so the profile is ready to publish within days of the entity name announcement</div>
+      <div class="priority-tag p-soon">Prepare now</div>
+    </div>
+    <div class="action-body">The combined entity name hasn't been publicly announced. That means the race to publish the first full profile hasn't started yet — but it will the moment the name drops. Feed Strategy mentioned the JV in the December 2025 outlook. Getting on the record with sources at both ADM Animal Nutrition and Alltech now means you're positioned to publish the definitive profile immediately rather than scrambling after the announcement. This is a cover story for whichever trade title gets there first.</div>
+    <div class="action-meta">
+      <div class="meta-item"><div class="meta-label">Story scale</div><div class="meta-value mv-amber">Top 3 NA producer</div></div>
+      <div class="meta-item"><div class="meta-label">First-mover window</div><div class="meta-value mv-amber">Still open</div></div>
+      <div class="meta-item"><div class="meta-label">Advertiser tie-in</div><div class="meta-value mv-amber">High</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value mv-amber">Cover profile</div></div>
+    </div>
+  </div>
+
+  <div class="action-card act-strategic">
+    <div class="action-header">
+      <div class="action-title">Apply Feed Strategy's operational lens to the screwworm story — the policy angle is covered, the mill operations angle is open</div>
+      <div class="priority-tag p-strategic">Differentiation</div>
+    </div>
+    <div class="action-body">USDA and FDA have both taken emergency action on New World screwworm. Veterinary and policy titles are covering the disease and regulatory response. Feed Strategy has a dedicated biosecurity section and no screwworm coverage. The angle that doesn't exist: what does a screwworm outbreak scenario mean for feed manufacturers operationally in affected regions — procurement adjustments, demand pattern shifts, inventory planning, customer communication? That's the thread that makes a well-covered story into a Feed Strategy story.</div>
+    <div class="action-meta">
+      <div class="meta-item"><div class="meta-label">Competitor coverage</div><div class="meta-value mv-blue">Policy and vet only</div></div>
+      <div class="meta-item"><div class="meta-label">Feed Strategy angle</div><div class="meta-value mv-blue">Operations gap</div></div>
+      <div class="meta-item"><div class="meta-label">Section fit</div><div class="meta-value mv-blue">Biosecurity</div></div>
+      <div class="meta-item"><div class="meta-label">Timeline</div><div class="meta-value mv-blue">Now</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TEASER -->
+<div class="teaser-strip">
+  <div class="teaser-eyebrow">This is a proof of concept</div>
+  <div class="teaser-headline">Imagine this for every title in your portfolio, every month.</div>
+  <div class="teaser-body">Automated signal collection across industry press releases, conference agendas, M&A activity, and regulatory filings — synthesized into a prioritized editorial brief your editors can act on. Not another dashboard to check. A report that lands in your inbox, tells you what the industry is moving toward before your audience asks for it, and shows you where your first-party engagement data confirms the opportunity.<br><br>The version you're reading was built entirely from public data. The next version is built on yours — which topics are driving registrations, which content clusters attract your highest-value readers, where audience intent and advertiser interest intersect. That's what turns an editorial brief into a publishing strategy.<br><br><a href="https://mindful.pub" style="color:var(--accent-blue);font-weight:600;text-decoration:none;">Learn about the full platform › mindful.pub</a></div>
+</div>
+
+<!-- CHAT -->
+<div style="margin-bottom:36px;">
+  <div class="section-header">
+    <div class="section-lg">
+      <div class="section-num" style="background:var(--accent-teal);">?</div>
+      <div>
+        <div class="section-title">Ask about this brief</div>
+        <div class="section-subtitle">Questions about any signal, gap, or editorial recommendation — or what a first-party version of this brief would look like for Feed Strategy.</div>
+      </div>
+    </div>
+    <div class="section-tag">Intelligence layer</div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="chat-messages">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(74,158,255,0.15);border:1px solid rgba(74,158,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent-blue);flex-shrink:0;">PI</div>
+        <div style="background:rgba(21,58,107,0.5);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-secondary);line-height:1.6;max-width:88%;">I have full context on every signal and gap in this brief. Every claim was verified against Feed Strategy's archive before inclusion. Try: <span style="color:var(--accent-blue);cursor:pointer;" onclick="fillQ('What would the first-party version of this brief add that the public data version can\'t show?')">"What would the first-party version add?"</span> or <span style="color:var(--accent-blue);cursor:pointer;" onclick="fillQ('Why is the China vitamin story Feed Strategy\'s story specifically and not a commodity title story?')">"Why is the China vitamin story Feed Strategy's story?"</span></div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:flex-end;">
+      <textarea id="chat-input" placeholder="Ask about any signal, gap, or recommendation in this brief..." rows="1" style="flex:1;background:rgba(21,58,107,0.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-primary);font-family:'Inter',sans-serif;resize:none;outline:none;line-height:1.5;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+      <button onclick="sendQ()" style="background:var(--accent-blue);border:none;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;white-space:nowrap;height:40px;">Ask</button>
+    </div>
+  </div>
+</div>
+
+<div class="report-footer">
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+      <span class="logo-bracket" style="font-size:11px;">{ parameter : 1 }</span>
+      <span style="font-size:10px;color:var(--text-muted)">|</span>
+      <span style="font-size:10px;font-weight:600;color:var(--accent-blue);letter-spacing:1px;text-transform:uppercase;">Mindful</span>
+    </div>
+    <div class="footer-brand">mindful.pub &nbsp;·&nbsp; sales@mindful.pub</div>
+  </div>
+  <div class="footer-note">Coverage gaps verified against feedstrategy.com public sitemap (~400 URLs), April 2026. Signal strength is qualitative assessment, not statistical search volume. Sources: AFIA, NGFA, IPPE 2026 agenda, International Rendering Symposium 2026, Alltech Agri-Food Outlook, USDA/FDA filings, public M&A records.</div>
+</div>
+
+</body>
+<script>
+const REPORT_CONTEXT = `You are the intelligence layer embedded in an Editorial Intelligence Brief for Feed Strategy magazine (feedstrategy.com), produced by Parameter1 / Mindful Publishing Intelligence. You are speaking to Jackie Roembke, Editor-in-Chief, or another senior editorial leader at a B2B trade publication.
+
+ABOUT THIS BRIEF:
+This brief monitors five signal sources — press releases and M&A filings, trade association communications, conference agendas, regulatory activity, and coverage patterns — and verifies gaps against Feed Strategy's public sitemap (~400 URLs). Every coverage gap claim was checked against the archive before inclusion. Signal strength labels are qualitative, not statistical.
+
+ABOUT PARAMETER1 / MINDFUL:
+Parameter1 builds Mindful, a unified publishing intelligence platform for B2B niche publishers. The platform spans audience management, content, advertising, and analytics. The editorial intelligence brief is a proof of concept showing what becomes possible when external industry signals are combined with a publisher's own first-party engagement data — which topics drive registrations, which content clusters attract high-value readers, where audience intent and advertiser interest intersect.
+
+SIGNALS IN THIS BRIEF:
+
+1. China vitamin/amino acid supply chain [URGENT]
+- Source: AFIA formal letter to President Trump, April 2026
+- China produces ~80% of US vitamins for animal/human food
+- Tariffs active and escalating
+- Feed Strategy mentioned in Dec 2025 outlook, no standalone feature
+- Gap: formulator response guide — substitution strategies, supply risk by vitamin, procurement adjustments
+- Other trade titles covering policy angle; operational/formulation angle is open
+
+2. ADM × Alltech JV profile [URGENT — first-mover]
+- Source: M&A filing, Q1 2026 close
+- Combines ADM Animal Nutrition + Alltech US/Canadian feed manufacturing
+- Creates Top 3 North American feed producer
+- Entity name not yet announced as of late 2025 — no full profile written anywhere
+- Feed Strategy mentioned in Dec 2025 outlook piece only
+- Gap: full profile — facilities, leadership, formulation philosophy, competitive implications
+
+3. New World screwworm — operations angle [RISING]
+- Source: USDA FIFRA exemption filing, FDA emergency F10 ointment authorization
+- Policy and veterinary titles covering disease/regulatory response
+- Feed Strategy has biosecurity section, no screwworm coverage in sitemap
+- Gap: feed manufacturer operational response — procurement, demand pattern shifts, inventory planning
+
+4. Alltech 2026 Agri-Food Outlook [RISING]
+- Source: Alltech annual report, April 2026
+- 1.44 billion MT global production, +2.9%, China +4.8% structural shift
+- Covered by DairyReporter and commodity titles, not yet in Feed Strategy archive
+- Gap: manufacturing/formulation implications of China's on-farm to commercial feed shift
+
+5. Fevara PLC acquires Macal, Brazil [RISING]
+- Source: press release April 2026
+- First Southern Hemisphere presence for sustainable livestock supplement company
+- Not in Feed Strategy, Feedstuffs, or Feed & Grain sitemaps
+
+6. FEED Act 2026 status [EMERGING]
+- Source: NGFA/AFIA 2026 priority programming
+- Feed Strategy covered House introduction in 2024
+- No 2026 status/implications piece in archive
+
+CONFERENCE SIGNALS:
+- IPPE 2026: API integration across disconnected feed supply chain systems
+- International Rendering Symposium 2026: science-based communication for rendered ingredients
+- NGFA 2026: mycotoxin programming — confirmed by Feed Strategy's own top-read 2025 data
+- Multiple 2026 events: precision swine nutrition building practitioner demand
+
+THREE EDITORIAL PRIORITIES:
+1. China vitamin story — assign this week, formulator response angle open across all trade press
+2. ADM × Alltech profile — get sourcing in place now, publish within days of entity name announcement
+3. Screwworm operations angle — apply Feed Strategy's mill/operations lens to a widely covered story
+
+WHAT THE FIRST-PARTY VERSION ADDS:
+The public data brief shows what the industry is signaling. A first-party version — built on Feed Strategy's own engagement data — would add: which of these topics your registered readers are already searching for, which content clusters are driving newsletter signups and registrations, where audience intent and advertiser interest intersect, and which signals are confirmed by your own reader behavior vs. just external noise. That turns editorial intuition into publishing strategy.
+
+Answer questions helpfully, accurately, and specifically. You're speaking to a sharp trade publication editor or publishing executive. Be direct and concise.`;
+
+async function sendQ() {
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addMessage(q, 'user');
+  const thinking = addMessage('...', 'bot', true);
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: REPORT_CONTEXT,
+        messages: [{role: 'user', content: q}]
+      })
+    });
+    const data = await res.json();
+    const answer = data.content?.[0]?.text || 'No response received.';
+    thinking.remove();
+    addMessage(answer, 'bot');
+  } catch(e) {
+    thinking.remove();
+    addMessage('Unable to reach the intelligence layer. Please try again.', 'bot');
+  }
+}
+function fillQ(t) { document.getElementById('chat-input').value = t; document.getElementById('chat-input').focus(); }
+function addMessage(text, role) {
+  const c = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:10px;align-items:flex-start;';
+  const av = document.createElement('div');
+  if (role==='user') {
+    av.style.cssText = 'width:26px;height:26px;border-radius:50%;background:rgba(29,184,138,0.15);border:1px solid rgba(29,184,138,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1db88a;flex-shrink:0;';
+    av.textContent = 'FS';
+  } else {
+    av.style.cssText = 'width:26px;height:26px;border-radius:50%;background:rgba(74,158,255,0.15);border:1px solid rgba(74,158,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4a9eff;flex-shrink:0;';
+    av.textContent = 'PI';
+  }
+  const bubble = document.createElement('div');
+  bubble.style.cssText = `border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;max-width:88%;white-space:pre-wrap;${role==='user'?'background:rgba(29,184,138,0.08);border:1px solid rgba(29,184,138,0.2);color:#8ba0c0;margin-left:auto;':'background:rgba(21,58,107,0.5);border:1px solid rgba(74,158,255,0.15);color:#8ba0c0;'}`;
+  bubble.textContent = text;
+  if (role==='user') wrap.style.flexDirection='row-reverse';
+  wrap.appendChild(av); wrap.appendChild(bubble);
+  c.appendChild(wrap);
+  c.scrollTop = c.scrollHeight;
+  return wrap;
+}
+document.getElementById('chat-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+</script>
+</html>
