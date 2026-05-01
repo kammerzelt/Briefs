@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed Strategy — Search Intelligence Keyword Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1a6b3c; --green-light: #e6f4ec; --green-mid: #b3dfc4; --green-dark: #145530;
+  --amber: #d97706; --red: #dc2626; --blue: #1d6fa4; --purple: #7c3aed; --teal: #0d9488;
+  --text: #1a2e1a; --text-sec: #475569; --text-muted: #94a3b8;
+  --bg: #f8faf8; --white: #fff; --border: #e2e8e2;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+.app { max-width: 920px; margin: 0 auto; padding: 24px 20px 60px; }
+
+.header { background: var(--green); border-radius: 12px; padding: 22px 28px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+.header h1 { font-size: 19px; font-weight: 800; color: #fff; }
+.header p { font-size: 12px; color: var(--green-mid); margin-top: 3px; }
+.header-right { text-align: right; }
+.header-right strong { display: block; font-size: 22px; font-weight: 700; color: var(--green-mid); }
+.header-right span { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+.data-note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; margin-bottom: 18px; font-size: 12px; color: #92400e; line-height: 1.6; }
+.data-note strong { color: #78350f; }
+
+.summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 18px; }
+.sum-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 13px 15px; }
+.sum-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+.sum-value { font-size: 20px; font-weight: 700; }
+
+.controls { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+.filter-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--white); color: var(--text-sec); font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; }
+.filter-btn.active { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
+.search-input { flex: 1; min-width: 180px; padding: 7px 12px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 12px; font-family: 'Inter', sans-serif; outline: none; }
+.search-input:focus { border-color: var(--green); }
+
+.category { margin-bottom: 22px; }
+.cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.cat-icon { font-size: 16px; }
+.cat-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.cat-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+.cluster-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.cluster-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 9px; padding: 13px 15px; transition: border-color 0.15s; }
+.cluster-card:hover { border-color: var(--green-mid); }
+.cluster-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 7px; gap: 8px; }
+.cluster-name { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.signal-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.sb-hot { background: #fef2f2; color: var(--red); }
+.sb-rising { background: #fffbeb; color: var(--amber); }
+.sb-stable { background: var(--green-light); color: var(--green-dark); }
+.sb-emerging { background: #eff6ff; color: var(--blue); }
+.sb-professional { background: #f5f3ff; color: var(--purple); }
+.kw-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 9px; }
+.kw-tag { font-size: 10px; padding: 2px 7px; border-radius: 3px; background: var(--bg); border: 1px solid var(--border); color: var(--text-sec); cursor: pointer; }
+.kw-tag:hover { background: var(--green-light); border-color: var(--green-mid); color: var(--green-dark); }
+.cluster-footer { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.aud-tag { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+.aud-formulator { background: #eff6ff; color: var(--blue); }
+.aud-mill { background: var(--green-light); color: var(--green-dark); }
+.aud-procurement { background: #fdf4ff; color: var(--purple); }
+.aud-nutritionist { background: #fff7ed; color: #c2410c; }
+.aud-all { background: #f1f5f9; color: #334155; }
+.trends-link { margin-left: auto; font-size: 10px; font-weight: 600; color: var(--green-dark); text-decoration: none; padding: 2px 9px; border-radius: 4px; border: 1px solid var(--green-mid); background: var(--green-light); white-space: nowrap; }
+.sitemap-ref { font-size: 10px; color: var(--text-muted); margin-top: 5px; }
+.no-results { text-align: center; padding: 40px; color: var(--text-muted); }
+
+@media(max-width:580px){ .cluster-grid{grid-template-columns:1fr;} .summary{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div>
+    <h1>Feed Strategy — Search Intelligence Keyword Universe</h1>
+    <p>Derived from feedstrategy.com sitemap · Click any keyword to explore on Google Trends · Click "Compare" to compare clusters</p>
+  </div>
+  <div class="header-right">
+    <strong id="total-count">44</strong>
+    <span>keyword clusters across 8 categories</span>
+  </div>
+</div>
+
+<div class="data-note">
+  <strong>Data note:</strong> Keyword clusters are derived directly from the Feed Strategy sitemap taxonomy — these are the topics the publication covers, mapped to how practitioners and researchers actually search. Click any keyword to open live Google Trends. Signal labels (Hot / Rising / Stable / Emerging / Professional) reflect qualitative assessment based on current industry conditions documented from AFIA, USDA, IFEEDER, and Cargill sources — not yet from a live Trends pull. The Trends links let you validate each cluster directly.
+</div>
+
+<div class="summary">
+  <div class="sum-card"><div class="sum-label">Total clusters</div><div class="sum-value" style="color:var(--green)">44</div></div>
+  <div class="sum-card"><div class="sum-label">Hot / urgent</div><div class="sum-value" style="color:var(--red)">5</div></div>
+  <div class="sum-card"><div class="sum-label">Rising</div><div class="sum-value" style="color:var(--amber)">12</div></div>
+  <div class="sum-card"><div class="sum-label">Professional / trade</div><div class="sum-value" style="color:var(--purple)">14</div></div>
+</div>
+
+<div class="controls">
+  <button class="filter-btn active" onclick="filterAud('all',this)">All</button>
+  <button class="filter-btn" onclick="filterAud('formulator',this)">Formulator</button>
+  <button class="filter-btn" onclick="filterAud('mill',this)">Mill Manager</button>
+  <button class="filter-btn" onclick="filterAud('procurement',this)">Procurement</button>
+  <button class="filter-btn" onclick="filterAud('nutritionist',this)">Nutritionist</button>
+  <button class="filter-btn" onclick="filterSig('hot',this)">🔴 Hot</button>
+  <button class="filter-btn" onclick="filterSig('rising',this)">🟡 Rising</button>
+  <button class="filter-btn" onclick="filterSig('emerging',this)">🔵 Emerging</button>
+  <input class="search-input" placeholder="Search clusters or keywords..." oninput="search(this.value)">
+</div>
+
+<div id="container"></div>
+<div class="no-results" id="no-results" style="display:none">No clusters match. Try a different filter.</div>
+
+</div>
+<script>
+const CLUSTERS = [
+  // SUPPLY CHAIN & INGREDIENTS
+  { cat:"Supply Chain & Ingredients", icon:"🌽", id:"vitamins-amino", name:"Vitamin & Amino Acid Supply", signal:"hot", aud:["formulator","procurement","mill"],
+    kw:["vitamin supply chain feed","amino acid supply feed","lysine shortage","methionine supply","China vitamin imports animal feed"],
+    sitemap:"/animal-feed-additives-ingredients/feed-ingredients",
+    q:"vitamin+supply+chain+feed,amino+acid+supply+feed,lysine+shortage" },
+  { cat:"Supply Chain & Ingredients", icon:"🌽", id:"corn-soy", name:"Corn & Soybean Prices / Availability", signal:"hot", aud:["procurement","mill","formulator"],
+    kw:["corn price feed","soybean meal price","DDGS feed price","feed ingredient prices","corn futures animal feed"],
+    sitemap:"/business-markets/commodities",
+    q:"corn+price+feed,soybean+meal+price,DDGS+feed+price" },
+  { cat:"Supply Chain & Ingredients", icon:"🌽", id:"tariffs-trade", name:"Tariffs & Feed Ingredient Trade", signal:"hot", aud:["procurement","mill"],
+    kw:["feed ingredient tariffs","China feed trade","soybean export tariffs","animal feed import restrictions"],
+    sitemap:"/business-markets/international-trade",
+    q:"feed+ingredient+tariffs,China+feed+trade,soybean+export+tariffs" },
+  { cat:"Supply Chain & Ingredients", icon:"🌽", id:"alt-protein", name:"Alternative Protein Sources", signal:"rising", aud:["formulator","nutritionist"],
+    kw:["insect meal animal feed","black soldier fly feed","single cell protein feed","algae animal feed","alternative protein feed"],
+    sitemap:"/animal-feed-additives-ingredients/alternative-protein",
+    q:"insect+meal+animal+feed,black+soldier+fly+feed,single+cell+protein+feed" },
+  { cat:"Supply Chain & Ingredients", icon:"🌽", id:"sorghum", name:"Sorghum as Feed Ingredient", signal:"rising", aud:["formulator","procurement"],
+    kw:["sorghum animal feed","grain sorghum feed","milo feed ingredient","sorghum vs corn feed"],
+    sitemap:"/ingredient-insights-collection/sorghum",
+    q:"sorghum+animal+feed,grain+sorghum+feed,milo+feed+ingredient" },
+  { cat:"Supply Chain & Ingredients", icon:"🌽", id:"rendered", name:"Rendered Ingredients & Sustainability", signal:"emerging", aud:["formulator","nutritionist"],
+    kw:["rendered ingredients feed","meat and bone meal feed","rendered protein sustainability","circularity animal feed"],
+    sitemap:"/sustainability-in-feed-production/circularity-upcycling",
+    q:"rendered+ingredients+feed,meat+and+bone+meal+feed,rendered+protein+sustainability" },
+
+  // ANIMAL HEALTH
+  { cat:"Animal Health", icon:"🐔", id:"hpai", name:"Avian Influenza / HPAI", signal:"hot", aud:["mill","formulator","nutritionist"],
+    kw:["avian influenza feed industry","HPAI poultry feed","bird flu egg production","avian flu flock rebuilding","HPAI biosecurity feed mill"],
+    sitemap:"/animal-health-veterinary/livestock-poultry-diseases/avian-influenza",
+    q:"avian+influenza+feed+industry,HPAI+poultry+feed,bird+flu+egg+production" },
+  { cat:"Animal Health", icon:"🐔", id:"asf", name:"African Swine Fever", signal:"rising", aud:["mill","formulator"],
+    kw:["African swine fever feed","ASF biosecurity feed mill","ASF pig feed","African swine fever prevention"],
+    sitemap:"/animal-health-veterinary/african-swine-fever",
+    q:"African+swine+fever+feed,ASF+biosecurity+feed+mill,ASF+pig+feed" },
+  { cat:"Animal Health", icon:"🐔", id:"mycotoxins-health", name:"Mycotoxins in Feed", signal:"hot", aud:["formulator","mill","nutritionist"],
+    kw:["mycotoxin in feed","DON vomitoxin feed","aflatoxin corn feed","mycotoxin binder feed","fumonisin animal feed","zearalenone swine"],
+    sitemap:"/animal-health-veterinary/mycotoxins · /animal-feed-additives-ingredients/mycotoxin-management",
+    q:"mycotoxin+in+feed,DON+vomitoxin+feed,mycotoxin+binder+feed" },
+  { cat:"Animal Health", icon:"🐔", id:"biosecurity", name:"Biosecurity at Feed Mills", signal:"rising", aud:["mill"],
+    kw:["feed mill biosecurity","feed biosecurity HPAI","feed-borne pathogen control","biosecurity feed manufacturing"],
+    sitemap:"/animal-feed-regulations-safety/biosecurity",
+    q:"feed+mill+biosecurity,feed+biosecurity+HPAI,feed-borne+pathogen+control" },
+  { cat:"Animal Health", icon:"🐔", id:"dairy-health", name:"Dairy Cow Health & Nutrition", signal:"rising", aud:["nutritionist","formulator"],
+    kw:["dairy cow nutrition","dairy feed formulation","transition cow nutrition","dairy cow health disease","milk production nutrition"],
+    sitemap:"/animal-health-veterinary/livestock-poultry-diseases/dairy-cow-health-disease · /animal-nutrition/dairy-cattle",
+    q:"dairy+cow+nutrition,dairy+feed+formulation,transition+cow+nutrition" },
+  { cat:"Animal Health", icon:"🐔", id:"antibiotic-free", name:"Antibiotic-Free & Alternatives", signal:"rising", aud:["formulator","nutritionist"],
+    kw:["antibiotic free animal production","antibiotic alternatives feed","AGP-free poultry","phytogenics feed additive","organic acid feed"],
+    sitemap:"/animal-feed-additives-ingredients/antibiotic-free-production",
+    q:"antibiotic+free+animal+production,antibiotic+alternatives+feed,AGP-free+poultry" },
+
+  // ANIMAL NUTRITION
+  { cat:"Animal Nutrition", icon:"🐷", id:"swine-nutrition", name:"Swine / Pig Nutrition", signal:"professional", aud:["formulator","nutritionist"],
+    kw:["swine feed formulation","pig nutrition","precision swine nutrition","nursery pig feed","sow nutrition"],
+    sitemap:"/animal-nutrition/swine · /animal-nutrition/feed-formulation/swine-feed-formulations",
+    q:"swine+feed+formulation,pig+nutrition,precision+swine+nutrition" },
+  { cat:"Animal Nutrition", icon:"🐷", id:"poultry-nutrition", name:"Poultry Nutrition", signal:"professional", aud:["formulator","nutritionist"],
+    kw:["broiler feed formulation","poultry nutrition","layer feed formulation","broiler nutrition","poultry diet energy"],
+    sitemap:"/animal-nutrition/poultry · /animal-nutrition/feed-formulation/broiler-feed-formulations",
+    q:"broiler+feed+formulation,poultry+nutrition,layer+feed+formulation" },
+  { cat:"Animal Nutrition", icon:"🐷", id:"beef-nutrition", name:"Beef Cattle Nutrition", signal:"stable", aud:["formulator","nutritionist"],
+    kw:["beef cattle nutrition","feedlot ration","stocker cattle feed","beef feed formulation","ionophore feed additive"],
+    sitemap:"/animal-nutrition/beef-cattle",
+    q:"beef+cattle+nutrition,feedlot+ration,beef+feed+formulation" },
+  { cat:"Animal Nutrition", icon:"🐷", id:"precision-nutrition", name:"Precision Nutrition", signal:"rising", aud:["formulator","nutritionist"],
+    kw:["precision animal nutrition","precision livestock farming feed","nutrigenomics feed","nutrient matrix precision"],
+    sitemap:"/sustainability-in-feed-production/precision-nutrition · /feed-mill-of-the-future/formulation-nutrition",
+    q:"precision+animal+nutrition,precision+livestock+farming+feed,nutrigenomics+feed" },
+  { cat:"Animal Nutrition", icon:"🐷", id:"aquafeed", name:"Aquafeed & Aquaculture Nutrition", signal:"rising", aud:["formulator","nutritionist"],
+    kw:["aquafeed formulation","fish feed ingredients","shrimp feed","aquaculture feed additives","fishmeal alternative"],
+    sitemap:"/animal-nutrition/aquaculture · /top-feed-companies/2022/aqua-feed",
+    q:"aquafeed+formulation,fish+feed+ingredients,fishmeal+alternative" },
+  { cat:"Animal Nutrition", icon:"🐷", id:"feed-formulation", name:"Feed Formulation & Least Cost", signal:"professional", aud:["formulator"],
+    kw:["feed formulation software","least cost feed formulation","linear programming feed","NRC feed requirements"],
+    sitemap:"/animal-nutrition/feed-formulation · /recommended/formulation-software",
+    q:"feed+formulation+software,least+cost+feed+formulation,NRC+feed+requirements" },
+
+  // FEED ADDITIVES
+  { cat:"Feed Additives", icon:"🧪", id:"enzymes", name:"Enzymes in Feed", signal:"stable", aud:["formulator","nutritionist"],
+    kw:["phytase feed additive","xylanase feed","protease feed enzyme","enzyme feed formulation","carbohydrase feed"],
+    sitemap:"/animal-feed-additives-ingredients/feed-additives",
+    q:"phytase+feed+additive,xylanase+feed,protease+feed+enzyme" },
+  { cat:"Feed Additives", icon:"🧪", id:"probiotics-prebiotics", name:"Probiotics, Prebiotics & Gut Health", signal:"rising", aud:["formulator","nutritionist"],
+    kw:["probiotic animal feed","prebiotic feed additive","gut health poultry","direct fed microbials","postbiotic feed"],
+    sitemap:"/animal-feed-additives-ingredients/feed-additives",
+    q:"probiotic+animal+feed,prebiotic+feed+additive,gut+health+poultry" },
+  { cat:"Feed Additives", icon:"🧪", id:"mycotoxin-binders", name:"Mycotoxin Binders & Management Products", signal:"hot", aud:["formulator","mill"],
+    kw:["mycotoxin binder feed","anti-mycotoxin additive","clay mycotoxin binder","biological mycotoxin control","mycotoxin detoxifier"],
+    sitemap:"/animal-feed-additives-ingredients/mycotoxin-management",
+    q:"mycotoxin+binder+feed,anti-mycotoxin+additive,mycotoxin+detoxifier" },
+  { cat:"Feed Additives", icon:"🧪", id:"acidifiers", name:"Acidifiers & Preservatives", signal:"stable", aud:["formulator"],
+    kw:["organic acid feed additive","feed acidifier","formic acid feed","propionic acid feed","feed preservative mold"],
+    sitemap:"/animal-feed-additives-ingredients/feed-additives",
+    q:"organic+acid+feed+additive,feed+acidifier,formic+acid+feed" },
+
+  // FEED MANUFACTURING
+  { cat:"Feed Manufacturing", icon:"🏭", id:"pelleting", name:"Pelleting & Feed Processing", signal:"professional", aud:["mill"],
+    kw:["feed pelleting","pellet mill feed","die and roll feed mill","feed conditioning","pellet quality feed"],
+    sitemap:"/animal-feed-manufacturing/feed-mill-equipment · /recommended/manufacturing-equipment",
+    q:"feed+pelleting,pellet+mill+feed,pellet+quality+feed" },
+  { cat:"Feed Manufacturing", icon:"🏭", id:"automation-mill", name:"Feed Mill Automation & Digital", signal:"rising", aud:["mill"],
+    kw:["feed mill automation","feed mill control system","digital feed mill","batching automation feed","feed mill software"],
+    sitemap:"/feed-mill-of-the-future/automation · /recommended/batching-and-automation-systems",
+    q:"feed+mill+automation,feed+mill+control+system,digital+feed+mill" },
+  { cat:"Feed Manufacturing", icon:"🏭", id:"energy-efficiency-mill", name:"Feed Mill Energy Efficiency", signal:"rising", aud:["mill"],
+    kw:["feed mill energy efficiency","energy reduction feed manufacturing","feed mill carbon footprint","feed mill electricity cost"],
+    sitemap:"/feed-mill-of-the-future/energy-efficiency",
+    q:"feed+mill+energy+efficiency,energy+reduction+feed+manufacturing,feed+mill+carbon+footprint" },
+  { cat:"Feed Manufacturing", icon:"🏭", id:"mill-safety", name:"Feed Mill Worker Safety", signal:"professional", aud:["mill"],
+    kw:["feed mill worker safety","grain dust explosion","feed mill OSHA","combustible dust feed mill","mill safety program"],
+    sitemap:"/animal-feed-manufacturing/worker-safety",
+    q:"feed+mill+worker+safety,grain+dust+explosion,combustible+dust+feed+mill" },
+  { cat:"Feed Manufacturing", icon:"🏭", id:"material-handling", name:"Conveying & Material Handling", signal:"professional", aud:["mill"],
+    kw:["feed mill conveying","bucket elevator feed mill","screw conveyor feed","material handling feed manufacturing"],
+    sitemap:"/recommended/conveying-and-material-handling",
+    q:"feed+mill+conveying,bucket+elevator+feed+mill,material+handling+feed+manufacturing" },
+  { cat:"Feed Manufacturing", icon:"🏭", id:"quality-testing", name:"Feed Quality Testing & Analysis", signal:"professional", aud:["mill","formulator"],
+    kw:["feed quality testing","feed analysis lab","NIR feed analysis","feed moisture testing","mycotoxin testing feed"],
+    sitemap:"/recommended/testing-and-analysis · /products/laboratory-products-and-services",
+    q:"feed+quality+testing,NIR+feed+analysis,feed+analysis+lab" },
+
+  // REGULATIONS & SAFETY
+  { cat:"Regulations & Safety", icon:"⚖️", id:"fda-feed", name:"FDA Feed Regulations", signal:"professional", aud:["mill","formulator","procurement"],
+    kw:["FDA animal feed regulations","FSMA feed rule","feed safety modernization","FDA GRAS feed additive","FDA feed ingredient approval"],
+    sitemap:"/animal-feed-regulations-safety/regulatory-updates",
+    q:"FDA+animal+feed+regulations,FSMA+feed+rule,FDA+feed+ingredient+approval" },
+  { cat:"Regulations & Safety", icon:"⚖️", id:"feed-act", name:"FEED Act & Ingredient Labeling", signal:"emerging", aud:["formulator","mill"],
+    kw:["FEED Act livestock","feed ingredient claims legislation","animal feed labeling reform","feed additive regulatory change"],
+    sitemap:"/animal-feed-regulations-safety/regulatory-updates",
+    q:"FEED+Act+livestock,feed+ingredient+claims+legislation" },
+  { cat:"Regulations & Safety", icon:"⚖️", id:"feed-recalls", name:"Feed Recalls & Contamination", signal:"professional", aud:["mill","procurement"],
+    kw:["animal feed recall","feed contamination recall","pet food recall","feed safety alert"],
+    sitemap:"/animal-feed-regulations-safety/animal-feed-recalls",
+    q:"animal+feed+recall,feed+contamination+recall,pet+food+recall" },
+
+  // SUSTAINABILITY
+  { cat:"Sustainability", icon:"🌱", id:"carbon-feed", name:"Carbon Emissions & Scope 3 in Feed", signal:"rising", aud:["mill","formulator"],
+    kw:["feed industry carbon footprint","Scope 3 livestock emissions","carbon reduction animal feed","methane enteric fermentation","feed sustainability"],
+    sitemap:"/sustainability-in-feed-production/carbon-emissions-reduction",
+    q:"feed+industry+carbon+footprint,Scope+3+livestock+emissions,carbon+reduction+animal+feed" },
+  { cat:"Sustainability", icon:"🌱", id:"future-protein", name:"Future / Novel Proteins", signal:"rising", aud:["formulator","nutritionist"],
+    kw:["novel protein animal feed","duckweed feed","seaweed animal feed","mycoprotein feed","fermented feed protein"],
+    sitemap:"/feed-mill-of-the-future/protein-of-the-future",
+    q:"novel+protein+animal+feed,duckweed+feed,seaweed+animal+feed" },
+  { cat:"Sustainability", icon:"🌱", id:"agtech-feed", name:"AgTech in Feed Production", signal:"emerging", aud:["mill","formulator"],
+    kw:["AI feed formulation","machine learning animal nutrition","digital agriculture feed","precision feeding technology","feed tech startup"],
+    sitemap:"/sustainability-in-feed-production/agriculture-technology",
+    q:"AI+feed+formulation,machine+learning+animal+nutrition,precision+feeding+technology" },
+  { cat:"Sustainability", icon:"🌱", id:"consumer-trends", name:"Consumer & Meat Market Trends", signal:"rising", aud:["nutritionist","formulator"],
+    kw:["consumer meat demand trends","plant-based meat impact feed","cage free egg demand feed","antibiotic free consumer demand"],
+    sitemap:"/sustainability-in-feed-production/consumer-trends",
+    q:"consumer+meat+demand+trends,cage+free+egg+demand+feed,antibiotic+free+consumer+demand" },
+
+  // BUSINESS & MARKETS
+  { cat:"Business & Markets", icon:"📊", id:"ma-feed", name:"Feed Industry M&A", signal:"rising", aud:["mill","procurement"],
+    kw:["feed company acquisition","animal nutrition merger","feed industry consolidation","ADM Alltech joint venture","feed company M&A"],
+    sitemap:"/business-markets/mergers-acquisitions",
+    q:"feed+company+acquisition,animal+nutrition+merger,feed+industry+consolidation" },
+  { cat:"Business & Markets", icon:"📊", id:"global-production", name:"Global Feed Production Data", signal:"professional", aud:["mill","procurement"],
+    kw:["global feed production","Alltech feed survey","world feed production report","China feed production growth","feed production statistics"],
+    sitemap:"/business-markets/feed-production-by-region · /top-feed-companies",
+    q:"global+feed+production,Alltech+feed+survey,world+feed+production+report" },
+  { cat:"Business & Markets", icon:"📊", id:"screwworm", name:"New World Screwworm — Operational Impact", signal:"emerging", aud:["mill","procurement"],
+    kw:["screwworm livestock US","New World screwworm feed demand","screwworm cattle feed impact","livestock movement screwworm"],
+    sitemap:"/animal-feed-regulations-safety/biosecurity",
+    q:"screwworm+livestock+US,New+World+screwworm+cattle,livestock+movement+screwworm" },
+  { cat:"Business & Markets", icon:"📊", id:"ippe", name:"IPPE & Trade Show Intelligence", signal:"professional", aud:["mill","formulator","nutritionist"],
+    kw:["IPPE feed show","International Production Processing Expo","IPPE Atlanta feed","feed industry conference"],
+    sitemap:"/event-news/ippe-news",
+    q:"IPPE+feed+show,International+Production+Processing+Expo+Atlanta" },
+];
+
+let audFilter = 'all', sigFilter = null, searchVal = '';
+
+function render() {
+  const container = document.getElementById('container');
+  container.innerHTML = '';
+  const cats = [...new Set(CLUSTERS.map(c => c.cat))];
+  let total = 0;
+  cats.forEach(cat => {
+    const clusters = CLUSTERS.filter(c => {
+      const a = audFilter === 'all' || c.aud.includes(audFilter);
+      const s = !sigFilter || c.signal === sigFilter;
+      const q = !searchVal || c.name.toLowerCase().includes(searchVal.toLowerCase()) || c.kw.some(k => k.toLowerCase().includes(searchVal.toLowerCase()));
+      return c.cat === cat && a && s && q;
+    });
+    if (!clusters.length) return;
+    total += clusters.length;
+    const el = document.createElement('div');
+    el.className = 'category';
+    el.innerHTML = `<div class="cat-header"><span class="cat-icon">${clusters[0].icon}</span><span class="cat-title">${cat}</span><span class="cat-count">${clusters.length} cluster${clusters.length!==1?'s':''}</span></div><div class="cluster-grid">${clusters.map(c=>`<div class="cluster-card"><div class="cluster-top"><div class="cluster-name">${c.name}</div><span class="signal-badge sb-${c.signal}">${{hot:'Hot',rising:'Rising',stable:'Stable',emerging:'Emerging',professional:'Pro only'}[c.signal]||c.signal}</span></div><div class="kw-tags">${c.kw.map(k=>`<span class="kw-tag" onclick="window.open('https://trends.google.com/trends/explore?date=today%2012-m&geo=US&q=${encodeURIComponent(k)}','_blank')">${k}</span>`).join('')}</div><div class="cluster-footer">${c.aud.map(a=>`<span class="aud-tag aud-${a}">${{formulator:'Formulator',mill:'Mill Mgr',procurement:'Procurement',nutritionist:'Nutritionist',all:'All'}[a]||a}</span>`).join('')}<a href="https://trends.google.com/trends/explore?date=today%2012-m&geo=US&q=${c.q}" target="_blank" class="trends-link">Compare ↗</a></div><div class="sitemap-ref">📂 ${c.sitemap}</div></div>`).join('')}</div>`;
+    container.appendChild(el);
+  });
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('no-results').style.display = total === 0 ? 'block' : 'none';
+}
+
+function filterAud(a, btn) { audFilter = a; sigFilter = null; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render(); }
+function filterSig(s, btn) { sigFilter = sigFilter === s ? null : s; document.querySelectorAll('.filter-btn').forEach(b=>{ if(['🔴 Hot','🟡 Rising','🔵 Emerging'].includes(b.textContent)) b.classList.remove('active'); }); if(sigFilter) btn.classList.add('active'); render(); }
+function search(v) { searchVal = v; render(); }
+render();
+</script>
+</body>
+</html>

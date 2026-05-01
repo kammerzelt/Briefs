@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed Strategy Industry Signals — May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1a6b3c; --green-light: #e6f4ec; --green-mid: #b3dfc4; --green-dark: #145530;
+  --amber: #d97706; --red: #dc2626; --blue: #1d6fa4; --teal: #0d9488;
+  --text: #0c2340; --text-sec: #475569; --text-muted: #94a3b8;
+  --bg: #f8faf8; --white: #fff; --border: #e2e8f0;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.65; max-width: 680px; margin: 0 auto; }
+
+.header { background: var(--green); padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; }
+.pub-name { font-size: 21px; font-weight: 800; color: #fff; }
+.pub-tagline { font-size: 11px; font-weight: 600; color: var(--green-mid); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+.issue-badge { background: rgba(255,255,255,0.15); color: #fff; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); }
+
+.hero { background: var(--green-light); border-bottom: 3px solid var(--green); padding: 24px 28px 20px; }
+.hero-eyebrow { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+.hero-headline { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 10px; }
+.hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.65; margin-bottom: 14px; }
+.hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.meta-chip { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--white); border: 1.5px solid var(--green-mid); color: var(--green-dark); }
+
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); background: var(--white); border-bottom: 1px solid var(--border); }
+.stat-cell { padding: 15px 18px; border-right: 1px solid var(--border); text-align: center; }
+.stat-cell:last-child { border-right: none; }
+.stat-value { font-size: 21px; font-weight: 700; line-height: 1.1; margin-bottom: 3px; }
+.stat-label { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+
+.content { padding: 0 28px; }
+
+.section { padding: 24px 0; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+.section-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
+.section-left { display: flex; align-items: center; gap: 10px; }
+.section-icon { font-size: 18px; }
+.section-title { font-size: 17px; font-weight: 700; color: var(--text); }
+.section-desc { font-size: 12px; color: var(--text-muted); }
+.section-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.4px; }
+.tag-act { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+.tag-watch { background: #fffbeb; color: var(--amber); border: 1px solid #fde68a; }
+.tag-forward { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green-mid); }
+
+.signal-item { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+.signal-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.signal-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.momentum-pill { font-size: 12px; font-weight: 700; padding: 3px 11px; border-radius: 20px; }
+.mp-urgent { background: #fef2f2; color: var(--red); }
+.mp-rising { background: var(--green-light); color: var(--green-dark); }
+.mp-watch { background: #fffbeb; color: var(--amber); }
+.mp-forward { background: #eff6ff; color: var(--blue); }
+.signal-source { font-size: 11px; color: var(--text-muted); }
+.signal-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.35; margin-bottom: 8px; }
+.signal-body { font-size: 15px; color: var(--text-sec); line-height: 1.65; margin-bottom: 10px; }
+.impact-box { background: var(--white); border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; padding: 11px 15px; }
+.impact-label { font-size: 11px; font-weight: 700; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+.impact-text { font-size: 14px; color: var(--text-sec); line-height: 1.6; }
+.aud-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.aud-tag { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 10px; }
+.aud-formulator { background: #eff6ff; color: var(--blue); }
+.aud-mill { background: var(--green-light); color: var(--green-dark); }
+.aud-procurement { background: #fdf4ff; color: #7c3aed; }
+
+/* SPONSOR */
+.sponsor-wrap { margin: 4px 0; }
+.sponsor-label-bar { background: #f1f5f9; border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px; display: flex; align-items: center; justify-content: space-between; }
+.sponsor-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+.sponsor-body { background: linear-gradient(135deg, #e6f4ec, #f0faf4); border: 1px solid var(--green-mid); border-top: none; border-radius: 0 0 8px 8px; padding: 22px 24px; }
+.sponsor-eyebrow { font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.sponsor-headline { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.35; margin-bottom: 8px; }
+.sponsor-copy { font-size: 14px; color: var(--text-sec); line-height: 1.65; margin-bottom: 14px; }
+.sponsor-cta { display: inline-block; background: var(--green); color: #fff; font-size: 14px; font-weight: 700; padding: 10px 22px; border-radius: 7px; text-decoration: none; }
+.sponsor-name { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
+
+/* ACTION CARDS */
+.action-card { border-radius: 10px; border: 1.5px solid; padding: 18px 20px; margin-bottom: 10px; }
+.ac-red { background: #fef2f2; border-color: #fecaca; }
+.ac-amber { background: #fffbeb; border-color: #fde68a; }
+.ac-green { background: var(--green-light); border-color: var(--green-mid); }
+.action-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.action-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.35; }
+.action-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+.at-red { background: #fee2e2; color: var(--red); }
+.at-amber { background: #fef3c7; color: var(--amber); }
+.at-green { background: #d1fae5; color: var(--green-dark); }
+.action-body { font-size: 15px; color: var(--text-sec); line-height: 1.65; }
+
+.subscribe-section { background: var(--green); padding: 28px; text-align: center; }
+.sub-headline { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.3; }
+.sub-body { font-size: 15px; color: var(--green-mid); margin-bottom: 18px; line-height: 1.6; }
+.sub-row { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+.sub-input { flex: 1; padding: 12px 16px; border-radius: 8px; border: none; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; color: var(--text); }
+.sub-btn { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 12px 20px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; }
+.sub-btn:hover { background: rgba(255,255,255,0.25); }
+.sub-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 10px; }
+
+.chat-section { padding: 24px 28px; border-top: 1px solid var(--border); background: var(--white); }
+.chat-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.chat-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+.chat-heading { font-size: 16px; font-weight: 700; color: var(--text); }
+.chat-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; }
+#chat-messages { background: var(--bg); border: 1px solid var(--border); border-radius: 10px 10px 0 0; padding: 14px 16px; min-height: 90px; max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+.chat-input-row { display: flex; gap: 8px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; padding: 10px; background: var(--white); }
+#chat-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; font-size: 14px; color: var(--text); font-family: 'Inter', sans-serif; resize: none; outline: none; line-height: 1.5; }
+#chat-input::placeholder { color: var(--text-muted); }
+.chat-send { background: var(--green); border: none; border-radius: 7px; padding: 10px 18px; font-size: 14px; font-weight: 600; color: #fff; cursor: pointer; height: 42px; font-family: 'Inter', sans-serif; }
+
+.report-footer { padding: 18px 28px; background: #f1f5f1; border-top: 1px solid var(--border); text-align: center; }
+.footer-pub { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.footer-links { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+.footer-powered { font-size: 11px; color: #cbd5e1; margin-bottom: 6px; }
+.footer-method { font-size: 11px; color: var(--text-muted); line-height: 1.6; max-width: 500px; margin: 0 auto; }
+
+@media(max-width:600px){
+  .content{padding:0 20px;} .hero{padding:20px;} .header{padding:18px 20px;}
+  .stat-row{grid-template-columns:1fr 1fr;} .sub-row{flex-direction:column;}
+  .chat-section{padding:20px;} .subscribe-section{padding:22px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="pub-name">Feed Strategy</div>
+    <div class="pub-tagline">Industry Signals Brief</div>
+  </div>
+  <div class="issue-badge">May 2026</div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Monthly Search Intelligence · Feed Industry</div>
+  <div class="hero-headline">What practitioners are researching right now — and what it means for your operation this month.</div>
+  <div class="hero-sub">Each month Feed Strategy tracks search demand across 44 topic clusters in the global feed industry — what formulators, mill managers, and procurement teams are actively researching, how signals are shifting, and where the industry is heading. Every signal is sourced. This month's top three are documented and urgent.</div>
+  <div class="hero-meta">
+    <span class="meta-chip">44 clusters tracked</span>
+    <span class="meta-chip">3 urgent signals</span>
+    <span class="meta-chip">Sourced from AFIA · USDA · Cargill</span>
+  </div>
+</div>
+
+<div class="stat-row">
+  <div class="stat-cell">
+    <div class="stat-value" style="color:var(--red)">78%</div>
+    <div class="stat-label">US vitamin imports from China — IFEEDER, Nov 2025</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value" style="color:var(--amber)">86%</div>
+    <div class="stat-label">NA feed samples above mycotoxin threshold — dsm-firmenich</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value" style="color:var(--green)">Easing</div>
+    <div class="stat-label">HPAI detections Q1 2026 — fewer than Q1 2025, USDA ERS</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- URGENT SIGNALS -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">🔴</span>
+      <div>
+        <div class="section-title">Urgent Signals</div>
+        <div class="section-desc">Documented, sourced, and requiring attention now.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-act">Act Now</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-urgent">Supply Risk</span>
+      <span class="signal-source">Source: AFIA / IFEEDER November 2025 · Verified</span>
+    </div>
+    <div class="signal-title">The vitamin supply chain you've been warned about for years is now an operational problem — not a future scenario.</div>
+    <div class="signal-body">The November 2025 IFEEDER study confirmed what the industry suspected: 78% of US vitamin imports come from China. For specific vitamins — biotin, vitamins B1, B3, B7, B12, D3, and K — there is no meaningful domestic production capacity in the United States at all. China also controls 62% of global amino acid production, including 91% of threonine and 84% of valine. The 90-day US-China tariff pause announced May 12, 2026 buys time, but it doesn't resolve the underlying concentration. When that pause ends, the procurement exposure is the same as it was before. AFIA CEO Constance Cullman put it plainly at IPPE: "It doesn't matter if you put a tariff in place. You have to look at what it will take for a company to decide it's wise to place a plant here."</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Use the 90-day window to map your vitamin and amino acid exposure by ingredient, not just by category. Which vitamins in your ration are single-sourced from China? Where does your current supplier's inventory buffer sit? Which vitamins have any viable European or alternative-origin supply? That audit is the minimum response to a supply concentration of this magnitude.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-formulator">Formulator</span>
+      <span class="aud-tag aud-procurement">Procurement</span>
+      <span class="aud-tag aud-mill">Mill Manager</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-urgent">Elevated Risk</span>
+      <span class="signal-source">Source: dsm-firmenich World Mycotoxin Survey 2025 · Cargill Global Report March 2026 · Verified</span>
+    </div>
+    <div class="signal-title">Mycotoxin co-contamination is the defining feed safety story of 2025-2026 — not a single toxin spike, but multiple toxins creating compounded performance pressure.</div>
+    <div class="signal-body">The dsm-firmenich World Mycotoxin Survey found that 86% of North American samples tested above the recommended threshold for at least one mycotoxin. The Cargill Global Mycotoxin Report released March 2026, analyzing 389,926 samples from 41 countries, found 71% of feed samples positive and 34% above performance-based thresholds. The 2025 PROcheck survey of 199 corn grain samples shows fumonisins increased 13 percentage points and aflatoxins 4 points in the 2025 crop compared to the year prior. The defining characteristic is not a single dominant toxin — it is co-contamination. Nearly half of all samples in the Cargill report contained three or more mycotoxins simultaneously, and their effects on gut integrity, immune function, reproductive performance, and feed efficiency overlap and compound. Managing for one toxin while ignoring co-occurrence misses the actual risk the animal is experiencing.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">If your mycotoxin testing protocol is focused on individual toxins at regulatory minimums, the 2025-2026 data suggests you're measuring the wrong threshold. The performance question is not "is this contaminated?" but "what is the cumulative load across all toxins, and at what point does it affect this species' performance in measurable ways?" Cargill's species-specific performance thresholds — 17% of samples exceeded limits for calves and heifers, 27% for broilers, 26% for nursery pigs — are a more actionable framework than regulatory limits alone.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-formulator">Formulator</span>
+      <span class="aud-tag aud-mill">Mill Manager</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-watch">Tariff Window</span>
+      <span class="signal-source">Source: AFIA statement May 12 2026 · Verified</span>
+    </div>
+    <div class="signal-title">The 90-day US-China tariff pause is an inventory and contract window — not a resolution. Procurement teams have a defined period to act before conditions reset.</div>
+    <div class="signal-body">The US and China agreed on May 12, 2026 to reduce tariffs and pause new tariff escalation for 90 days. AFIA expressed cautious support, with CEO Constance Cullman calling it "breathing room" for trade officials to work toward a longer-term agreement. The US animal food industry exported $1.27 billion to China in 2024, while importing approximately $549 million — including vitamin E, amino acids, and finished pet food. The animal food trade relationship with China matters in both directions, which is why AFIA is supportive of the pause. But the 90-day window is finite. Mills and feed manufacturers who can use this window to build safety stock on high-exposure ingredients, renegotiate supplier contracts, or qualify alternative sources are better positioned than those who treat it as resolution rather than opportunity.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Three questions worth answering before the pause expires: Which of your China-sourced ingredients have no qualified alternative supplier? Which have sufficient supplier inventory to buffer a 60-to-90-day disruption? And which vitamins or amino acids could you substitute or reduce in the ration without animal performance impact if supply became constrained? The answers shape a response that's proactive rather than reactive.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-procurement">Procurement</span>
+      <span class="aud-tag aud-mill">Mill Manager</span>
+    </div>
+  </div>
+</div>
+
+<!-- WATCH SIGNALS -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">📈</span>
+      <div>
+        <div class="section-title">Rising Signals — Building Practitioner Attention</div>
+        <div class="section-desc">Conference agendas and search patterns both confirm growing demand in these areas.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-watch">Watch</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-rising">Rising</span>
+      <span class="signal-source">Signal: IPPE 2026 + AFIA programming · Conference confirmed</span>
+    </div>
+    <div class="signal-title">Precision swine nutrition is appearing at every major 2026 conference — practitioner demand is clearly building across multiple venues simultaneously.</div>
+    <div class="signal-body">Multiple 2026 industry events including IPPE and AFIA programming featured dedicated precision swine nutrition sessions. The concept — moving from population-average formulation to individual or phase-specific nutrient delivery based on real-time performance data — is transitioning from research discussion to operational consideration for larger integrated producers. The question practitioners are increasingly asking is not whether precision nutrition is worth pursuing, but how to implement it within existing mill infrastructure and data systems.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to watch</div>
+      <div class="impact-text">The implementation gap is the story the industry hasn't written yet. Research papers on precision nutrition are plentiful. Practical guides for mill managers on how to operationalize phase-specific formulation — including the data inputs, the software, and the equipment modifications — are almost entirely absent from trade press. That's the content the practitioner audience is searching for.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-formulator">Formulator</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-rising">Rising</span>
+      <span class="signal-source">Signal: HPAI detection data · USDA ERS April 2026</span>
+    </div>
+    <div class="signal-title">HPAI is easing — which means the flock rebuilding and biosecurity institutionalization story is just beginning, and it's Feed Strategy's lane specifically.</div>
+    <div class="signal-body">USDA ERS confirmed fewer new HPAI detections in Q1 2026 than Q1 2025. Egg prices, which peaked at $8.53 per dozen wholesale, have declined significantly. The recovery phase has begun — flock rebuilding is underway, egg production is projected up 7.7% in 2026. But the operational question now shifts from crisis response to permanent protocol: what biosecurity practices built during the outbreak should be institutionalized? How does flock rebuilding affect feed demand timing and formulation? What does replacement pullet nutrition look like at scale? These are feed manufacturing and nutrition questions that the veterinary and policy press aren't covering.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to watch</div>
+      <div class="impact-text">The 138.7 million birds affected since 2022 represents a significant future replacement demand. Feed manufacturers serving egg layer operations should be planning now for the formulation and volume requirements of flock rebuilding — which is a different nutritional challenge than steady-state production feeding.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-formulator">Formulator</span>
+      <span class="aud-tag aud-mill">Mill Manager</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- SPONSOR -->
+<div style="padding: 6px 28px;">
+  <div class="sponsor-wrap">
+    <div class="sponsor-label-bar">
+      <span class="sponsor-label">Sponsored by Alltech</span>
+      <span style="font-size:10px;color:#94a3b8;">Feed Strategy Industry Signals · May 2026</span>
+    </div>
+    <div class="sponsor-body">
+      <div class="sponsor-eyebrow">Mycotoxin Management Intelligence</div>
+      <div class="sponsor-headline">86% of North American samples above threshold. Co-contamination is the pattern. Managing one toxin isn't enough.</div>
+      <div class="sponsor-copy">Alltech's RAPIREAD mycotoxin testing and MYCOSORB A+ adsorption technology are built around the co-contamination reality — not just individual toxin thresholds. The 2026 Alltech Agri-Food Outlook analyzed 1.44 billion metric tons of global feed production. That same analytical infrastructure powers species-specific mycotoxin risk management for operations in more than 120 countries.</div>
+      <a href="#" class="sponsor-cta">View the 2026 Mycotoxin Risk Data →</a>
+      <div class="sponsor-name">Alltech · alltech.com/mycotoxin</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- FORWARD SIGNALS -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">🔭</span>
+      <div>
+        <div class="section-title">Forward Signals — 12 to 24 Months Out</div>
+        <div class="section-desc">Search terms crossing thresholds. Early enough to prepare.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-forward">Prepare</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-forward">Emerging</span>
+      <span class="signal-source">Signal: NGFA / AFIA 2026 priority programming · FEED Act legislative history</span>
+    </div>
+    <div class="signal-title">The FEED Act would allow feed ingredients to make production efficiency and animal health claims — closing a competitive gap with EU, South American, and Australian manufacturers.</div>
+    <div class="signal-body">Feed Strategy covered the FEED Act's House introduction in 2024. The legislation — which would allow feed ingredients and additives to legally claim production efficiency and animal health benefits that are currently restricted under existing regulatory frameworks — remains a stated priority for both NGFA and AFIA in 2026 with bipartisan Congressional support. US feed manufacturers are currently competing with international counterparts who operate under regulatory systems that permit those claims, creating a structural disadvantage in formulation flexibility and product positioning. A 2026 status update on where the legislation stands and what passage would mean practically for formulators is the piece the practitioner audience needs and hasn't seen.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to watch</div>
+      <div class="impact-text">Formulators and additive companies should be tracking this legislation specifically because it changes the commercial case for certain additives if it passes — not just the regulatory framework but the marketing and labeling flexibility that follows. The window to understand it before it's relevant is now.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-formulator">Formulator</span>
+      <span class="aud-tag aud-mill">Mill Manager</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-forward">Watch</span>
+      <span class="signal-source">Signal: M&A filing Q1 2026 · Feed Strategy December 2025 outlook</span>
+    </div>
+    <div class="signal-title">The ADM × Alltech joint venture closed Q1 2026, creating a top-3 North American feed producer — and no trade publication has yet published the full profile.</div>
+    <div class="signal-body">The joint venture combining ADM Animal Nutrition and Alltech's US and Canadian feed manufacturing businesses closed in Q1 2026, creating one of the three largest feed producers in North America by volume. The combined entity name has not yet been announced publicly. That means the first full profile — combined facilities, leadership structure, formulation philosophy, competitive positioning — has not been written by any trade title. For feed manufacturers competing with or buying from this entity, understanding its scale, capabilities, and strategic direction is operationally relevant, not just interesting.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to watch</div>
+      <div class="impact-text">When the entity name goes public, the combined organization's market footprint will become clearer. Manufacturers who supply to, compete with, or buy ingredients from either ADM Animal Nutrition or Alltech's feed manufacturing businesses should understand the combined competitive and commercial implications before the first formal announcements.</div>
+    </div>
+    <div class="aud-row">
+      <span class="aud-tag aud-mill">Mill Manager</span>
+      <span class="aud-tag aud-procurement">Procurement</span>
+    </div>
+  </div>
+</div>
+
+<!-- THREE MOVES -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">✅</span>
+      <div>
+        <div class="section-title">Three Moves This Month</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card ac-red">
+    <div class="action-top">
+      <div class="action-title">Audit your vitamin and amino acid exposure by ingredient before the tariff pause expires</div>
+      <span class="action-tag at-red">This month</span>
+    </div>
+    <div class="action-body">78% of US vitamin imports from China. No domestic vitamin production capacity. A 90-day pause doesn't change that math — it just buys time. Which vitamins in your ration are single-sourced? Where can you build inventory? Where can you qualify alternatives? The operations that complete that audit now are better positioned than those that wait for the next disruption signal.</div>
+  </div>
+
+  <div class="action-card ac-amber">
+    <div class="action-top">
+      <div class="action-title">Review your mycotoxin management protocol against species-specific performance thresholds — not just regulatory minimums</div>
+      <span class="action-tag at-amber">This month</span>
+    </div>
+    <div class="action-body">The 2025 crop data is in. Fumonisins up 13 points, 86% of North American samples above threshold, 34% above performance risk limits. The question is not whether your feed is contaminated — it probably contains some level of multiple toxins. The question is whether your management protocol is calibrated to the cumulative load the animal is actually experiencing across all toxins simultaneously.</div>
+  </div>
+
+  <div class="action-card ac-green">
+    <div class="action-top">
+      <div class="action-title">Start tracking the ADM × Alltech combined entity — the announcement will create a significant market event</div>
+      <span class="action-tag at-green">Prepare now</span>
+    </div>
+    <div class="action-body">The combined entity name hasn't been announced. When it is, the market will need to understand its footprint quickly. Feed manufacturers who have already mapped their commercial relationships with ADM Animal Nutrition and Alltech's US operations will be better positioned to assess the implications than those starting from scratch at the announcement.</div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<div class="subscribe-section">
+  <div class="sub-headline">Get Industry Signals every month. Free.</div>
+  <div class="sub-body">Search intelligence across 44 feed industry clusters — sourced from AFIA, USDA, Cargill, and primary industry data — delivered the first week of every month.</div>
+  <div class="sub-row">
+    <input class="sub-input" type="email" placeholder="your@email.com">
+    <button class="sub-btn">Subscribe →</button>
+  </div>
+  <div class="sub-note">No spam. Unsubscribe any time. Published by Feed Strategy · feedstrategy.com</div>
+</div>
+
+<div class="chat-section">
+  <div class="chat-hdr">
+    <div class="chat-dot"></div>
+    <div class="chat-heading">Ask about any signal in this brief</div>
+  </div>
+  <div class="chat-sub">How does the vitamin supply situation affect your specific operation? What should a swine formulator do differently on mycotoxin management? Ask anything.</div>
+  <div id="chat-messages">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;">FS</div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--text-sec);line-height:1.6;max-width:90%;">Every signal in this brief is sourced from verified primary data — AFIA, USDA, Cargill, dsm-firmenich. Ask me to go deeper on any of them. Try: <span style="color:var(--green);cursor:pointer;font-weight:500;" onclick="fillQ('I\'m a swine nutritionist — how should I be adjusting my mycotoxin management protocol based on the 2025 crop data?')">"I'm a swine nutritionist — what does the mycotoxin data mean for me?"</span> or <span style="color:var(--green);cursor:pointer;font-weight:500;" onclick="fillQ('Which specific vitamins carry the highest supply risk from the China dependency?')">"Which vitamins are highest risk from the China supply issue?"</span></div>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Ask about any signal in this brief..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+    <button class="chat-send" onclick="sendQ()">Ask</button>
+  </div>
+</div>
+
+<div class="report-footer">
+  <div class="footer-pub">Feed Strategy</div>
+  <div class="footer-links">feedstrategy.com · Feed Industry Signals</div>
+  <div class="footer-powered">Intelligence powered by Mindful · mindful.pub</div>
+  <div class="footer-method">Sources: AFIA/IFEEDER November 2025 vitamin &amp; amino acid supply study; USDA ERS Food Price Outlook April 2026; Cargill Global Mycotoxin Report March 2026 (389,926 samples, 41 countries); dsm-firmenich World Mycotoxin Survey 2025; PROcheck mycotoxin survey January 2026; AFIA tariff statement May 12 2026; Feed Strategy December 2025 outlook. All figures from primary sources. May 2026.</div>
+</div>
+
+<script>
+const BRIEF_CONTEXT = `You are the intelligence assistant embedded in Feed Strategy magazine's Industry Signals Brief for May 2026. You are speaking to a feed industry professional — a formulator, mill manager, nutritionist, or procurement specialist. Every signal in this brief is sourced from verified primary data. Speak to practitioners, not general audiences. Be technically accurate.
+
+VERIFIED SIGNALS IN THIS BRIEF:
+
+1. VITAMIN & AMINO ACID SUPPLY CHAIN — URGENT
+Source: IFEEDER November 2025 study; AFIA May 2026 statement
+- 78% of US vitamin imports from China (IFEEDER, Nov 2025)
+- Specific vitamins: biotin up to 100% from China; B1, B3, B7, B12, D3, K all China-dominant
+- No domestic US vitamin production capacity exists
+- 62% of global amino acid production from China: 91% threonine, 84% valine, 77% lysine, 27% methionine
+- 90-day US-China tariff pause announced May 12 2026 — AFIA supportive but cautious
+- US animal food industry: $1.27B exports to China, $549M imports from China (2024)
+
+2. MYCOTOXIN CO-CONTAMINATION — URGENT
+Source: dsm-firmenich World Mycotoxin Survey 2025; Cargill Global Mycotoxin Report March 2026; PROcheck January 2026
+- 86% of North American samples above threshold for at least one mycotoxin (dsm-firmenich)
+- Cargill report: 389,926 samples, 41 countries — 71% positive, 34% above performance thresholds
+- Nearly half of Cargill samples: 3 or more mycotoxins simultaneously
+- Species-specific performance thresholds exceeded: 17% calves/heifers, 27% broilers, 26% nursery pigs
+- 2025 crop: fumonisins up 13 percentage points, aflatoxins up 4 points (PROcheck, 199 corn samples)
+- DON and ZEN leading contributors to gut integrity and reproductive performance issues
+- Co-contamination is the defining pattern — not single-toxin spikes
+
+3. HPAI STATUS — EASING
+Source: USDA ERS Food Price Outlook April 2026
+- Fewer new HPAI detections Q1 2026 vs Q1 2025
+- Egg prices: peaked at $8.53/dozen wholesale, now declining; -44.7% YoY in March 2026
+- Egg production projected up 7.7% in 2026 (assumes flock rebuilding continues, no new HPAI)
+- 138.7 million birds affected since 2022 across 1,431 flocks
+- Recovery phase: flock rebuilding underway, replacement pullet placement active
+
+4. TARIFF WINDOW — 90 DAYS
+Source: AFIA statement May 12 2026
+- 90-day US-China tariff pause and reduction announced May 12 2026
+- AFIA supports as "breathing room" for trade negotiations
+- Does not resolve underlying vitamin/amino acid supply concentration
+
+5. PRECISION SWINE NUTRITION — RISING
+Source: IPPE 2026 and AFIA 2026 programming — confirmed multiple conference sessions
+- Transitioning from research discussion to operational consideration
+- Implementation gap: research papers plentiful, practical mill-level guides absent
+
+6. FEED ACT — FORWARD SIGNAL
+Source: NGFA/AFIA 2026 priority programming; Feed Strategy 2024 coverage of House introduction
+- Legislation would allow feed ingredients to claim production efficiency and animal health benefits
+- Bipartisan support; NGFA and AFIA stated 2026 priority
+- Closes competitive gap with EU, South American, Australian manufacturers
+
+7. ADM × ALLTECH JV — FORWARD SIGNAL
+Source: M&A filing Q1 2026 close
+- Combined ADM Animal Nutrition + Alltech US/Canadian feed manufacturing
+- Creates top-3 North American feed producer
+- Entity name not yet announced — no full profile written anywhere
+
+THREE ACTIONS:
+1. Audit vitamin/amino acid exposure by ingredient during the 90-day tariff pause
+2. Review mycotoxin management against species-specific performance thresholds, not just regulatory minimums
+3. Map commercial relationships with ADM Animal Nutrition and Alltech US operations before entity announcement
+
+Answer questions specifically to the practitioner's role and species when they share it. Be technically accurate. Reference the specific data sources. Keep responses focused and actionable.`;
+
+async function sendQ() {
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = ''; input.style.height = 'auto';
+  addMsg(q, 'user');
+  const t = addMsg('...', 'bot');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, system:BRIEF_CONTEXT, messages:[{role:'user',content:q}] })
+    });
+    const data = await res.json();
+    t.remove();
+    addMsg(data.content?.[0]?.text||'No response.','bot');
+  } catch(e) { t.remove(); addMsg('Unable to connect. Please try again.','bot'); }
+}
+function fillQ(t) { document.getElementById('chat-input').value=t; document.getElementById('chat-input').focus(); }
+function addMsg(text, role) {
+  const c=document.getElementById('chat-messages');
+  const w=document.createElement('div');
+  w.style.cssText='display:flex;gap:10px;align-items:flex-start;';
+  const av=document.createElement('div');
+  const isU=role==='user';
+  av.style.cssText=`width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;${isU?'background:var(--green-light);color:var(--green-dark);':'background:var(--green);color:#fff;'}`;
+  av.textContent=isU?'You':'FS';
+  const b=document.createElement('div');
+  b.style.cssText=`border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.6;max-width:88%;white-space:pre-wrap;${isU?'background:var(--green-light);color:var(--text);margin-left:auto;':'background:var(--white);border:1px solid var(--border);color:var(--text-sec);'}`;
+  b.textContent=text;
+  if(isU) w.style.flexDirection='row-reverse';
+  w.appendChild(av); w.appendChild(b);
+  c.appendChild(w); c.scrollTop=c.scrollHeight;
+  return w;
+}
+document.getElementById('chat-input').addEventListener('input',function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,120)+'px'; });
+</script>
+</body>
+</html>

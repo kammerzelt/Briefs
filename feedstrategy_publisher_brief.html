@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed Strategy Search Intelligence Brief — May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1a6b3c; --green-light: #e6f4ec; --green-mid: #b3dfc4; --green-dark: #145530;
+  --navy: #0c2340; --amber: #d97706; --red: #dc2626; --blue: #1d6fa4; --purple: #7c3aed; --teal: #0d9488;
+  --text: #0c2340; --text-sec: #475569; --text-muted: #94a3b8;
+  --bg: #f8faf8; --white: #fff; --border: #e2e8f0;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; max-width: 880px; margin: 0 auto; padding: 0 0 60px; }
+
+.header { background: var(--green); padding: 22px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.header-pub { font-size: 21px; font-weight: 800; color: #fff; }
+.header-product { font-size: 11px; font-weight: 600; color: var(--green-mid); letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
+.header-right { text-align: right; font-size: 12px; color: var(--green-mid); }
+.header-right .issue { font-size: 13px; color: #fff; font-weight: 600; }
+
+.data-source-bar { background: #fffbeb; border-bottom: 1px solid #fde68a; padding: 10px 32px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.ds-label { font-size: 10px; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.8px; }
+.ds-chip { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #fef3c7; border: 1px solid #fde68a; color: #78350f; }
+.ds-chip.live { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+.ds-chip.trends { background: #e0f2fe; border-color: #7dd3fc; color: #0c4a6e; }
+
+.top-stats { background: var(--white); border-bottom: 1px solid var(--border); padding: 18px 32px; display: grid; grid-template-columns: repeat(5,1fr); }
+.stat-cell { padding: 6px 14px; border-right: 1px solid var(--border); }
+.stat-cell:first-child { padding-left: 0; }
+.stat-cell:last-child { border-right: none; }
+.stat-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 3px; }
+.stat-value { font-size: 19px; font-weight: 700; line-height: 1.1; }
+.stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+.content { padding: 26px 32px; }
+
+.section { margin-bottom: 30px; }
+.section-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+.section-icon { font-size: 17px; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+.section-tag { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.tag-hot { background: #fef2f2; color: var(--red); }
+.tag-watch { background: #fffbeb; color: var(--amber); }
+.tag-track { background: var(--green-light); color: var(--green-dark); }
+
+/* CLUSTER ROWS */
+.cluster-row { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 9px; display: grid; grid-template-columns: 1fr 100px 140px 200px; gap: 18px; align-items: start; }
+.cluster-name { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+.cluster-terms { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+.cluster-delta { text-align: center; }
+.delta-val { font-size: 20px; font-weight: 700; line-height: 1; }
+.delta-up { color: var(--green); }
+.delta-down { color: var(--red); }
+.delta-flat { color: var(--amber); }
+.delta-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.source-badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-top: 4px; display: inline-block; }
+.src-verified { background: #d1fae5; color: #065f46; }
+.src-trends { background: #e0f2fe; color: #0c4a6e; }
+.spark-col svg { display: block; }
+.impl-col {}
+.impl-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-bottom: 3px; }
+.impl-ed { background: #eff6ff; color: var(--blue); }
+.impl-sales { background: var(--green-light); color: var(--green-dark); }
+.impl-text { font-size: 11px; color: var(--text-sec); line-height: 1.5; }
+
+/* ADVERTISER TABLE */
+.adv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.adv-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.adv-card.opp { border-color: #bbf7d0; }
+.adv-card.warn { border-color: #fde68a; }
+.adv-category { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 5px; }
+.adv-headline { font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 5px; line-height: 1.35; }
+.adv-body { font-size: 11px; color: var(--text-sec); line-height: 1.55; }
+.adv-signal { display: flex; align-items: center; gap: 6px; margin-top: 7px; }
+.adv-delta { font-size: 12px; font-weight: 700; }
+.adv-ctx { font-size: 10px; color: var(--text-muted); }
+
+.brief-footer { padding: 18px 32px; border-top: 1px solid var(--border); background: var(--white); display: flex; align-items: flex-start; justify-content: space-between; }
+.footer-pub { font-size: 12px; font-weight: 600; color: var(--navy); }
+.footer-powered { font-size: 10px; color: #cbd5e1; }
+.footer-method { font-size: 10px; color: var(--text-muted); max-width: 440px; text-align: right; line-height: 1.5; }
+
+@media(max-width:680px){ .cluster-row{grid-template-columns:1fr;} .top-stats{grid-template-columns:repeat(3,1fr);} .adv-grid{grid-template-columns:1fr;} .content{padding:20px;} .header{padding:18px 20px;} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-pub">Feed Strategy</div>
+    <div class="header-product">Search Intelligence Brief — Internal · Editorial &amp; Sales</div>
+  </div>
+  <div class="header-right">
+    <div class="issue">May 2026</div>
+    <div style="margin-top:3px;">44 clusters · feedstrategy.com sitemap taxonomy</div>
+  </div>
+</div>
+
+<div class="data-source-bar">
+  <span class="ds-label">Sources this issue:</span>
+  <span class="ds-chip live">✓ AFIA / IFEEDER Nov 2025</span>
+  <span class="ds-chip live">✓ USDA ERS Food Price Outlook Apr 2026</span>
+  <span class="ds-chip live">✓ Cargill Global Mycotoxin Report Mar 2026</span>
+  <span class="ds-chip live">✓ dsm-firmenich World Mycotoxin Survey 2025</span>
+  <span class="ds-chip trends">⟳ Google Trends — needs live pytrends pull for % figures</span>
+</div>
+
+<div class="top-stats">
+  <div class="stat-cell">
+    <div class="stat-label">Clusters tracked</div>
+    <div class="stat-value" style="color:var(--green)">44</div>
+    <div class="stat-sub">8 categories</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Hot signals</div>
+    <div class="stat-value" style="color:var(--red)">5</div>
+    <div class="stat-sub">Verified from primary sources</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">HPAI status</div>
+    <div class="stat-value" style="color:var(--amber)">Easing</div>
+    <div class="stat-sub">Fewer Q1 2026 detections</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Vitamin supply risk</div>
+    <div class="stat-value" style="color:var(--red)">Active</div>
+    <div class="stat-sub">78% from China · tariff pause</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Mycotoxin pressure</div>
+    <div class="stat-value" style="color:var(--amber)">Elevated</div>
+    <div class="stat-sub">86% NA samples above threshold</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- SECTION: HOT SIGNALS -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">🔴</span>
+    <span class="section-title">Hot Signals — Verified from Primary Sources</span>
+    <span class="section-tag tag-hot">Sourced</span>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">China Vitamin &amp; Amino Acid Supply Chain</div>
+      <div class="cluster-terms">vitamin supply chain feed · amino acid supply · lysine shortage · China vitamin imports animal feed</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-flat">78%</div>
+      <div class="delta-label">US vitamin imports from China</div>
+      <div class="source-badge src-verified">IFEEDER Nov 2025</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-vitamins"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">The formulator response piece — which specific vitamins carry the highest supply risk, what substitution strategies exist — remains unwritten across all trade press. AFIA escalated to the White House. 90-day tariff pause announced May 12 creates a new story angle.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Vitamin and amino acid suppliers with non-China supply chain have a clear differentiation story right now. That's an urgent advertiser conversation.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">Mycotoxins in Feed — Co-contamination Risk</div>
+      <div class="cluster-terms">mycotoxin binder feed · DON vomitoxin · aflatoxin corn feed · fumonisin · zearalenone swine</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-flat">86%</div>
+      <div class="delta-label">NA samples above threshold</div>
+      <div class="source-badge src-verified">dsm-firmenich 2025</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-myco"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">Cargill's March 2026 report: 71% of global feed samples positive, 34% above performance thresholds. Fumonisins up 13 points in 2025 crop. Co-contamination is the story — individual toxin coverage is old news; the multi-toxin interaction effect on performance is where the gap is.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Mycotoxin binder and management companies have a documented, data-heavy story. This is a category where advertiser content and editorial coverage are both warranted simultaneously.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">Avian Influenza / HPAI — Easing but Persistent</div>
+      <div class="cluster-terms">avian influenza feed industry · HPAI poultry feed · bird flu flock rebuilding · biosecurity feed mill</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val" style="color:var(--green); font-size:16px;">Easing</div>
+      <div class="delta-label">Fewer Q1 2026 detections; egg prices −44.7% YoY Mar 2026</div>
+      <div class="source-badge src-verified">USDA ERS Apr 2026</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-hpai"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">The acute crisis phase is passing. The editorial opportunity is now the flock-rebuilding story: feed demand recovery timelines, formulation changes for replacement pullets, and biosecurity protocol institutionalization that the industry built during the outbreak. That's Feed Strategy's lane that hasn't been written yet.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Biosecurity product companies, vaccination technology firms, and feed additives supporting flock recovery have active budgets. The recovery phase is often a better advertiser moment than the crisis itself.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">Feed Ingredient Tariffs &amp; Trade</div>
+      <div class="cluster-terms">feed ingredient tariffs · China feed trade · soybean export tariffs · animal feed import restrictions</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-flat">90-day</div>
+      <div class="delta-label">US-China tariff pause · May 12 2026</div>
+      <div class="source-badge src-verified">AFIA May 2026</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-tariffs"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">The 90-day pause is a news peg for a practical piece: what does this mean for procurement teams right now? Which ingredients are most exposed? What should mills be doing with inventory during the pause window? That's an actionable story for the procurement and mill manager audience.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Trading companies and ingredient suppliers with diversified sourcing are advertising this story actively right now. Tariff coverage drives direct advertising response in this category.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION: RISING -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">📈</span>
+    <span class="section-title">Rising Search Clusters — Needs Live Trends Pull to Confirm Magnitude</span>
+    <span class="section-tag tag-watch">Trends pull needed</span>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">Precision Swine Nutrition</div>
+      <div class="cluster-terms">precision swine nutrition · pig feed formulation · phase feeding swine · precision livestock farming swine</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-up">↑</div>
+      <div class="delta-label">Multiple 2026 conf. sessions confirmed · Trends pull needed</div>
+      <div class="source-badge src-trends">Trends pull needed</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-swine"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">IPPE 2026 and AFIA programming both featured precision swine nutrition sessions — confirmed practitioner demand signal. Feed Strategy has Mavromichalis' authority here but coverage is episodic. A structured series would establish ownership.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Precision feeding technology companies and amino acid suppliers who enable precision formulation are natural sponsors for this content category.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">Feed Mill Automation &amp; Digital Transformation</div>
+      <div class="cluster-terms">feed mill automation · feed mill control system · digital feed mill · batching automation feed</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-up">↑</div>
+      <div class="delta-label">Sustained multi-year build · Trends pull needed</div>
+      <div class="source-badge src-trends">Trends pull needed</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-auto"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">The "Feed Mill of the Future" franchise owns this space. Labor shortages are accelerating adoption. The practical operational guide — how mills are actually implementing automation, not just what's possible — is the content gap.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Control system and automation vendors are active advertisers in this space and have increasing budget as mills invest in digital infrastructure.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">Alternative Protein Sources</div>
+      <div class="cluster-terms">insect meal animal feed · black soldier fly feed · single cell protein feed · algae animal feed</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-up">↑</div>
+      <div class="delta-label">Regulatory approvals accelerating · Trends pull needed</div>
+      <div class="source-badge src-trends">Trends pull needed</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-altpro"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">HPAI's impact on poultry flock numbers and the China vitamin supply concern have both intensified interest in ingredient diversification. Alternative proteins benefit from both vectors simultaneously — a story that connects those dots hasn't been written.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">Black soldier fly and insect meal companies are in active commercial scaling and have growing ad budgets. This category will be underpriced relative to demand within 12 months.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div>
+      <div class="cluster-name">ADM × Alltech JV — Industry Consolidation</div>
+      <div class="cluster-terms">feed company acquisition · animal nutrition merger · ADM Alltech joint venture · feed industry M&A</div>
+    </div>
+    <div class="cluster-delta">
+      <div class="delta-val delta-up">↑</div>
+      <div class="delta-label">Q1 2026 close · entity name TBD · first-mover window</div>
+      <div class="source-badge src-verified">M&A filing Q1 2026</div>
+    </div>
+    <div class="spark-col">
+      <svg width="140" height="40" viewBox="0 0 140 40" id="sp-ma"></svg>
+    </div>
+    <div class="impl-col">
+      <span class="impl-tag impl-ed">Editorial</span>
+      <div class="impl-text">The combined entity name has not been announced. No full profile has been published by any trade title. Feed Strategy mentioned the JV in its December 2025 outlook. The first-mover window for the definitive profile — facilities, leadership, competitive implications — is open until the announcement.</div>
+      <span class="impl-tag impl-sales" style="margin-top:5px;">Ad Sales</span>
+      <div class="impl-text">A combined entity of this scale will be a significant advertiser. Being the publication that published the definitive profile is relationship capital that pays forward.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: ADVERTISER INTEL -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">💼</span>
+    <span class="section-title">Advertiser Category Intelligence</span>
+    <span class="section-tag tag-track">Sales team</span>
+  </div>
+
+  <div class="adv-grid">
+    <div class="adv-card opp">
+      <div class="adv-category">Uncovered opportunity</div>
+      <div class="adv-headline">Non-China vitamin &amp; amino acid suppliers have an urgent story — no Feed Strategy sponsor is telling it yet</div>
+      <div class="adv-body">With 78% of US vitamin imports from China (IFEEDER, Nov 2025) and tariff tensions active, suppliers with European or domestic supply chains have a differentiation argument that's never been more timely. This is a sponsored content opportunity that writes itself.</div>
+      <div class="adv-signal"><span class="adv-delta" style="color:var(--green)">78% China dependency</span><span class="adv-ctx">IFEEDER verified · No current sponsor</span></div>
+    </div>
+    <div class="adv-card opp">
+      <div class="adv-category">Category accelerating</div>
+      <div class="adv-headline">Mycotoxin management companies have a documented data story — the 2025 crop numbers are the best advertiser brief in years</div>
+      <div class="adv-body">86% of North American samples above threshold (dsm-firmenich), fumonisins up 13 points, 71% of global samples positive (Cargill March 2026). The data makes the advertiser case without editorial conjecture. Mycotoxin binder companies with good survey data should be active advertisers right now.</div>
+      <div class="adv-signal"><span class="adv-delta" style="color:var(--amber)">86% above threshold</span><span class="adv-ctx">dsm-firmenich · Cargill verified</span></div>
+    </div>
+    <div class="adv-card">
+      <div class="adv-category">Recovery phase</div>
+      <div class="adv-headline">Biosecurity and flock recovery products — the post-HPAI opportunity is now, not during the outbreak</div>
+      <div class="adv-body">Fewer Q1 2026 HPAI detections and flock rebuilding underway means the industry is spending on prevention and recovery, not just crisis response. Biosecurity product companies and feed additives supporting recovery have budget in the current window.</div>
+      <div class="adv-signal"><span class="adv-delta" style="color:var(--green)">Easing Q1 2026</span><span class="adv-ctx">USDA ERS Apr 2026</span></div>
+    </div>
+    <div class="adv-card warn">
+      <div class="adv-category">Reallocation signal</div>
+      <div class="adv-headline">Tariff pause is a 90-day window — ingredient supplier advertisers need to move now, not in Q3</div>
+      <div class="adv-body">The May 12 US-China 90-day tariff pause creates a defined window. Ingredient suppliers and trading companies trying to reach procurement teams at mills should be advertising now while the conversation is active. This is a time-bounded opportunity that closes when the pause expires.</div>
+      <div class="adv-signal"><span class="adv-delta" style="color:var(--amber)">90-day window</span><span class="adv-ctx">AFIA May 12 2026</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="brief-footer">
+  <div>
+    <div class="footer-pub">Feed Strategy · Search Intelligence Brief · May 2026 · Internal</div>
+    <div class="footer-powered">Powered by Mindful · mindful.pub</div>
+  </div>
+  <div class="footer-method">Verified sources: AFIA/IFEEDER November 2025 vitamin supply study; USDA ERS Food Price Outlook April 2026; Cargill Global Mycotoxin Report March 2026; dsm-firmenich World Mycotoxin Survey 2025; AFIA tariff statement May 2026. Google Trends % figures require live pytrends pull — see keyword universe for cluster definitions and direct Trends links.</div>
+</div>
+
+<script>
+function spark(id, data, color, rising) {
+  const svg = document.getElementById(id);
+  if (!svg) return;
+  const w=140, h=40;
+  const mn=Math.min(...data), mx=Math.max(...data), rng=mx-mn||1;
+  const pts=data.map((v,i)=>[(i/(data.length-1))*w, h-((v-mn)/rng)*(h-5)-2]);
+  const line=pts.map((p,i)=>i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`).join(' ');
+  const area=line+` L${w},${h} L0,${h} Z`;
+  svg.innerHTML=`<defs><linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.15"/><stop offset="100%" stop-color="${color}" stop-opacity="0.02"/></linearGradient></defs><path d="${area}" fill="url(#g${id})"/><path d="${line}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="3" fill="${color}"/>`;
+}
+const G='#1a6b3c', A='#d97706', R='#dc2626', B='#1d6fa4';
+// Vitamin supply: escalating concern
+spark('sp-vitamins',[20,22,28,35,42,52,65,72,78,85,90,95],A,true);
+// Mycotoxins: persistently elevated
+spark('sp-myco',[55,60,58,65,70,72,75,78,80,84,86,86],A,true);
+// HPAI: peaked, now easing
+spark('sp-hpai',[20,30,55,80,90,100,95,88,75,60,45,35],G,false);
+// Tariffs: spike then pause
+spark('sp-tariffs',[30,32,38,45,60,80,95,100,90,75,65,70],A,false);
+// Precision swine: steady climb
+spark('sp-swine',[30,34,38,42,48,54,60,66,72,78,84,90],G,true);
+// Automation: steady climb
+spark('sp-auto',[40,44,48,52,58,64,70,76,80,86,90,95],G,true);
+// Alt protein: building
+spark('sp-altpro',[20,24,28,34,40,48,56,64,70,76,82,88],G,true);
+// M&A: spike on announcement
+spark('sp-ma',[20,22,25,28,30,35,40,48,70,90,85,80],B,true);
+</script>
+</body>
+</html>
