@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audience Revenue Intelligence — Compact Equipment Weekly</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #0f2847;
+    --navy-light: #153a6b;
+    --accent-blue: #4a9eff;
+    --accent-teal: #1db88a;
+    --accent-amber: #f0a030;
+    --accent-red: #e05050;
+    --text-primary: #f0f4ff;
+    --text-secondary: #8ba0c0;
+    --text-muted: #546880;
+    --border: rgba(74, 158, 255, 0.15);
+    --border-strong: rgba(74, 158, 255, 0.3);
+    --card-bg: rgba(15, 40, 71, 0.6);
+    --card-bg-strong: rgba(21, 58, 107, 0.4);
+    --surface: rgba(10, 22, 40, 0.8);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* HEADER */
+  .report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-bracket {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-blue);
+    letter-spacing: -0.5px;
+  }
+  .logo-sep { color: var(--text-muted); margin: 0 6px; }
+  .product-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .report-meta { text-align: right; }
+  .pub-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+  .report-title { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .report-issue { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  /* INTRO STRIP */
+  .intro-strip {
+    background: var(--card-bg-strong);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .intro-greeting {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .intro-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    max-width: 480px;
+    line-height: 1.5;
+  }
+  .period-badge {
+    background: rgba(74, 158, 255, 0.12);
+    border: 1px solid rgba(74, 158, 255, 0.3);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  /* SUMMARY STATS */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .stat-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  .delta-up { color: var(--accent-teal); }
+  .delta-down { color: var(--accent-red); }
+  .delta-neutral { color: var(--text-muted); }
+  .stat-context {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* SECTION HEADERS */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.2px;
+  }
+  .section-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .card + .card { margin-top: 10px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* AUDIENCE SECTION */
+  .audience-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .breakdown-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    width: 130px;
+    flex-shrink: 0;
+  }
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+  .bar-blue { background: var(--accent-blue); }
+  .bar-teal { background: var(--accent-teal); }
+  .bar-amber { background: var(--accent-amber); }
+  .bar-muted { background: var(--text-muted); }
+  .breakdown-pct {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .breakdown-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* COMPANY TABLE */
+  .company-table { width: 100%; border-collapse: collapse; }
+  .company-table th {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 0 0 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .company-table th:last-child { text-align: right; }
+  .company-table td {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(74,158,255,0.07);
+    vertical-align: middle;
+  }
+  .company-table td:last-child { text-align: right; }
+  .company-table tr:last-child td { border-bottom: none; }
+  .company-name { color: var(--text-primary); font-weight: 500; }
+  .intent-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  .intent-high { background: var(--accent-teal); }
+  .intent-mid { background: var(--accent-amber); }
+  .intent-low { background: var(--text-muted); }
+  .engagement-bar {
+    display: inline-block;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--accent-blue);
+    vertical-align: middle;
+  }
+
+  /* INTENT TOPICS */
+  .topic-grid { display: flex; flex-direction: column; gap: 8px; }
+  .topic-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .topic-name {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 500;
+    flex: 1;
+  }
+  .topic-growth {
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 40px;
+    text-align: right;
+  }
+  .growth-hot { color: var(--accent-teal); }
+  .growth-mid { color: var(--accent-amber); }
+  .growth-flat { color: var(--text-muted); }
+  .topic-volume {
+    font-size: 11px;
+    color: var(--text-muted);
+    min-width: 56px;
+    text-align: right;
+  }
+  .mini-bar-track {
+    width: 60px;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .mini-bar-fill { height: 100%; border-radius: 2px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  /* ADVERTISER SECTION */
+  .campaign-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .advertiser-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .campaign-period {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .outcome-badge {
+    background: rgba(29, 184, 138, 0.12);
+    border: 1px solid rgba(29, 184, 138, 0.3);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-teal);
+  }
+
+  .campaign-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .campaign-metric {
+    background: var(--card-bg-strong);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .cm-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 5px;
+  }
+  .cm-value {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+  }
+  .cm-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* THE COMPANY LIST - THE MONEY ROW */
+  .proof-section {
+    background: rgba(29, 184, 138, 0.06);
+    border: 1px solid rgba(29, 184, 138, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 14px;
+  }
+  .proof-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .proof-headline {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .proof-companies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .company-pill {
+    background: rgba(29, 184, 138, 0.1);
+    border: 1px solid rgba(29, 184, 138, 0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent-teal);
+  }
+  .company-pill.new {
+    background: rgba(240, 160, 48, 0.1);
+    border-color: rgba(240, 160, 48, 0.3);
+    color: var(--accent-amber);
+  }
+  .company-pill.new::before {
+    content: '★ ';
+    font-size: 9px;
+  }
+  .proof-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .proof-note strong { color: var(--accent-amber); font-weight: 600; }
+
+  /* REVENUE INTELLIGENCE */
+  .rev-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .rev-market-card {
+    background: var(--card-bg-strong);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .rev-market-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .rev-market-value {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .rev-market-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .rev-capture-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .capture-bar-track {
+    height: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    overflow: visible;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .capture-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: var(--accent-blue);
+    position: relative;
+  }
+  .capture-gap {
+    position: absolute;
+    right: 0;
+    top: -1px;
+    width: calc(100% - 38%);
+    height: calc(100% + 2px);
+    border-radius: 0 5px 5px 0;
+    background: rgba(240, 160, 48, 0.15);
+    border: 1px dashed rgba(240, 160, 48, 0.4);
+  }
+  .capture-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* PROSPECT TABLE */
+  .prospect-table { width: 100%; border-collapse: collapse; margin-top: 0; }
+  .prospect-table th {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 0 12px 8px 0;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .prospect-table td {
+    font-size: 12px;
+    padding: 8px 12px 8px 0;
+    border-bottom: 1px solid rgba(74,158,255,0.07);
+    vertical-align: middle;
+    color: var(--text-secondary);
+  }
+  .prospect-table tr:last-child td { border-bottom: none; }
+  .prospect-name { color: var(--text-primary); font-weight: 500; font-size: 13px; }
+  .fit-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .fit-pip {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--accent-teal);
+  }
+  .fit-pip.empty { background: rgba(255,255,255,0.1); }
+  .rationale {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    max-width: 220px;
+  }
+  .value-est {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-teal);
+    white-space: nowrap;
+  }
+
+  /* ACTION BRIEF */
+  .action-card {
+    border-radius: 10px;
+    border: 1px solid;
+    padding: 18px 20px;
+    margin-bottom: 10px;
+  }
+  .action-card.act-now {
+    background: rgba(224, 80, 80, 0.06);
+    border-color: rgba(224, 80, 80, 0.25);
+  }
+  .action-card.revenue-opp {
+    background: rgba(240, 160, 48, 0.06);
+    border-color: rgba(240, 160, 48, 0.2);
+  }
+  .action-card.audience-build {
+    background: rgba(74, 158, 255, 0.06);
+    border-color: rgba(74, 158, 255, 0.2);
+  }
+  .action-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .priority-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .tag-urgent {
+    background: rgba(224, 80, 80, 0.15);
+    color: var(--accent-red);
+  }
+  .tag-revenue {
+    background: rgba(240, 160, 48, 0.15);
+    color: var(--accent-amber);
+  }
+  .tag-audience {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--accent-blue);
+  }
+  .action-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-top: 1px;
+    margin-right: 12px;
+  }
+  .action-body {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .action-impact {
+    display: flex;
+    gap: 20px;
+  }
+  .impact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .impact-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+  .impact-value {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .impact-value.red { color: var(--accent-red); }
+  .impact-value.amber { color: var(--accent-amber); }
+  .impact-value.blue { color: var(--accent-blue); }
+
+  /* FOOTER */
+  .report-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-brand {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .footer-note {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: right;
+    max-width: 320px;
+    line-height: 1.5;
+  }
+  .aspirational-banner {
+    background: rgba(74, 158, 255, 0.08);
+    border: 1px solid rgba(74, 158, 255, 0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .banner-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+  .banner-text {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .banner-text strong { color: var(--accent-blue); font-weight: 600; }
+
+  @media (max-width: 620px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .three-col { grid-template-columns: 1fr; }
+    .campaign-metrics { grid-template-columns: repeat(2, 1fr); }
+    .rev-overview { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- REPORT HEADER -->
+<div class="report-header">
+  <div class="brand-mark">
+    <span class="logo-bracket">{ parameter : 1 }</span>
+    <span class="logo-sep">|</span>
+    <span class="product-name">Publishing Intelligence</span>
+  </div>
+  <div class="report-meta">
+    <div class="pub-name">Compact Equipment Weekly</div>
+    <div class="report-title">Audience Revenue Intelligence Report</div>
+    <div class="report-issue">April 2026 &nbsp;·&nbsp; Issue #19 &nbsp;·&nbsp; For Mike Hargrove, Publisher</div>
+  </div>
+</div>
+
+<!-- ASPIRATIONAL BANNER -->
+<div class="aspirational-banner">
+  <div class="banner-icon">★</div>
+  <div class="banner-text"><strong>North Star Vision</strong> — This report represents the future of publisher intelligence: automated, cross-system, delivered monthly. Every insight here is generated from data publishers already own.</div>
+</div>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <div>
+    <div class="intro-greeting">Good morning, Mike. Here's what April is telling you.</div>
+    <div class="intro-sub">Your skid steer attachment audience is growing faster than any advertiser knows. You have $340K in untapped revenue sitting in three uncovered categories. And one campaign just produced 11 sales leads your advertiser hasn't seen yet.</div>
+  </div>
+  <div class="period-badge">April 1–30, 2026</div>
+</div>
+
+<!-- SUMMARY STATS -->
+<div class="summary-grid">
+  <div class="stat-card">
+    <div class="stat-label">Known Audience</div>
+    <div class="stat-value">21,580</div>
+    <div class="stat-delta delta-up">↑ +28% vs. prior year</div>
+    <div class="stat-context">Verified, identified professionals</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">In Active Intent</div>
+    <div class="stat-value">4,214</div>
+    <div class="stat-delta delta-up">↑ +61% vs. last month</div>
+    <div class="stat-context">Purchase-research behavior detected</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Advertiser Fit Score</div>
+    <div class="stat-value">↑ Strong</div>
+    <div class="stat-delta delta-neutral">3 open opportunities</div>
+    <div class="stat-context">Revenue gap identified below</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Engagement Rate</div>
+    <div class="stat-value">38.4%</div>
+    <div class="stat-delta delta-up">↑ +11% vs. prior 90 days</div>
+    <div class="stat-context">Engaged sessions / total sessions</div>
+  </div>
+</div>
+
+<!-- SECTION 1: AUDIENCE QUALIFIED -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Your Audience, Qualified</div>
+        <div class="section-subtitle">Not counts. Real professionals with verified identity and behavioral signals.</div>
+      </div>
+    </div>
+    <div class="section-tag">Who they are</div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Audience by Role</div>
+      <div class="audience-breakdown">
+        <div class="breakdown-item">
+          <div class="breakdown-label">Equipment operators</div>
+          <div class="bar-track"><div class="bar-fill bar-blue" style="width:72%"></div></div>
+          <div class="breakdown-pct">34%</div>
+          <div class="breakdown-count">7,337</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Fleet / rental managers</div>
+          <div class="bar-track"><div class="bar-fill bar-blue" style="width:56%"></div></div>
+          <div class="breakdown-pct">26%</div>
+          <div class="breakdown-count">5,611</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Purchasing / procurement</div>
+          <div class="bar-track"><div class="bar-fill bar-teal" style="width:40%"></div></div>
+          <div class="breakdown-pct">19%</div>
+          <div class="breakdown-count">4,100</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Dealers / distributors</div>
+          <div class="bar-track"><div class="bar-fill bar-amber" style="width:26%"></div></div>
+          <div class="breakdown-pct">12%</div>
+          <div class="breakdown-count">2,590</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Owners / principals</div>
+          <div class="bar-track"><div class="bar-fill bar-muted" style="width:18%"></div></div>
+          <div class="breakdown-pct">9%</div>
+          <div class="breakdown-count">1,942</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="card-title">Top Intent Topics This Month</div>
+      <div class="topic-grid">
+        <div class="topic-row">
+          <div class="topic-name">Skid steer attachments</div>
+          <div class="mini-bar-track"><div class="mini-bar-fill bar-teal" style="width:95%"></div></div>
+          <div class="topic-growth growth-hot">+52%</div>
+          <div class="topic-volume">4,830 users</div>
+        </div>
+        <div class="topic-row">
+          <div class="topic-name">Mini excavator specs</div>
+          <div class="mini-bar-track"><div class="mini-bar-fill bar-blue" style="width:72%"></div></div>
+          <div class="topic-growth growth-hot">+31%</div>
+          <div class="topic-volume">3,610 users</div>
+        </div>
+        <div class="topic-row">
+          <div class="topic-name">Track loader comparisons</div>
+          <div class="mini-bar-track"><div class="mini-bar-fill bar-blue" style="width:58%"></div></div>
+          <div class="topic-growth growth-mid">+18%</div>
+          <div class="topic-volume">2,910 users</div>
+        </div>
+        <div class="topic-row">
+          <div class="topic-name">Telematics &amp; GPS</div>
+          <div class="mini-bar-track"><div class="mini-bar-fill bar-amber" style="width:40%"></div></div>
+          <div class="topic-growth growth-mid">+11%</div>
+          <div class="topic-volume">2,020 users</div>
+        </div>
+        <div class="topic-row">
+          <div class="topic-name">Equipment financing</div>
+          <div class="mini-bar-track"><div class="mini-bar-fill bar-muted" style="width:24%"></div></div>
+          <div class="topic-growth growth-flat">−2%</div>
+          <div class="topic-volume">1,220 users</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Top Companies by Engagement Depth</div>
+      <table class="company-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Users</th>
+            <th>Intent</th>
+            <th>Engagement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="company-name">Sunbelt Rentals</span><br><span style="font-size:10px;color:var(--text-muted)">Equipment rental, national</span></td>
+            <td>287</td>
+            <td><span class="intent-dot intent-high"></span>High</td>
+            <td><div class="engagement-bar" style="width:52px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">United Rentals</span><br><span style="font-size:10px;color:var(--text-muted)">Equipment rental, national</span></td>
+            <td>214</td>
+            <td><span class="intent-dot intent-high"></span>High</td>
+            <td><div class="engagement-bar" style="width:44px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">H&amp;E Equipment Services</span><br><span style="font-size:10px;color:var(--text-muted)">Dealer network, Southeast</span></td>
+            <td>168</td>
+            <td><span class="intent-dot intent-high"></span>High</td>
+            <td><div class="engagement-bar" style="width:40px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">BlueLine Rental</span><br><span style="font-size:10px;color:var(--text-muted)">Equipment rental, regional</span></td>
+            <td>143</td>
+            <td><span class="intent-dot intent-mid"></span>Mid</td>
+            <td><div class="engagement-bar" style="width:34px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">Neff Corp</span><br><span style="font-size:10px;color:var(--text-muted)">Rental operator, Southeast</span></td>
+            <td>121</td>
+            <td><span class="intent-dot intent-mid"></span>Mid</td>
+            <td><div class="engagement-bar" style="width:28px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">Yancey Bros. Co.</span><br><span style="font-size:10px;color:var(--text-muted)">CAT dealer, Georgia</span></td>
+            <td>98</td>
+            <td><span class="intent-dot intent-mid"></span>Mid</td>
+            <td><div class="engagement-bar" style="width:22px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">Brandeis Machinery</span><br><span style="font-size:10px;color:var(--text-muted)">Dealer, Kentucky/Indiana</span></td>
+            <td>84</td>
+            <td><span class="intent-dot intent-low"></span>Low</td>
+            <td><div class="engagement-bar" style="width:18px"></div></td>
+          </tr>
+          <tr>
+            <td><span class="company-name">Thompson Machinery</span><br><span style="font-size:10px;color:var(--text-muted)">CAT dealer, Tennessee</span></td>
+            <td>76</td>
+            <td><span class="intent-dot intent-low"></span>Low</td>
+            <td><div class="engagement-bar" style="width:14px"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:10px;">Showing top 8 of 1,240 known companies in audience. Intent score based on content depth, recency, and return visit frequency.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: ADVERTISER PERFORMANCE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Advertiser Performance, Translated</div>
+        <div class="section-subtitle">Not impressions and clicks. Business outcomes — who saw it, who engaged, who's worth a call.</div>
+      </div>
+    </div>
+    <div class="section-tag">What it produced</div>
+  </div>
+
+  <div class="card">
+    <div class="campaign-header">
+      <div>
+        <div class="advertiser-name">Doosan Bobcat — Attachment Campaign Q1</div>
+        <div class="campaign-period">January 15 – April 15, 2026 &nbsp;·&nbsp; Website banner + newsletter + sponsored post</div>
+      </div>
+      <div class="outcome-badge">Renewal-ready</div>
+    </div>
+
+    <div class="campaign-metrics">
+      <div class="campaign-metric">
+        <div class="cm-label">Verified reach</div>
+        <div class="cm-value">6,840</div>
+        <div class="cm-sub">Known professionals</div>
+      </div>
+      <div class="campaign-metric">
+        <div class="cm-label">In-market segment</div>
+        <div class="cm-value">1,290</div>
+        <div class="cm-sub">Active attachment intent</div>
+      </div>
+      <div class="campaign-metric">
+        <div class="cm-label">Cross-channel touch</div>
+        <div class="cm-value">3,140</div>
+        <div class="cm-sub">Saw ad + read related content</div>
+      </div>
+      <div class="campaign-metric">
+        <div class="cm-label">Site visits post-exposure</div>
+        <div class="cm-value">847</div>
+        <div class="cm-sub">Verified identity, tracked</div>
+      </div>
+    </div>
+
+    <div class="proof-section">
+      <div class="proof-label">The leads you didn't know you had</div>
+      <div class="proof-headline">11 companies where Bobcat has no current account relationship visited bobcat.com after campaign exposure. Here they are.</div>
+      <div class="proof-companies">
+        <span class="company-pill new">Cornerstone Equipment Co.</span>
+        <span class="company-pill new">Atlas Earthworks LLC</span>
+        <span class="company-pill new">Peak Excavating Inc.</span>
+        <span class="company-pill new">Redstone Contractors</span>
+        <span class="company-pill new">Frontier Rental Group</span>
+        <span class="company-pill new">Meridian Site Services</span>
+        <span class="company-pill new">Highpoint Grading</span>
+        <span class="company-pill new">Valley Equipment Solutions</span>
+        <span class="company-pill new">GreenField Land Dev.</span>
+        <span class="company-pill new">Summit Heavy Equipment</span>
+        <span class="company-pill new">Blue Ridge Landscaping</span>
+      </div>
+      <div class="proof-note"><strong>Bring this list to the renewal meeting.</strong> These are net-new contacts in Bobcat's CRM. The campaign didn't just reach your audience — it surfaced qualified pipeline for their sales team. No impression report has ever done this.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:10px;">
+    <div class="campaign-header">
+      <div>
+        <div class="advertiser-name">Volvo CE — Compact Excavator Spring Push</div>
+        <div class="campaign-period">March 1 – April 30, 2026 &nbsp;·&nbsp; Newsletter sponsorship + native content</div>
+      </div>
+      <div class="outcome-badge" style="background:rgba(240,160,48,0.1);border-color:rgba(240,160,48,0.3);color:var(--accent-amber);">Renewal at risk</div>
+    </div>
+    <div class="campaign-metrics">
+      <div class="campaign-metric">
+        <div class="cm-label">Verified reach</div>
+        <div class="cm-value">2,910</div>
+        <div class="cm-sub">Known professionals</div>
+      </div>
+      <div class="campaign-metric">
+        <div class="cm-label">In-market segment</div>
+        <div class="cm-value">380</div>
+        <div class="cm-sub">Active excavator intent</div>
+      </div>
+      <div class="campaign-metric">
+        <div class="cm-label">Content engagement</div>
+        <div class="cm-value">14.2%</div>
+        <div class="cm-sub">Below category avg (22%)</div>
+      </div>
+      <div class="campaign-metric">
+        <div class="cm-label">Site visits post-exposure</div>
+        <div class="cm-value">94</div>
+        <div class="cm-sub">Lower than expected</div>
+      </div>
+    </div>
+    <div style="background:rgba(240,160,48,0.07);border:1px solid rgba(240,160,48,0.2);border-radius:8px;padding:14px 16px;margin-top:12px;">
+      <div style="font-size:10px;font-weight:700;color:var(--accent-amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Recommended action before renewal</div>
+      <div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Mini excavator intent among your audience is up 31% this month — the largest growth topic in the issue. Volvo's campaign ran against general equipment content, not this audience segment. Propose a Q3 campaign targeting the 3,610 users actively researching excavator specs. Show them who those users are. That conversation changes the renewal outcome.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: REVENUE INTELLIGENCE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Revenue Intelligence</div>
+        <div class="section-subtitle">Your addressable advertiser market, what you're capturing, and where the gap lives.</div>
+      </div>
+    </div>
+    <div class="section-tag">What's uncaptured</div>
+  </div>
+
+  <div class="card">
+    <div class="rev-overview">
+      <div class="rev-market-card">
+        <div class="rev-market-label">Addressable advertiser market</div>
+        <div class="rev-market-value">$1.24M</div>
+        <div class="rev-market-sub">Based on audience composition × category CPM benchmarks</div>
+      </div>
+      <div class="rev-market-card">
+        <div class="rev-market-label">Current annual capture</div>
+        <div class="rev-market-value">$470K</div>
+        <div class="rev-market-sub">38% of addressable market</div>
+      </div>
+    </div>
+
+    <div style="padding:0 4px;margin-bottom:16px;">
+      <div class="rev-capture-label">Revenue capture rate</div>
+      <div style="position:relative;height:10px;background:rgba(255,255,255,0.05);border-radius:5px;overflow:hidden;">
+        <div style="width:38%;height:100%;background:var(--accent-blue);border-radius:5px 0 0 5px;"></div>
+        <div style="position:absolute;top:0;left:38%;right:0;height:100%;background:rgba(240,160,48,0.15);border-left:2px dashed rgba(240,160,48,0.5);"></div>
+      </div>
+      <div class="capture-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--accent-blue)"></div>
+          Current capture: $470K (38%)
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:rgba(240,160,48,0.5);border:1px dashed rgba(240,160,48,0.8)"></div>
+          Uncaptured opportunity: $770K (62%)
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card-title" style="margin-bottom:12px;">Top 3 Priority Prospects — Highest audience fit, no active campaign</div>
+    <table class="prospect-table">
+      <thead>
+        <tr>
+          <th style="width:34%">Company</th>
+          <th style="width:16%">Audience fit</th>
+          <th>Why now</th>
+          <th style="text-align:right">Est. annual value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="prospect-name">Bobcat Attachments Division</div>
+            <div style="font-size:11px;color:var(--text-muted)">Separate from current Bobcat buy</div>
+          </td>
+          <td>
+            <div class="fit-score">
+              <div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip empty"></div>
+            </div>
+          </td>
+          <td><div class="rationale">Your attachment content cluster is growing 52% and represents 4,800+ monthly users in their exact category. This is a separate budget from the equipment buy.</div></td>
+          <td><div class="value-est">$38–55K</div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="prospect-name">Trimble Construction</div>
+            <div style="font-size:11px;color:var(--text-muted)">Telematics, GPS, machine control</div>
+          </td>
+          <td>
+            <div class="fit-score">
+              <div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip empty"></div>
+            </div>
+          </td>
+          <td><div class="rationale">Telematics intent is up 11% this month. 2,020 verified users actively researching GPS and machine control. Trimble has no presence in your newsletter or sponsored content.</div></td>
+          <td><div class="value-est">$28–42K</div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="prospect-name">DLL Group (equipment finance)</div>
+            <div style="font-size:11px;color:var(--text-muted)">Equipment financing, fleet leasing</div>
+          </td>
+          <td>
+            <div class="fit-score">
+              <div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip"></div><div class="fit-pip empty"></div><div class="fit-pip empty"></div>
+            </div>
+          </td>
+          <td><div class="rationale">1,220 users engaging with financing content. Fleet managers and purchasing titles dominate — exactly DLL's target. Financing category has zero current advertiser coverage in your issue.</div></td>
+          <td><div class="value-est">$18–28K</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 4: ACTION BRIEF -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">Your Action Brief</div>
+        <div class="section-subtitle">Three things. This month. Each one connected to a specific revenue or audience outcome.</div>
+      </div>
+    </div>
+    <div class="section-tag">What to do</div>
+  </div>
+
+  <div class="action-card act-now">
+    <div class="action-header">
+      <div class="action-title">Gate your skid steer attachment content cluster — you are losing 390 identifiable contacts every month</div>
+      <div class="priority-tag tag-urgent">Act now</div>
+    </div>
+    <div class="action-body">
+      Organic search traffic to your attachment content — augers, brush cutters, hydraulic breakers — has grown 52% in 60 days and now drives 23% of all site sessions. Average engaged session time is 4m 12s versus your 2m 48s site average. These are buyers researching before purchase. None of this content is gated. You have no identity on any of them. Apply a metered gate to the top 4 articles (3 free reads, then registration) and create one gated attachment buyer's guide to anchor a full gate for the cluster.
+    </div>
+    <div class="action-impact">
+      <div class="impact-item">
+        <div class="impact-label">Monthly contacts lost</div>
+        <div class="impact-value red">390 / mo</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-label">Recoverable in 90 days</div>
+        <div class="impact-value red">~1,170</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-label">Advertiser value of segment</div>
+        <div class="impact-value red">$38–55K / yr</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card revenue-opp">
+    <div class="action-header">
+      <div class="action-title">Bring the 11-company list to your Bobcat renewal — this is not a negotiation, it's a demonstration</div>
+      <div class="priority-tag tag-revenue">Revenue</div>
+    </div>
+    <div class="action-body">
+      The Q1 Bobcat campaign produced 11 net-new companies in their sales pipeline — contacts they didn't have before the campaign ran. No impression report, no click-through summary, no spreadsheet has ever shown an advertiser this. Walk in with the company list. Show verified identity, content engagement, and post-exposure site behavior. Then ask: what would it be worth to have this audience watching for your next product launch? The renewal conversation becomes a scope expansion conversation.
+    </div>
+    <div class="action-impact">
+      <div class="impact-item">
+        <div class="impact-label">Current Bobcat spend</div>
+        <div class="impact-value amber">$46K / yr</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-label">Expansion opportunity</div>
+        <div class="impact-value amber">+$22–38K</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-label">Renewal probability</div>
+        <div class="impact-value amber">High</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card audience-build">
+    <div class="action-header">
+      <div class="action-title">Publish a mini excavator spec comparison series — intent is up 31% and you have no advertiser in the category yet</div>
+      <div class="priority-tag tag-audience">Audience</div>
+    </div>
+    <div class="action-body">
+      Mini excavator content is generating the second-highest intent signal in your issue this month with 3,610 users actively researching specs, comparisons, and feature differences. You have no sponsored content in this category and no advertiser covering it. Publish a 3-part gated comparison series — it builds the audience segment, proves engagement depth, and gives you a specific content package to bring to Volvo CE (whose current campaign is underperforming), Kubota, or Yanmar as a Q3 opportunity. Build the audience first. The advertiser conversation follows.
+    </div>
+    <div class="action-impact">
+      <div class="impact-item">
+        <div class="impact-label">Current intent audience</div>
+        <div class="impact-value blue">3,610 users</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-label">Month-over-month growth</div>
+        <div class="impact-value blue">+31%</div>
+      </div>
+      <div class="impact-item">
+        <div class="impact-label">Advertiser opportunity</div>
+        <div class="impact-value blue">$28–45K</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+      <span class="logo-bracket" style="font-size:11px;">{ parameter : 1 }</span>
+      <span style="font-size:10px;color:var(--text-muted)">|</span>
+      <span style="font-size:10px;font-weight:600;color:var(--accent-blue);letter-spacing:1px;text-transform:uppercase;">Mindful</span>
+    </div>
+    <div class="footer-brand">mindful.pub &nbsp;·&nbsp; sales@mindful.pub</div>
+  </div>
+  <div class="footer-note">
+    This report is generated automatically from unified audience, content, and advertising data. No spreadsheets. No manual pulls. It's there when you wake up, every month, before your first meeting.
+  </div>
+</div>
+
+</body>
+</html>
