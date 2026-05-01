@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertiser Intelligence Report — Mindful</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root {
+  --navy:#0f172a;
+  --navy-mid:#1e293b;
+  --navy-light:#334155;
+  --blue:#3b82f6;
+  --blue-dark:#1d4ed8;
+  --blue-light:#60a5fa;
+  --sky:#dbeafe;
+  --sky-light:#eff6ff;
+  --orange:#f97316;
+  --green:#22c55e;
+  --green-light:#dcfce7;
+  --red:#ef4444;
+  --amber:#f59e0b;
+  --white:#ffffff;
+  --gray-50:#f8fafc;
+  --gray-100:#f1f5f9;
+  --gray-200:#e2e8f0;
+  --gray-300:#cbd5e1;
+  --gray-400:#94a3b8;
+  --gray-500:#64748b;
+  --gray-600:#475569;
+  --gray-700:#334155;
+  --gray-800:#1e293b;
+}
+
+body {
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:#1a1a2e;
+  color:var(--gray-700);
+  line-height:1.5;
+}
+
+.report-shell {
+  max-width:1100px;
+  margin:40px auto;
+  background:var(--white);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 25px 80px rgba(0,0,0,0.4);
+}
+
+/* ═══════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════ */
+.report-header {
+  background:linear-gradient(135deg, #0a1628 0%, #0f2847 50%, #162f5a 100%);
+  padding:32px 40px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  position:relative;
+  overflow:hidden;
+}
+.report-header::before {
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:300px;height:300px;border-radius:50%;
+  border:1px solid rgba(59,130,246,0.08);pointer-events:none;
+}
+.report-header::after {
+  content:'';position:absolute;bottom:-120px;right:80px;
+  width:200px;height:200px;border-radius:50%;
+  border:1px solid rgba(59,130,246,0.05);pointer-events:none;
+}
+
+.header-left {display:flex;align-items:center;gap:20px;}
+.advertiser-logo {
+  width:56px;height:56px;border-radius:12px;
+  background:var(--white);display:flex;align-items:center;
+  justify-content:center;font-weight:900;font-size:11px;
+  color:var(--navy);letter-spacing:0.5px;line-height:1.1;
+  text-align:center;padding:6px;
+}
+.header-titles {}
+.header-titles h1 {
+  font-size:22px;font-weight:800;color:var(--white);
+  letter-spacing:-0.3px;line-height:1.2;
+}
+.header-titles .advertiser-name {
+  font-size:14px;font-weight:500;color:var(--blue-light);
+  margin-top:4px;
+}
+
+.header-right {text-align:right;}
+.header-right .date-range {
+  font-size:12px;font-weight:600;color:var(--gray-400);
+  letter-spacing:0.02em;
+}
+.header-right .date-value {
+  font-size:14px;font-weight:700;color:var(--white);margin-top:2px;
+}
+.mindful-badge {
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:10px;padding:5px 12px;
+  background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.25);
+  border-radius:6px;font-size:10px;font-weight:700;
+  color:var(--blue-light);letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.mindful-badge .dot {
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+}
+
+/* ═══════════════════════════════════════
+   EXECUTIVE SUMMARY / INSIGHT BAR
+   ═══════════════════════════════════════ */
+.insight-bar {
+  background:linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%);
+  padding:20px 40px;
+  display:flex;align-items:center;gap:16px;
+}
+.insight-icon {
+  width:36px;height:36px;border-radius:8px;
+  background:rgba(255,255,255,0.15);display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;
+}
+.insight-icon svg {width:18px;height:18px;}
+.insight-text {
+  font-size:14px;font-weight:500;color:rgba(255,255,255,0.92);
+  line-height:1.5;
+}
+.insight-text strong {font-weight:700;color:var(--white);}
+
+/* ═══════════════════════════════════════
+   KPI STRIP
+   ═══════════════════════════════════════ */
+.kpi-strip {
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border-bottom:1px solid var(--gray-200);
+}
+.kpi-card {
+  padding:24px 28px;
+  border-right:1px solid var(--gray-200);
+  position:relative;
+}
+.kpi-card:last-child {border-right:none;}
+.kpi-label {
+  font-size:10px;font-weight:700;color:var(--gray-400);
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:6px;
+}
+.kpi-value {
+  font-size:28px;font-weight:800;color:var(--navy);
+  letter-spacing:-0.02em;line-height:1;
+}
+.kpi-sub {
+  font-size:11px;font-weight:500;color:var(--gray-500);
+  margin-top:4px;
+}
+.kpi-trend {
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:11px;font-weight:600;margin-top:4px;
+}
+.kpi-trend.up {color:var(--green);}
+.kpi-trend.down {color:var(--red);}
+
+/* ═══════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════ */
+.section {padding:32px 40px;}
+.section + .section {border-top:1px solid var(--gray-200);}
+.section-header {
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:20px;
+}
+.section-title {
+  font-size:16px;font-weight:800;color:var(--navy);
+  letter-spacing:-0.01em;
+}
+.section-subtitle {
+  font-size:12px;color:var(--gray-500);margin-top:2px;
+}
+.section-badge {
+  font-size:9px;font-weight:700;color:var(--blue);
+  background:var(--sky);padding:4px 10px;border-radius:4px;
+  text-transform:uppercase;letter-spacing:0.08em;
+}
+
+/* ═══════════════════════════════════════
+   AUDIENCE SECTION
+   ═══════════════════════════════════════ */
+.audience-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+.audience-companies {
+  background:var(--gray-50);border:1px solid var(--gray-200);
+  border-radius:10px;padding:20px 24px;
+}
+.audience-companies h4 {
+  font-size:11px;font-weight:700;color:var(--gray-400);
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:14px;
+}
+.company-row {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--gray-200);
+}
+.company-row:last-child {border-bottom:none;}
+.company-name {font-size:13px;font-weight:600;color:var(--navy);}
+.company-domain {font-size:11px;color:var(--gray-400);margin-top:1px;}
+.company-users {
+  font-size:13px;font-weight:700;color:var(--blue);
+  background:var(--sky);padding:3px 10px;border-radius:4px;
+}
+
+.audience-demographics {
+  background:var(--gray-50);border:1px solid var(--gray-200);
+  border-radius:10px;padding:20px 24px;
+}
+.audience-demographics h4 {
+  font-size:11px;font-weight:700;color:var(--gray-400);
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:14px;
+}
+.demo-row {
+  display:flex;align-items:center;gap:12px;
+  padding:7px 0;
+}
+.demo-label {
+  font-size:12px;font-weight:500;color:var(--gray-600);
+  width:120px;flex-shrink:0;
+}
+.demo-bar-track {
+  flex:1;height:8px;background:var(--gray-200);
+  border-radius:4px;overflow:hidden;
+}
+.demo-bar-fill {
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 100%);
+}
+.demo-pct {
+  font-size:11px;font-weight:700;color:var(--navy);
+  width:36px;text-align:right;
+}
+
+/* ═══════════════════════════════════════
+   CROSS-CHANNEL PERFORMANCE
+   ═══════════════════════════════════════ */
+.channel-cards {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.channel-card {
+  border:1px solid var(--gray-200);border-radius:10px;
+  overflow:hidden;transition:box-shadow 0.2s;
+}
+.channel-card:hover {box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+.channel-card-header {
+  padding:14px 18px 10px;
+  border-bottom:1px solid var(--gray-100);
+  display:flex;align-items:center;gap:10px;
+}
+.channel-icon {
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;
+}
+.channel-icon.banner {background:#dbeafe;color:#2563eb;}
+.channel-icon.native {background:#fef3c7;color:#d97706;}
+.channel-icon.newsletter {background:#d1fae5;color:#059669;}
+.channel-icon.sponsored {background:#ede9fe;color:#7c3aed;}
+.channel-icon.email {background:#fce7f3;color:#db2777;}
+.channel-icon.content {background:#ffedd5;color:#ea580c;}
+.channel-card-name {
+  font-size:12px;font-weight:700;color:var(--navy);
+}
+.channel-card-body {padding:14px 18px 16px;}
+.channel-metric {
+  display:flex;justify-content:space-between;
+  align-items:baseline;padding:4px 0;
+}
+.channel-metric-label {
+  font-size:11px;color:var(--gray-500);
+}
+.channel-metric-value {
+  font-size:13px;font-weight:700;color:var(--navy);
+}
+.channel-ctr {
+  margin-top:8px;padding-top:8px;
+  border-top:1px solid var(--gray-100);
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.channel-ctr-label {font-size:10px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.06em;}
+.channel-ctr-value {font-size:16px;font-weight:800;color:var(--blue);}
+
+/* ═══════════════════════════════════════
+   DETAIL TABLES
+   ═══════════════════════════════════════ */
+.detail-table {width:100%;border-collapse:collapse;font-size:12px;}
+.detail-table thead th {
+  text-align:left;font-size:10px;font-weight:700;
+  color:var(--gray-400);text-transform:uppercase;
+  letter-spacing:0.06em;padding:8px 12px 10px;
+  border-bottom:2px solid var(--gray-200);
+}
+.detail-table thead th.num {text-align:right;}
+.detail-table tbody td {
+  padding:10px 12px;border-bottom:1px solid var(--gray-100);
+  color:var(--gray-700);
+}
+.detail-table tbody td.num {text-align:right;font-weight:600;font-variant-numeric:tabular-nums;}
+.detail-table tbody td.name {font-weight:600;color:var(--navy);}
+.detail-table tbody tr:hover {background:var(--gray-50);}
+.detail-table tfoot td {
+  padding:10px 12px;font-weight:700;color:var(--navy);
+  border-top:2px solid var(--gray-200);
+}
+.detail-table tfoot td.num {text-align:right;}
+
+/* ═══════════════════════════════════════
+   CONTENT ENGAGEMENT
+   ═══════════════════════════════════════ */
+.content-list {}
+.content-item {
+  display:grid;grid-template-columns:auto 1fr auto auto;
+  gap:16px;align-items:center;padding:12px 0;
+  border-bottom:1px solid var(--gray-100);
+}
+.content-item:last-child {border-bottom:none;}
+.content-rank {
+  width:28px;height:28px;border-radius:6px;
+  background:var(--sky);color:var(--blue);
+  font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.content-info {}
+.content-title {font-size:13px;font-weight:600;color:var(--navy);}
+.content-meta {font-size:11px;color:var(--gray-400);margin-top:2px;}
+.content-views {
+  text-align:right;
+}
+.content-views-num {font-size:14px;font-weight:700;color:var(--navy);}
+.content-views-label {font-size:10px;color:var(--gray-400);}
+.content-users {text-align:right;}
+.content-users-num {font-size:14px;font-weight:700;color:var(--blue);}
+.content-users-label {font-size:10px;color:var(--gray-400);}
+
+/* ═══════════════════════════════════════
+   EMAIL ENGAGEMENT
+   ═══════════════════════════════════════ */
+.email-url-table {width:100%;border-collapse:collapse;font-size:12px;margin-top:12px;}
+.email-url-table th {
+  text-align:left;font-size:10px;font-weight:700;
+  color:var(--gray-400);text-transform:uppercase;
+  letter-spacing:0.06em;padding:6px 12px;
+  border-bottom:1px solid var(--gray-200);
+}
+.email-url-table th.num {text-align:right;}
+.email-url-table td {padding:8px 12px;border-bottom:1px solid var(--gray-100);color:var(--gray-600);}
+.email-url-table td.num {text-align:right;font-weight:600;color:var(--navy);}
+
+/* ═══════════════════════════════════════
+   GEOGRAPHIC
+   ═══════════════════════════════════════ */
+.geo-grid {display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.geo-list {}
+.geo-list h4 {
+  font-size:11px;font-weight:700;color:var(--gray-400);
+  text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;
+}
+.geo-row {
+  display:flex;justify-content:space-between;
+  padding:6px 0;border-bottom:1px solid var(--gray-100);
+  font-size:12px;
+}
+.geo-row:last-child {border-bottom:none;}
+.geo-name {font-weight:500;color:var(--gray-700);}
+.geo-count {font-weight:700;color:var(--navy);}
+
+/* ═══════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════ */
+.report-footer {
+  background:var(--navy);
+  padding:20px 40px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-left {
+  font-size:11px;color:var(--gray-400);
+}
+.footer-left strong {color:var(--white);font-weight:700;}
+.footer-right {
+  display:flex;align-items:center;gap:8px;
+}
+.footer-logo {
+  font-size:10px;font-weight:700;color:var(--gray-400);
+  letter-spacing:0.06em;
+}
+.footer-product {
+  font-size:14px;font-weight:800;color:var(--white);
+}
+
+/* ═══════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════ */
+.tab-row {
+  display:flex;gap:0;border-bottom:2px solid var(--gray-200);
+  margin-bottom:20px;
+}
+.tab {
+  padding:8px 18px;font-size:12px;font-weight:600;
+  color:var(--gray-400);cursor:default;
+  border-bottom:2px solid transparent;
+  margin-bottom:-2px;
+}
+.tab.active {color:var(--blue);border-bottom-color:var(--blue);}
+
+/* ═══════════════════════════════════════
+   CHANNEL DETAIL SUBSECTION
+   ═══════════════════════════════════════ */
+.channel-detail {
+  margin-top:24px;padding-top:24px;
+  border-top:1px solid var(--gray-200);
+}
+.channel-detail-header {
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;
+}
+.cd-icon {
+  width:28px;height:28px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+}
+.cd-title {font-size:14px;font-weight:700;color:var(--navy);}
+
+/* Sparkline placeholder */
+.sparkline {
+  display:flex;align-items:flex-end;gap:2px;height:32px;
+}
+.spark-bar {
+  width:6px;border-radius:2px 2px 0 0;
+  background:var(--blue);opacity:0.7;
+}
+
+/* Responsive */
+@media (max-width:900px) {
+  .kpi-strip {grid-template-columns:repeat(3,1fr);}
+  .channel-cards {grid-template-columns:1fr 1fr;}
+  .audience-grid {grid-template-columns:1fr;}
+  .geo-grid {grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="report-shell">
+
+  <!-- ══════════ HEADER ══════════ -->
+  <div class="report-header">
+    <div class="header-left">
+      <div class="advertiser-logo">TARA<br>POOL</div>
+      <div class="header-titles">
+        <h1>Advertiser Intelligence Report</h1>
+        <div class="advertiser-name">Tara Pool &amp; Outdoor Products</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="date-range">REPORTING PERIOD</div>
+      <div class="date-value">Jul 1, 2025 – Aug 31, 2025</div>
+      <div class="mindful-badge">
+        <span class="dot"></span>
+        Powered by Mindful
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ INSIGHT BAR ══════════ -->
+  <div class="insight-bar">
+    <div class="insight-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+    </div>
+    <div class="insight-text">
+      Your campaigns reached <strong>1,247 identified professionals</strong> across 6 channels during this period. 
+      <strong>Tara</strong> content generated the highest engagement in the <strong>Vinyl Liners</strong> category, 
+      with 127 unique users engaging with sponsored content — <strong>96% identified by company and title</strong>.
+    </div>
+  </div>
+
+  <!-- ══════════ KPI STRIP ══════════ -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-label">Identified Audience</div>
+      <div class="kpi-value">1,247</div>
+      <div class="kpi-sub">Verified professionals</div>
+      <div class="kpi-trend up">↑ 18% vs. prior period</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Impressions</div>
+      <div class="kpi-value">892K</div>
+      <div class="kpi-sub">Across all channels</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Engagements</div>
+      <div class="kpi-value">3,841</div>
+      <div class="kpi-sub">Clicks, opens, views</div>
+      <div class="kpi-trend up">↑ 12% vs. prior period</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cross-Channel CTR</div>
+      <div class="kpi-value">0.43%</div>
+      <div class="kpi-sub">Blended rate</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Top Companies</div>
+      <div class="kpi-value">38</div>
+      <div class="kpi-sub">Unique organizations</div>
+    </div>
+  </div>
+
+  <!-- ══════════ AUDIENCE INTELLIGENCE ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Audience Intelligence</div>
+        <div class="section-subtitle">Aggregated identity and engagement data from interactions with your campaigns</div>
+      </div>
+      <div class="section-badge">Who, Not How Many</div>
+    </div>
+
+    <div class="audience-grid">
+      <div class="audience-companies">
+        <h4>Top Companies Reached</h4>
+        <div class="company-row">
+          <div><div class="company-name">Patio Pleasures Inc.</div><div class="company-domain">patiopl.com</div></div>
+          <div class="company-users">47</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">Alpine Pool Supply</div><div class="company-domain">alpinepools.com</div></div>
+          <div class="company-users">34</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">Bonsall Pool &amp; Spa</div><div class="company-domain">bonsallpool.com</div></div>
+          <div class="company-users">28</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">Aquatic Design Group</div><div class="company-domain">aquaticdesign.com</div></div>
+          <div class="company-users">23</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">SunWater Pools</div><div class="company-domain">sunwaterpools.com</div></div>
+          <div class="company-users">19</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">Pacific Pools Corp.</div><div class="company-domain">pacificpools.com</div></div>
+          <div class="company-users">16</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">Werner Enterprises</div><div class="company-domain">werner.com</div></div>
+          <div class="company-users">14</div>
+        </div>
+        <div class="company-row">
+          <div><div class="company-name">Schneider National</div><div class="company-domain">schneider.com</div></div>
+          <div class="company-users">11</div>
+        </div>
+      </div>
+
+      <div class="audience-demographics">
+        <h4>Audience by Role / Function</h4>
+        <div class="demo-row">
+          <div class="demo-label">Owner / Principal</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:72%"></div></div>
+          <div class="demo-pct">72%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">Operations Mgr</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:48%"></div></div>
+          <div class="demo-pct">48%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">Purchasing</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:35%"></div></div>
+          <div class="demo-pct">35%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">Service Tech</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:22%"></div></div>
+          <div class="demo-pct">22%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">Marketing</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:15%"></div></div>
+          <div class="demo-pct">15%</div>
+        </div>
+
+        <h4 style="margin-top:20px;">Audience by Company Size</h4>
+        <div class="demo-row">
+          <div class="demo-label">1–9 employees</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:44%;background:linear-gradient(90deg,var(--orange),#fb923c)"></div></div>
+          <div class="demo-pct">44%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">10–49</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:31%;background:linear-gradient(90deg,var(--orange),#fb923c)"></div></div>
+          <div class="demo-pct">31%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">50–249</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:18%;background:linear-gradient(90deg,var(--orange),#fb923c)"></div></div>
+          <div class="demo-pct">18%</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-label">250+</div>
+          <div class="demo-bar-track"><div class="demo-bar-fill" style="width:7%;background:linear-gradient(90deg,var(--orange),#fb923c)"></div></div>
+          <div class="demo-pct">7%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CROSS-CHANNEL PERFORMANCE ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Cross-Channel Performance</div>
+        <div class="section-subtitle">Unified view of campaign delivery across all media types</div>
+      </div>
+      <div class="section-badge">All Channels</div>
+    </div>
+
+    <div class="channel-cards">
+      <!-- Banner Ads -->
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="channel-icon banner">▦</div>
+          <div class="channel-card-name">Website Banner Ads</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="channel-metric"><span class="channel-metric-label">Impressions</span><span class="channel-metric-value">720,400</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Clicks</span><span class="channel-metric-value">2,841</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Unique Users</span><span class="channel-metric-value">684</span></div>
+          <div class="channel-ctr">
+            <span class="channel-ctr-label">CTR</span>
+            <span class="channel-ctr-value">0.39%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Native Ads -->
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="channel-icon native">◧</div>
+          <div class="channel-card-name">Website Native Ads</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="channel-metric"><span class="channel-metric-label">Impressions</span><span class="channel-metric-value">58,200</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Clicks</span><span class="channel-metric-value">412</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Unique Users</span><span class="channel-metric-value">389</span></div>
+          <div class="channel-ctr">
+            <span class="channel-ctr-label">CTR</span>
+            <span class="channel-ctr-value">0.71%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Ads -->
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="channel-icon newsletter">✉</div>
+          <div class="channel-card-name">Newsletter Ads</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="channel-metric"><span class="channel-metric-label">Sends</span><span class="channel-metric-value">32,700</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Opens</span><span class="channel-metric-value">14,900</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Unique Clicks</span><span class="channel-metric-value">198</span></div>
+          <div class="channel-ctr">
+            <span class="channel-ctr-label">CTR</span>
+            <span class="channel-ctr-value">0.61%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sponsored Posts -->
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="channel-icon sponsored">★</div>
+          <div class="channel-card-name">Sponsored Posts</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="channel-metric"><span class="channel-metric-label">Views</span><span class="channel-metric-value">295</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Unique Users</span><span class="channel-metric-value">242</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Avg. Views/User</span><span class="channel-metric-value">1.2</span></div>
+          <div class="channel-ctr">
+            <span class="channel-ctr-label">Engagement</span>
+            <span class="channel-ctr-value">82%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email Campaigns -->
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="channel-icon email">@</div>
+          <div class="channel-card-name">Email Campaigns</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="channel-metric"><span class="channel-metric-label">Campaigns</span><span class="channel-metric-value">16</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Total Opens</span><span class="channel-metric-value">100,800</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Clicks</span><span class="channel-metric-value">1,100</span></div>
+          <div class="channel-ctr">
+            <span class="channel-ctr-label">CTR</span>
+            <span class="channel-ctr-value">0.37%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content / Leaders -->
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="channel-icon content">◉</div>
+          <div class="channel-card-name">Content &amp; Leaders</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="channel-metric"><span class="channel-metric-label">Content Items</span><span class="channel-metric-value">18</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Total Views</span><span class="channel-metric-value">339</span></div>
+          <div class="channel-metric"><span class="channel-metric-label">Unique Users</span><span class="channel-metric-value">298</span></div>
+          <div class="channel-ctr">
+            <span class="channel-ctr-label">Data Card Opens</span>
+            <span class="channel-ctr-value">279</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ GROWTH INTELLIGENCE ══════════ -->
+  <div class="section" style="background:linear-gradient(180deg, #f0f7ff 0%, #fff 100%);">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Growth Intelligence</div>
+        <div class="section-subtitle">Audience segments you're not yet reaching, based on your current channel mix</div>
+      </div>
+      <div class="section-badge" style="background:#fef3c7;color:#92400e;">Opportunities</div>
+    </div>
+
+    <!-- Opportunity: Magazine -->
+    <div style="border:1px solid #e2e8f0;border-radius:12px;padding:24px 28px;margin-bottom:16px;background:#fff;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#f59e0b,#ea580c);border-radius:4px 0 0 4px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:16px;">📖</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;">Magazine Advertising</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:1px;">Not currently in your media mix</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24px;font-weight:800;color:#d97706;line-height:1;">+4,280</div>
+          <div style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;">additional professionals</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#334155;line-height:1.65;margin-bottom:16px;">
+        Your email campaigns reached <strong>1,247 identified professionals</strong>. However, <strong>4,280 AQUA Magazine subscribers</strong> in your product category do not receive your email blasts. These readers represent:
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">1,840</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Builders</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">1,120</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Retailers</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">890</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Service Techs</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">430</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Distributors</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:22px;font-weight:800;color:#1d4ed8;">2,140</div>
+          <div style="font-size:11px;color:#1e40af;line-height:1.3;">managers and owners<br><strong>decision-makers</strong></div>
+        </div>
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;">
+          <div style="font-size:11px;color:#1e40af;line-height:1.5;">
+            <strong>62%</strong> have subscribed 5+ years<br>
+            <strong>34%</strong> have subscribed 10+ years<br>
+            <span style="font-size:10px;color:#3b82f6;">Loyal, verified, long-tenure readers</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:12px;color:#713f12;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:16px;">⚡</span>
+        <span><strong>Competitive context:</strong> 5 companies in your category (pool liners) are currently advertising inside AQUA Magazine.</span>
+      </div>
+    </div>
+
+    <!-- Opportunity: Website Banners -->
+    <div style="border:1px solid #e2e8f0;border-radius:12px;padding:24px 28px;margin-bottom:16px;background:#fff;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#3b82f6,#1d4ed8);border-radius:4px 0 0 4px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:16px;">🌐</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;">Website Banner Advertising</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:1px;">Expand beyond email and print</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24px;font-weight:800;color:#2563eb;line-height:1;">+6,720</div>
+          <div style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;">unique monthly visitors</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#334155;line-height:1.65;margin-bottom:16px;">
+        <strong>6,720 unique visitors</strong> read content on aquamagazine.com each month who <strong>did not see your email campaigns</strong>. These website-only readers represent:
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">2,890</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Builders</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">1,640</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Retailers</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">1,340</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Service Techs</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;">850</div>
+          <div style="font-size:10px;font-weight:600;color:#64748b;margin-top:2px;">Distributors</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:22px;font-weight:800;color:#1d4ed8;">3,180</div>
+          <div style="font-size:11px;color:#1e40af;line-height:1.3;">managers and owners<br><strong>decision-makers</strong></div>
+        </div>
+        <div style="background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:12px;color:#713f12;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:16px;">⚡</span>
+          <span><strong>Competitive context:</strong> 5 companies in your category currently run banners on aquamagazine.com.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opportunity: Sponsored Content -->
+    <div style="border:1px solid #e2e8f0;border-radius:12px;padding:24px 28px;background:#fff;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,#22c55e,#059669);border-radius:4px 0 0 4px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:16px;">📝</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;">Sponsored Content</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:1px;">Deepen engagement with long-form content</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24px;font-weight:800;color:#059669;line-height:1;">82%</div>
+          <div style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;">avg. engagement rate</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#334155;line-height:1.65;">
+        Your current sponsored posts average <strong>1.2 views per user</strong>, indicating strong reader interest. Readers who engage with sponsored content spend an average of <strong>3.2 minutes</strong> on the page. Based on your category (pool liners), AQUA readers have shown <strong>high engagement</strong> with vinyl liner product content this quarter, with "Vivacious Vinyl" generating 127 unique identified users from a single article.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ SPONSORED CONTENT DETAIL ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Sponsored Content Performance</div>
+        <div class="section-subtitle">Individual article and content piece engagement</div>
+      </div>
+    </div>
+
+    <div class="content-list">
+      <div class="content-item">
+        <div class="content-rank">1</div>
+        <div class="content-info">
+          <div class="content-title">Vivacious Vinyl: 2025 Vinyl-Liner Product Focus</div>
+          <div class="content-meta">AQUA Magazine · Article · Published Jul 12</div>
+        </div>
+        <div class="content-views"><div class="content-views-num">147</div><div class="content-views-label">views</div></div>
+        <div class="content-users"><div class="content-users-num">127</div><div class="content-users-label">users</div></div>
+      </div>
+      <div class="content-item">
+        <div class="content-rank">2</div>
+        <div class="content-info">
+          <div class="content-title">For the Love of Vinyl: Vinyl-Liner Product Focus</div>
+          <div class="content-meta">AQUA Magazine · Article · Published Jul 18</div>
+        </div>
+        <div class="content-views"><div class="content-views-num">70</div><div class="content-views-label">views</div></div>
+        <div class="content-users"><div class="content-users-num">61</div><div class="content-users-label">users</div></div>
+      </div>
+      <div class="content-item">
+        <div class="content-rank">3</div>
+        <div class="content-info">
+          <div class="content-title">Hot Commodity: Tara's Mod Shade Kits Offer Pool Pros a New Revenue Stream</div>
+          <div class="content-meta">AQUA Magazine · Sponsored Post · Published Aug 1</div>
+        </div>
+        <div class="content-views"><div class="content-views-num">284</div><div class="content-views-label">views</div></div>
+        <div class="content-users"><div class="content-users-num">231</div><div class="content-users-label">users</div></div>
+      </div>
+      <div class="content-item">
+        <div class="content-rank">4</div>
+        <div class="content-info">
+          <div class="content-title">Celestial Skies: Look Toward a Cure</div>
+          <div class="content-meta">AQUA Magazine · Article · Published Jul 22</div>
+        </div>
+        <div class="content-views"><div class="content-views-num">67</div><div class="content-views-label">views</div></div>
+        <div class="content-users"><div class="content-users-num">61</div><div class="content-users-label">users</div></div>
+      </div>
+      <div class="content-item">
+        <div class="content-rank">5</div>
+        <div class="content-info">
+          <div class="content-title">Tara's SureStep Elevates User Safety, Expands Vinyl-Liner Options</div>
+          <div class="content-meta">AQUA Magazine · Sponsored Post · Published Aug 8</div>
+        </div>
+        <div class="content-views"><div class="content-views-num">6</div><div class="content-views-label">views</div></div>
+        <div class="content-users"><div class="content-users-num">6</div><div class="content-users-label">users</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ NEWSLETTER AD DETAIL ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Newsletter Ad Delivery</div>
+        <div class="section-subtitle">Performance by deployment across newsletter sends</div>
+      </div>
+    </div>
+
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Deployment</th>
+          <th class="num">Sent</th>
+          <th class="num">Deliveries</th>
+          <th class="num">Opens</th>
+          <th class="num">Unique Clicks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">AQUA Business Today — Mon, Jul 7</td>
+          <td class="num">2024-07-07</td>
+          <td class="num">32.7k</td>
+          <td class="num">14.9k</td>
+          <td class="num">29</td>
+        </tr>
+        <tr>
+          <td class="name">AQUA Business Today — Tue, Jul 8</td>
+          <td class="num">2024-07-08</td>
+          <td class="num">32.7k</td>
+          <td class="num">14.8k</td>
+          <td class="num">34</td>
+        </tr>
+        <tr>
+          <td class="name">AQUA Business Today — Wed, Jul 9</td>
+          <td class="num">2024-07-09</td>
+          <td class="num">32.7k</td>
+          <td class="num">15.1k</td>
+          <td class="num">22</td>
+        </tr>
+        <tr>
+          <td class="name">AQUA Business Today — Thu, Jul 10</td>
+          <td class="num">2024-07-10</td>
+          <td class="num">32.7k</td>
+          <td class="num">14.7k</td>
+          <td class="num">18</td>
+        </tr>
+        <tr>
+          <td class="name">AQUA Business Today — Fri, Jul 11</td>
+          <td class="num">2024-07-11</td>
+          <td class="num">32.7k</td>
+          <td class="num">14.8k</td>
+          <td class="num">12</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Total (30 sends)</td>
+          <td class="num"></td>
+          <td class="num">32.7k avg</td>
+          <td class="num">14.9k avg</td>
+          <td class="num">198</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ══════════ EMAIL CAMPAIGN ENGAGEMENT ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Email Campaign Engagement</div>
+        <div class="section-subtitle">Dedicated email sends and audience click destinations</div>
+      </div>
+    </div>
+
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Campaign</th>
+          <th class="num">Sent</th>
+          <th class="num">Deliveries</th>
+          <th class="num">Opens</th>
+          <th class="num">Clicks</th>
+          <th class="num">OR</th>
+          <th class="num">CTR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">20250212 — AQadmail Tara</td>
+          <td class="num">Feb 12</td>
+          <td class="num">19.7k</td>
+          <td class="num">7.1k</td>
+          <td class="num">57</td>
+          <td class="num">36.1%</td>
+          <td class="num">0.80%</td>
+        </tr>
+        <tr>
+          <td class="name">20250402 — AQadmail Tara</td>
+          <td class="num">Apr 2</td>
+          <td class="num">21k</td>
+          <td class="num">6.7k</td>
+          <td class="num">56</td>
+          <td class="num">32.0%</td>
+          <td class="num">0.83%</td>
+        </tr>
+        <tr>
+          <td class="name">20250813 — AQadmail Tara</td>
+          <td class="num">Aug 13</td>
+          <td class="num">19.9k</td>
+          <td class="num">7.7k</td>
+          <td class="num">28</td>
+          <td class="num">38.8%</td>
+          <td class="num">0.36%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-top:20px;">Top Click Destinations</h4>
+    <table class="email-url-table">
+      <thead>
+        <tr><th>URL</th><th class="num">Unique Clicks</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>tarapools.com/home-for-dealers</td><td class="num">47</td></tr>
+        <tr><td>tarapools.com/products/vinyl-liners</td><td class="num">34</td></tr>
+        <tr><td>envision.tarapools.com</td><td class="num">20</td></tr>
+        <tr><td>pinterest.com/taramfg</td><td class="num">5</td></tr>
+        <tr><td>facebook.com/TaraPoolLife</td><td class="num">3</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════ GEOGRAPHIC REACH ══════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Geographic Reach</div>
+        <div class="section-subtitle">Audience distribution by country and region</div>
+      </div>
+    </div>
+
+    <div class="geo-grid">
+      <div class="geo-list">
+        <h4>Top Countries</h4>
+        <div class="geo-row"><span class="geo-name">🇺🇸 United States</span><span class="geo-count">8,541</span></div>
+        <div class="geo-row"><span class="geo-name">🇨🇦 Canada</span><span class="geo-count">243</span></div>
+        <div class="geo-row"><span class="geo-name">🇦🇺 Australia</span><span class="geo-count">8</span></div>
+        <div class="geo-row"><span class="geo-name">🇬🇧 United Kingdom</span><span class="geo-count">5</span></div>
+        <div class="geo-row"><span class="geo-name">🇳🇱 Netherlands</span><span class="geo-count">4</span></div>
+      </div>
+      <div class="geo-list">
+        <h4>Top U.S. Regions</h4>
+        <div class="geo-row"><span class="geo-name">Texas</span><span class="geo-count">780</span></div>
+        <div class="geo-row"><span class="geo-name">Florida</span><span class="geo-count">678</span></div>
+        <div class="geo-row"><span class="geo-name">California</span><span class="geo-count">579</span></div>
+        <div class="geo-row"><span class="geo-name">Georgia</span><span class="geo-count">407</span></div>
+        <div class="geo-row"><span class="geo-name">Illinois</span><span class="geo-count">362</span></div>
+        <div class="geo-row"><span class="geo-name">Pennsylvania</span><span class="geo-count">355</span></div>
+        <div class="geo-row"><span class="geo-name">North Carolina</span><span class="geo-count">329</span></div>
+        <div class="geo-row"><span class="geo-name">Ohio</span><span class="geo-count">288</span></div>
+        <div class="geo-row"><span class="geo-name">Michigan</span><span class="geo-count">267</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <div class="report-footer">
+    <div class="footer-left">
+      Report generated Mar 19, 2026 · Data aggregated across all properties<br>
+      <strong>AQUA Magazine</strong> · Published by <strong>Parameter1</strong>
+    </div>
+    <div class="footer-right">
+      <div class="footer-logo">{ parameter : 1 }</div>
+      <div style="color:#334155;padding:0 6px;">·</div>
+      <div class="footer-product">Mindful</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
