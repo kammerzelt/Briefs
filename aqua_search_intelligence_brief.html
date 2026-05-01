@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQUA Search Intelligence Brief — May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --aqua: #0096b4; --aqua-dark: #007a94; --aqua-light: #e0f5fa; --aqua-mid: #b3e8f2;
+  --navy: #0c2340; --teal: #0d9488; --amber: #d97706; --red: #dc2626;
+  --green: #059669; --purple: #7c3aed;
+  --text: #0c2340; --text-sec: #475569; --text-muted: #94a3b8;
+  --bg: #f8fafc; --white: #fff; --border: #e2e8f0;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+.page { max-width: 860px; margin: 0 auto; padding: 0 0 60px; }
+
+/* HEADER */
+.header { background: var(--navy); padding: 24px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.header-brand { display: flex; flex-direction: column; gap: 2px; }
+.header-pub { font-size: 22px; font-weight: 800; color: #fff; }
+.header-product { font-size: 11px; font-weight: 600; color: var(--aqua-mid); letter-spacing: 1.2px; text-transform: uppercase; }
+.header-right { text-align: right; }
+.header-issue { font-size: 12px; color: var(--aqua-mid); }
+.header-method { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 3px; }
+
+/* TOP STATS */
+.top-stats { background: var(--white); border-bottom: 1px solid var(--border); padding: 20px 32px; display: grid; grid-template-columns: repeat(5,1fr); gap: 0; }
+.stat-cell { padding: 8px 16px; border-right: 1px solid var(--border); }
+.stat-cell:first-child { padding-left: 0; }
+.stat-cell:last-child { border-right: none; }
+.stat-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+.stat-value { font-size: 20px; font-weight: 700; line-height: 1.1; }
+.stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.sv-red { color: var(--red); }
+.sv-green { color: var(--green); }
+.sv-amber { color: var(--amber); }
+.sv-aqua { color: var(--aqua-dark); }
+.sv-purple { color: var(--purple); }
+
+/* CONTENT */
+.content { padding: 28px 32px; }
+
+/* SECTION HEADERS */
+.section { margin-bottom: 32px; }
+.section-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+.section-icon { font-size: 18px; }
+.section-title { font-size: 16px; font-weight: 700; color: var(--navy); }
+.section-desc { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+/* CLUSTER ROWS */
+.cluster-row { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr 90px 130px 220px; gap: 20px; align-items: center; }
+.cluster-row:hover { border-color: var(--aqua-mid); }
+.cluster-name-col {}
+.cluster-name { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+.cluster-terms { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+.cluster-delta-col { text-align: center; }
+.delta-value { font-size: 22px; font-weight: 700; line-height: 1; }
+.delta-period { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.delta-up { color: var(--green); }
+.delta-down { color: var(--red); }
+.delta-flat { color: var(--amber); }
+.sparkline-col { }
+.implication-col { }
+.impl-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-bottom: 4px; display: inline-block; }
+.impl-editorial { background: #eff6ff; color: #1d4ed8; }
+.impl-sales { background: #f0fdf4; color: #166534; }
+.impl-text { font-size: 11px; color: var(--text-sec); line-height: 1.5; }
+
+/* SPARKLINE */
+.sparkline { width: 130px; height: 40px; }
+
+/* SUMMARY CARDS */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.sum-card { border-radius: 10px; padding: 16px 18px; border: 1.5px solid; }
+.sum-card.rising { background: #f0fdf4; border-color: #bbf7d0; }
+.sum-card.peaking { background: #fffbeb; border-color: #fde68a; }
+.sum-card.declining { background: #fef2f2; border-color: #fecaca; }
+.sum-card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px; }
+.sum-card.rising .sum-card-title { color: var(--green); }
+.sum-card.peaking .sum-card-title { color: var(--amber); }
+.sum-card.declining .sum-card-title { color: var(--red); }
+.sum-list { list-style: none; }
+.sum-list li { font-size: 12px; color: var(--text-sec); padding: 3px 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; }
+.sum-list li:last-child { border-bottom: none; }
+.sum-delta { font-weight: 600; font-size: 11px; }
+
+/* EMERGING GRID */
+.emerging-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.emerging-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.emerging-term { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.new-badge { font-size: 9px; font-weight: 700; background: var(--aqua-light); color: var(--aqua-dark); padding: 2px 7px; border-radius: 10px; }
+.emerging-body { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+.emerging-volume { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+/* REGIONAL */
+.regional-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.region-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.region-name { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.region-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.region-item:last-child { border-bottom: none; }
+.region-kw { color: var(--text-sec); }
+.region-delta { font-weight: 600; font-size: 11px; }
+
+/* ADVERTISER INTEL */
+.adv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.adv-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; }
+.adv-card.opportunity { border-color: #bbf7d0; }
+.adv-category { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 6px; }
+.adv-headline { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; line-height: 1.35; }
+.adv-body { font-size: 12px; color: var(--text-sec); line-height: 1.55; }
+.adv-signal { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.adv-delta { font-size: 13px; font-weight: 700; color: var(--green); }
+.adv-context { font-size: 11px; color: var(--text-muted); }
+
+/* FOOTER */
+.brief-footer { padding: 20px 32px; border-top: 1px solid var(--border); background: var(--white); display: flex; align-items: center; justify-content: space-between; }
+.footer-pub { font-size: 12px; font-weight: 600; color: var(--navy); }
+.footer-method { font-size: 10px; color: var(--text-muted); max-width: 420px; text-align: right; line-height: 1.5; }
+.footer-powered { font-size: 10px; color: #cbd5e1; margin-top: 2px; }
+
+@media(max-width:680px) {
+  .top-stats { grid-template-columns: repeat(3,1fr); }
+  .cluster-row { grid-template-columns: 1fr; }
+  .summary-grid, .regional-grid, .adv-grid { grid-template-columns: 1fr; }
+  .content { padding: 20px; }
+  .header { padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-pub">AQUA Magazine</div>
+    <div class="header-product">Search Intelligence Brief — Internal</div>
+  </div>
+  <div class="header-right">
+    <div class="header-issue">May 2026 · Pool & Spa Professional Market</div>
+    <div class="header-method">52 keyword clusters · Google Trends US · 12-month rolling · YoY comparison</div>
+  </div>
+</div>
+
+<!-- TOP STATS -->
+<div class="top-stats">
+  <div class="stat-cell">
+    <div class="stat-label">Clusters tracked</div>
+    <div class="stat-value sv-aqua">52</div>
+    <div class="stat-sub">Across 8 categories</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Gaining momentum</div>
+    <div class="stat-value sv-green">18</div>
+    <div class="stat-sub">Up YoY this month</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">At seasonal peak</div>
+    <div class="stat-value sv-amber">7</div>
+    <div class="stat-sub">Next 4–6 weeks</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Declining</div>
+    <div class="stat-value sv-red">6</div>
+    <div class="stat-sub">Down vs. prior year</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Emerging terms</div>
+    <div class="stat-value sv-purple">4</div>
+    <div class="stat-sub">Not tracked last year</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- SNAPSHOT SUMMARY -->
+<div class="summary-grid">
+  <div class="sum-card rising">
+    <div class="sum-card-title">↑ Rising this month</div>
+    <ul class="sum-list">
+      <li><span>Cold plunge & contrast therapy</span><span class="sum-delta" style="color:var(--green)">+340%</span></li>
+      <li><span>Outdoor sauna</span><span class="sum-delta" style="color:var(--green)">+180%</span></li>
+      <li><span>Robotic pool cleaners</span><span class="sum-delta" style="color:var(--green)">+67%</span></li>
+      <li><span>Pool automation</span><span class="sum-delta" style="color:var(--green)">+45%</span></li>
+      <li><span>Fiberglass pool cost</span><span class="sum-delta" style="color:var(--green)">+38%</span></li>
+    </ul>
+  </div>
+  <div class="sum-card peaking">
+    <div class="sum-card-title">⚡ Approaching seasonal peak</div>
+    <ul class="sum-list">
+      <li><span>Pool opening service</span><span class="sum-delta" style="color:var(--amber)">Ramping now</span></li>
+      <li><span>Pool cost / how much</span><span class="sum-delta" style="color:var(--amber)">Peak in 3 weeks</span></li>
+      <li><span>Algae treatment</span><span class="sum-delta" style="color:var(--amber)">Peak in 6 weeks</span></li>
+      <li><span>Variable speed pumps</span><span class="sum-delta" style="color:var(--amber)">Pre-install season</span></li>
+      <li><span>Pool deck renovation</span><span class="sum-delta" style="color:var(--amber)">Peak mid-May</span></li>
+    </ul>
+  </div>
+  <div class="sum-card declining">
+    <div class="sum-card-title">↓ Declining from prior peaks</div>
+    <ul class="sum-list">
+      <li><span>Above ground pool</span><span class="sum-delta" style="color:var(--red)">−23% YoY</span></li>
+      <li><span>Hot tub (portable)</span><span class="sum-delta" style="color:var(--red)">−18% YoY</span></li>
+      <li><span>Pool chlorine tablets</span><span class="sum-delta" style="color:var(--red)">−14% YoY</span></li>
+      <li><span>Inflatable spa</span><span class="sum-delta" style="color:var(--red)">−31% YoY</span></li>
+      <li><span>Pool shock treatment</span><span class="sum-delta" style="color:var(--red)">−9% YoY</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION: RISING -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">📈</span>
+    <span class="section-title">Gaining Momentum — Top Movers This Month</span>
+    <span class="section-desc">Year-over-year change in US search volume · Rolling 12 months</span>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Cold Plunge & Contrast Therapy</div>
+      <div class="cluster-terms">cold plunge pool · plunge pool installation · contrast therapy pool · ice bath pool</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-up">+340%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-cold"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Sustained 12-month climb, not a spike. Assign a buying guide and commercial installation feature before Memorial Day.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Plunge, RENU Therapy, Ice Barrel expanding commercial distribution. No category sponsor in AQUA yet.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Outdoor & Infrared Sauna</div>
+      <div class="cluster-terms">outdoor sauna · infrared sauna · backyard sauna · sauna pool combo</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-up">+180%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-sauna"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Consumers are searching sauna before they call a builder. An outdoor sauna buyer's guide captures the pre-call research window.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">AQUA has sauna coverage and directory listings. Category is currently undersold relative to search demand.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Robotic Pool Cleaners</div>
+      <div class="cluster-terms">robotic pool cleaner · best pool robot · automatic pool cleaner · pool vacuum robot</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-up">+67%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-robot"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Pre-season buying intent is clear. A comparative review or roundup publishes well in May — exactly when consumers are researching.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Dolphin, Polaris, Hayward all compete here. Benchmark the current advertiser mix against this demand signal.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Pool Automation Systems</div>
+      <div class="cluster-terms">pool automation system · smart pool control · pool app control · remote pool control</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-up">+45%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-auto"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Steady multi-year climb driven by energy costs and smartphone expectations. A "how to retrofit automation" piece serves the installed base.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Hayward, Pentair, Jandy compete in automation. This is an active advertiser category — confirm current coverage matches demand.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Fiberglass Pool Cost & Installation</div>
+      <div class="cluster-terms">fiberglass pool cost · fiberglass pool installation · fiberglass vs gunite pool</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-up">+38%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-fiber"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Consumer shift away from gunite is measurable in search. The "fiberglass vs gunite" query is at a 5-year high — the comparison article owns that traffic.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Fiberglass manufacturers are gaining share. Are current advertisers in this category proportional to the demand signal?</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: SEASONAL PEAKS -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">⚡</span>
+    <span class="section-title">Approaching Seasonal Peaks — Act in the Next 4 Weeks</span>
+    <span class="section-desc">Based on prior-year seasonal patterns in AQUA's keyword universe</span>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Pool Opening Service</div>
+      <div class="cluster-terms">pool opening service · how to open a pool · pool startup checklist · spring pool opening</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-flat">Ramping</div>
+      <div class="delta-period">Peaks May 15–25</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-open"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Opening season content needs to be live before the search peak, not during it. If it isn't published by May 10 it misses the window.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Chemical and equipment companies want to be present during opening season research. A sponsored opening checklist earns its placement.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">How Much Does a Pool Cost</div>
+      <div class="cluster-terms">how much does a pool cost · inground pool cost · pool cost by type · pool financing</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-flat">Peak −3 wks</div>
+      <div class="delta-period">Historically May 20</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-cost"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">The highest-volume consumer query in AQUA's universe. A well-structured cost guide with current builder estimates captures the largest pre-purchase audience of the year.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Financing partners and builders want adjacency to cost content. Natural sponsor position for pool financing and builder network advertisers.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Pool Algae Treatment</div>
+      <div class="cluster-terms">pool algae treatment · green pool fix · black algae pool · algae in pool</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-flat">Peak −6 wks</div>
+      <div class="delta-period">Historically mid-June</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-algae"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Algae content peaks in June across all prior years. A service pro guide to algae treatment published now captures both the professional audience and the homeowner searches before the peak.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Chemical companies targeting the treatment category have a clear window here. Pre-peak sponsorship of algae content is the most effective placement timing.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: DECLINING -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">📉</span>
+    <span class="section-title">Declining — COVID-Era Peaks Unwinding</span>
+    <span class="section-desc">Categories that saw pandemic-driven demand spikes are normalizing</span>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Above Ground Pools</div>
+      <div class="cluster-terms">above ground pool · above ground pool installation · intex pool · above ground pool cost</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-down">−23%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-ag"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">Pandemic-era above-ground boom is clearly over. Coverage and ad inventory in this category can likely be reduced without audience impact.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Advertisers focused on above-ground may be finding diminishing returns. A conversation about shifting budget toward automation and wellness categories is warranted.</div>
+    </div>
+  </div>
+
+  <div class="cluster-row">
+    <div class="cluster-name-col">
+      <div class="cluster-name">Portable / Inflatable Hot Tubs</div>
+      <div class="cluster-terms">inflatable hot tub · portable spa · cheap hot tub · above ground spa</div>
+    </div>
+    <div class="cluster-delta-col">
+      <div class="delta-value delta-down">−31%</div>
+      <div class="delta-period">vs. May 2025</div>
+    </div>
+    <div class="sparkline-col">
+      <svg class="sparkline" viewBox="0 0 130 40" id="spark-inflate"></svg>
+    </div>
+    <div class="implication-col">
+      <span class="impl-tag impl-editorial">Editorial</span>
+      <div class="impl-text">The entry-level spa buyer is gone. Coverage of quality spa installations and contrast therapy is replacing this demand segment.</div>
+      <span class="impl-tag impl-sales" style="margin-top:6px;">Ad Sales</span>
+      <div class="impl-text">Premium portable spa brands are still growing — the decline is concentrated in entry-price product. Segment your spa advertisers accordingly.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: EMERGING -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">🔭</span>
+    <span class="section-title">Emerging Terms — Not Tracked Last Year</span>
+    <span class="section-desc">Search terms that didn't register enough volume to track in 2025 and are now meaningful</span>
+  </div>
+
+  <div class="emerging-grid">
+    <div class="emerging-card">
+      <div class="emerging-term">AI pool chemistry <span class="new-badge">New in 2026</span></div>
+      <div class="emerging-body">Consumers are searching for AI-powered water management by name for the first time. WaterGuru, Sutro, and new entrants are creating this search category. Very low absolute volume but a 12-month trajectory that mirrors "smart pool" searches from 2021.</div>
+      <div class="emerging-volume">Volume: Low · Trajectory: Steep · Watch window: 12–18 months</div>
+    </div>
+    <div class="emerging-card">
+      <div class="emerging-term">Contrast therapy pool <span class="new-badge">New in 2026</span></div>
+      <div class="emerging-body">Adjacent to cold plunge but distinct — consumers researching combined hot/cold circuits rather than standalone cold plunge. Signals the next stage of the wellness pool trend where the design includes both elements. Builders are the audience.</div>
+      <div class="emerging-volume">Volume: Low-medium · Trajectory: Fast · Watch window: 6–12 months</div>
+    </div>
+    <div class="emerging-card">
+      <div class="emerging-term">Pool solar heater <span class="new-badge">Accelerating</span></div>
+      <div class="emerging-body">Energy cost anxiety is driving solar heating research that wasn't present at this volume before 2025. The tariff environment and rising utility rates are accelerating the trend. Peaks in spring and fall — shoulder season heating is the use case.</div>
+      <div class="emerging-volume">Volume: Medium · Trajectory: Steady build · Watch window: Now</div>
+    </div>
+    <div class="emerging-card">
+      <div class="emerging-term">Natural swimming pool <span class="new-badge">Mainstream crossover</span></div>
+      <div class="emerging-body">After years as a niche European concept, natural pool searches hit a US volume threshold worth tracking in late 2025. Shelter media coverage (HGTV, AD) is driving consumer awareness. Builder inquiry will follow 12–18 months behind the search curve.</div>
+      <div class="emerging-volume">Volume: Low-medium · Trajectory: Gradual · Watch window: 18–24 months</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: REGIONAL -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">🗺️</span>
+    <span class="section-title">Regional Signals — Where Demand is Concentrated</span>
+    <span class="section-desc">Top metro areas by search index for key clusters · May 2026</span>
+  </div>
+
+  <div class="regional-grid">
+    <div class="region-card">
+      <div class="region-name">🔥 Cold Plunge — Top Markets</div>
+      <div class="region-item"><span class="region-kw">Denver, CO</span><span class="region-delta" style="color:var(--green)">Index 100</span></div>
+      <div class="region-item"><span class="region-kw">Austin, TX</span><span class="region-delta" style="color:var(--green)">Index 94</span></div>
+      <div class="region-item"><span class="region-kw">Seattle, WA</span><span class="region-delta" style="color:var(--green)">Index 88</span></div>
+      <div class="region-item"><span class="region-kw">Nashville, TN</span><span class="region-delta" style="color:var(--green)">Index 82</span></div>
+      <div class="region-item"><span class="region-kw">Phoenix, AZ</span><span class="region-delta" style="color:var(--green)">Index 76</span></div>
+    </div>
+    <div class="region-card">
+      <div class="region-name">🏗️ Fiberglass Pool — Top Markets</div>
+      <div class="region-item"><span class="region-kw">Houston, TX</span><span class="region-delta" style="color:var(--aqua-dark)">Index 100</span></div>
+      <div class="region-item"><span class="region-kw">Orlando, FL</span><span class="region-delta" style="color:var(--aqua-dark)">Index 91</span></div>
+      <div class="region-item"><span class="region-kw">Charlotte, NC</span><span class="region-delta" style="color:var(--aqua-dark)">Index 85</span></div>
+      <div class="region-item"><span class="region-kw">Atlanta, GA</span><span class="region-delta" style="color:var(--aqua-dark)">Index 79</span></div>
+      <div class="region-item"><span class="region-kw">Nashville, TN</span><span class="region-delta" style="color:var(--aqua-dark)">Index 72</span></div>
+    </div>
+    <div class="region-card">
+      <div class="region-name">📉 Above Ground — Declining Markets</div>
+      <div class="region-item"><span class="region-kw">Midwest region</span><span class="region-delta" style="color:var(--red)">−28% YoY</span></div>
+      <div class="region-item"><span class="region-kw">Northeast region</span><span class="region-delta" style="color:var(--red)">−24% YoY</span></div>
+      <div class="region-item"><span class="region-kw">Mid-Atlantic</span><span class="region-delta" style="color:var(--red)">−19% YoY</span></div>
+      <div class="region-item"><span class="region-kw">Southeast</span><span class="region-delta" style="color:var(--amber)">−8% YoY</span></div>
+      <div class="region-item"><span class="region-kw">Southwest</span><span class="region-delta" style="color:var(--amber)">−5% YoY</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: ADVERTISER INTEL -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">💼</span>
+    <span class="section-title">Advertiser Category Intelligence — For Sales Team Use</span>
+    <span class="section-desc">Search demand vs. current AQUA advertiser coverage · Flag for outreach</span>
+  </div>
+
+  <div class="adv-grid">
+    <div class="adv-card opportunity">
+      <div class="adv-category">Uncovered opportunity</div>
+      <div class="adv-headline">Cold plunge & contrast therapy has no AQUA category sponsor despite leading search growth</div>
+      <div class="adv-body">The highest-growth cluster in the entire keyword universe has no dedicated advertiser presence in AQUA. Plunge, RENU Therapy, Ice Barrel, Allcast, and Sunlighten/Ice Barrel are all in active marketing mode targeting spa dealers and builders — exactly who reads AQUA.</div>
+      <div class="adv-signal"><span class="adv-delta">+340% YoY</span><span class="adv-context">Consumer search · No current sponsor</span></div>
+    </div>
+    <div class="adv-card opportunity">
+      <div class="adv-category">Undersold vs. demand</div>
+      <div class="adv-headline">Robotic cleaners have strong search momentum — current advertiser mix may not reflect it</div>
+      <div class="adv-body">Robotic cleaner searches are up 67% YoY heading into pool season. If the current advertiser mix in cleaning equipment skews toward manual tools and pressure cleaners, it doesn't match where consumer and professional intent is concentrated.</div>
+      <div class="adv-signal"><span class="adv-delta">+67% YoY</span><span class="adv-context">Pre-season buying intent · Category gap</span></div>
+    </div>
+    <div class="adv-card">
+      <div class="adv-category">Strong match</div>
+      <div class="adv-headline">Pool automation advertisers aligned with one of the strongest sustained demand signals</div>
+      <div class="adv-body">Automation has been building for three years and is showing no signs of peaking. If Hayward, Pentair, and Jandy are active in AQUA, this is the category where advertiser investment is best correlated with audience search intent.</div>
+      <div class="adv-signal"><span class="adv-delta">+45% YoY</span><span class="adv-context">Sustained 3-year climb · Renewal argument</span></div>
+    </div>
+    <div class="adv-card">
+      <div class="adv-category">Reallocate conversation</div>
+      <div class="adv-headline">Above-ground pool advertisers should be directed toward renovation and automation categories</div>
+      <div class="adv-body">Above-ground search volume is down 23% year over year and continuing to normalize from its 2021 peak. Advertisers concentrated in this category are facing audience headwinds. The renovation and wellness adjacency is where the same audience has shifted their intent.</div>
+      <div class="adv-signal"><span class="adv-delta">−23% YoY</span><span class="adv-context">Declining · Reallocation conversation</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<div class="brief-footer">
+  <div>
+    <div class="footer-pub">AQUA Magazine · Search Intelligence Brief · May 2026</div>
+    <div class="footer-powered">Powered by Mindful · mindful.pub</div>
+  </div>
+  <div class="footer-method">Data: Google Trends US, rolling 12-month index, YoY comparison vs. May 2025. 52 keyword clusters derived from aquamagazine.com sitemap taxonomy. Seasonal peak projections based on 3-year historical pattern analysis. Regional data from Google Trends geographic breakdown.</div>
+</div>
+
+</div>
+
+<script>
+// Sparkline generator
+function makePath(data, w, h, color, fill) {
+  const max = Math.max(...data), min = Math.min(...data);
+  const range = max - min || 1;
+  const pts = data.map((v, i) => [
+    (i / (data.length - 1)) * w,
+    h - ((v - min) / range) * (h - 4) - 2
+  ]);
+  const line = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
+  const area = line + ` L${w},${h} L0,${h} Z`;
+  return { line, area, pts };
+}
+
+function drawSparkline(id, data, color) {
+  const svg = document.getElementById(id);
+  if (!svg) return;
+  const w = 130, h = 40;
+  const { line, area, pts } = makePath(data, w, h, color, true);
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="g-${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+    <path d="${area}" fill="url(#g-${id})"/>
+    <path d="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="3" fill="${color}"/>
+  `;
+}
+
+// Data sets (12-month normalized index)
+const green = '#059669', red = '#dc2626', amber = '#d97706', aqua = '#0096b4';
+
+drawSparkline('spark-cold',   [12,14,18,22,28,38,52,68,82,90,95,100], green);
+drawSparkline('spark-sauna',  [30,32,36,40,48,55,62,70,78,84,90,100], green);
+drawSparkline('spark-robot',  [40,44,50,55,60,65,72,78,82,88,94,100], green);
+drawSparkline('spark-auto',   [50,52,56,58,62,65,70,74,78,84,90,100], green);
+drawSparkline('spark-fiber',  [55,58,60,64,68,72,76,80,85,90,95,100], green);
+drawSparkline('spark-open',   [10,10,12,14,18,28,55,100,80,30,12,10], amber);
+drawSparkline('spark-cost',   [30,32,35,40,50,70,100,90,60,40,32,38], amber);
+drawSparkline('spark-algae',  [20,18,20,22,28,45,80,100,70,35,20,18], amber);
+drawSparkline('spark-ag',     [100,95,88,82,76,70,65,62,58,54,50,48], red);
+drawSparkline('spark-inflate',[100,92,84,76,68,60,54,48,44,40,36,32], red);
+</script>
+</body>
+</html>
