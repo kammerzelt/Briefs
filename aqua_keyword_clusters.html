@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQUA Search Intelligence — Keyword Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --aqua: #0096b4; --aqua-dark: #007a94; --aqua-light: #e0f5fa; --aqua-mid: #b3e8f2;
+  --navy: #0c2340; --teal: #0d9488; --amber: #d97706; --red: #dc2626; --purple: #7c3aed;
+  --green: #059669;
+  --text: #0c2340; --text-sec: #475569; --text-muted: #94a3b8;
+  --bg: #f8fafc; --white: #ffffff; --border: #e2e8f0;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+.app { max-width: 900px; margin: 0 auto; padding: 24px 20px 60px; }
+
+/* HEADER */
+.header { background: var(--navy); border-radius: 12px; padding: 22px 28px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+.header-left h1 { font-size: 20px; font-weight: 800; color: #fff; }
+.header-left p { font-size: 13px; color: var(--aqua-mid); margin-top: 3px; }
+.header-right { text-align: right; font-size: 12px; color: var(--aqua-mid); }
+.header-right strong { display: block; font-size: 22px; font-weight: 700; color: var(--aqua); }
+
+/* CONTROLS */
+.controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+.filter-btn {
+  padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--white); color: var(--text-sec); font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--aqua); color: var(--aqua-dark); }
+.filter-btn.active { background: var(--aqua); border-color: var(--aqua); color: #fff; font-weight: 600; }
+.search-input {
+  flex: 1; min-width: 200px; padding: 8px 14px; border-radius: 8px;
+  border: 1.5px solid var(--border); font-size: 13px; font-family: 'Inter', sans-serif;
+  outline: none; color: var(--text);
+}
+.search-input:focus { border-color: var(--aqua); }
+
+/* SUMMARY STRIP */
+.summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+.sum-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.sum-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+.sum-value { font-size: 22px; font-weight: 700; color: var(--aqua-dark); }
+.sum-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* CATEGORY SECTIONS */
+.category { margin-bottom: 24px; }
+.cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer; }
+.cat-icon { font-size: 18px; }
+.cat-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+.cat-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.cat-toggle { font-size: 12px; color: var(--text-muted); }
+
+/* CLUSTER GRID */
+.cluster-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cluster-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; transition: border-color 0.15s;
+}
+.cluster-card:hover { border-color: var(--aqua); }
+.cluster-card.hidden { display: none; }
+.cluster-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
+.cluster-name { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.signal-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.sb-hot { background: #fef2f2; color: var(--red); }
+.sb-rising { background: #fffbeb; color: var(--amber); }
+.sb-stable { background: #f0fdf4; color: var(--green); }
+.sb-emerging { background: var(--aqua-light); color: var(--aqua-dark); }
+.sb-professional { background: #f5f3ff; color: var(--purple); }
+.cluster-keywords { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.kw-tag {
+  font-size: 11px; padding: 2px 8px; border-radius: 4px;
+  background: var(--bg); border: 1px solid var(--border); color: var(--text-sec);
+  cursor: pointer; transition: all 0.1s;
+}
+.kw-tag:hover { background: var(--aqua-light); border-color: var(--aqua-mid); color: var(--aqua-dark); }
+.cluster-footer { display: flex; align-items: center; gap: 8px; }
+.audience-tag {
+  font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px;
+}
+.aud-builder { background: #fff7ed; color: #c2410c; }
+.aud-service { background: #f0fdf4; color: #166534; }
+.aud-retail { background: #fdf4ff; color: #7e22ce; }
+.aud-consumer { background: var(--aqua-light); color: var(--aqua-dark); }
+.aud-all { background: #f1f5f9; color: #334155; }
+.trends-link {
+  margin-left: auto; font-size: 11px; font-weight: 600; color: var(--aqua);
+  text-decoration: none; display: flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 4px; border: 1px solid var(--aqua-mid);
+  background: var(--aqua-light);
+}
+.trends-link:hover { background: var(--aqua-mid); }
+.sitemap-ref { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
+/* INSIGHT BOX */
+.insight-box { background: linear-gradient(135deg, var(--aqua-light), #f0fffe); border: 1.5px solid var(--aqua-mid); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+.insight-title { font-size: 12px; font-weight: 700; color: var(--aqua-dark); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px; }
+.insight-body { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
+
+/* NO RESULTS */
+.no-results { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+
+@media(max-width:600px) { .cluster-grid{grid-template-columns:1fr;} .summary{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div class="header-left">
+    <h1>AQUA Magazine — Search Intelligence Keyword Universe</h1>
+    <p>Derived from aquamagazine.com sitemap taxonomy · Click any keyword to explore on Google Trends</p>
+  </div>
+  <div class="header-right">
+    <strong id="total-count">52</strong>
+    keyword clusters
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="insight-title">How this was built</div>
+  <div class="insight-body">AQUA's sitemap organizes content across four audience segments (builder, service, retail, homeowner) and dozens of product and topic categories. Each sitemap path becomes a keyword cluster — the terms a professional or consumer actually types when looking for that topic. Click any keyword tag to open Google Trends. Click "Compare on Trends" to compare the full cluster. This is the tracking universe for the monthly intelligence brief.</div>
+</div>
+
+<div class="summary">
+  <div class="sum-card">
+    <div class="sum-label">Total clusters</div>
+    <div class="sum-value">52</div>
+    <div class="sum-sub">Across 8 categories</div>
+  </div>
+  <div class="sum-card">
+    <div class="sum-label">Hot signals</div>
+    <div class="sum-value" style="color:var(--red)">6</div>
+    <div class="sum-sub">High consumer momentum</div>
+  </div>
+  <div class="sum-card">
+    <div class="sum-label">Rising</div>
+    <div class="sum-value" style="color:var(--amber)">14</div>
+    <div class="sum-sub">Building over 12 months</div>
+  </div>
+  <div class="sum-card">
+    <div class="sum-label">Professional-only</div>
+    <div class="sum-value" style="color:var(--purple)">11</div>
+    <div class="sum-sub">Trade terms, low consumer volume</div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="controls">
+  <button class="filter-btn active" onclick="filterAudience('all',this)">All</button>
+  <button class="filter-btn" onclick="filterAudience('builder',this)">Builder</button>
+  <button class="filter-btn" onclick="filterAudience('service',this)">Service</button>
+  <button class="filter-btn" onclick="filterAudience('retail',this)">Retail</button>
+  <button class="filter-btn" onclick="filterAudience('consumer',this)">Consumer</button>
+  <button class="filter-btn" onclick="filterSignal('hot',this)">🔴 Hot</button>
+  <button class="filter-btn" onclick="filterSignal('rising',this)">🟡 Rising</button>
+  <button class="filter-btn" onclick="filterSignal('emerging',this)">🔵 Emerging</button>
+  <input class="search-input" placeholder="Search clusters or keywords..." oninput="searchClusters(this.value)">
+</div>
+
+<div id="clusters-container"></div>
+<div class="no-results" id="no-results" style="display:none">No clusters match your filter. Try a different combination.</div>
+
+</div>
+
+<script>
+const CLUSTERS = [
+  // WELLNESS & EMERGING
+  { cat: "Wellness & Emerging", catIcon: "🌊", id:"cold-plunge", name: "Cold Plunge & Contrast Therapy", signal: "hot", audience: ["builder","retail","consumer"],
+    keywords: ["cold plunge pool", "plunge pool installation", "contrast therapy pool", "cold water therapy", "ice bath pool"],
+    sitemap: "/directory/hot-tubs-and-saunas/cold-plunge · /directory/swimming-pools/pools-plunge",
+    trendsQ: "cold+plunge+pool,plunge+pool+installation,contrast+therapy+pool" },
+  { cat: "Wellness & Emerging", catIcon: "🌊", id:"swim-spa", name: "Swim Spas", signal: "rising", audience: ["builder","retail","consumer"],
+    keywords: ["swim spa", "swim spa cost", "exercise pool", "endless pool", "swim spa vs pool"],
+    sitemap: "/products/swim-spas · /retail/swim-spas",
+    trendsQ: "swim+spa,swim+spa+cost,exercise+pool" },
+  { cat: "Wellness & Emerging", catIcon: "🌊", id:"sauna", name: "Sauna — Outdoor & Infrared", signal: "hot", audience: ["retail","consumer"],
+    keywords: ["outdoor sauna", "infrared sauna", "sauna installation", "backyard sauna", "sauna pool combo"],
+    sitemap: "/products/saunas · /retail/saunas · /directory/hot-tubs-and-saunas/saunas-infrared",
+    trendsQ: "outdoor+sauna,infrared+sauna,backyard+sauna" },
+  { cat: "Wellness & Emerging", catIcon: "🌊", id:"natural-pool", name: "Natural & Biofiltration Pools", signal: "emerging", audience: ["builder","consumer"],
+    keywords: ["natural swimming pool", "biofilter pool", "swimming pond", "natural pool cost", "chemical free pool"],
+    sitemap: "/builder/pools/natural",
+    trendsQ: "natural+swimming+pool,biofilter+pool,swimming+pond" },
+  { cat: "Wellness & Emerging", catIcon: "🌊", id:"float-tank", name: "Float Tanks", signal: "emerging", audience: ["retail","consumer"],
+    keywords: ["float tank", "sensory deprivation tank", "isolation tank", "float therapy"],
+    sitemap: "/directory/hot-tubs-and-saunas/float-tanks",
+    trendsQ: "float+tank,sensory+deprivation+tank,float+therapy" },
+
+  // POOL CONSTRUCTION
+  { cat: "Pool Construction", catIcon: "🏗️", id:"fiberglass", name: "Fiberglass Pool Installation", signal: "hot", audience: ["builder","consumer"],
+    keywords: ["fiberglass pool cost", "fiberglass pool installation", "fiberglass vs gunite", "fiberglass pool builder"],
+    sitemap: "/builder/pools/fiberglass · /products/fiberglass",
+    trendsQ: "fiberglass+pool+cost,fiberglass+pool+installation,fiberglass+vs+gunite" },
+  { cat: "Pool Construction", catIcon: "🏗️", id:"gunite", name: "Gunite / Concrete Pools", signal: "stable", audience: ["builder"],
+    keywords: ["gunite pool", "concrete pool cost", "shotcrete pool", "gunite pool builder", "gunite vs fiberglass"],
+    sitemap: "/builder/pools/gunite · /directory/pool-building-parts-and-products/gunite-rigs",
+    trendsQ: "gunite+pool,concrete+pool+cost,shotcrete+pool" },
+  { cat: "Pool Construction", catIcon: "🏗️", id:"vinyl-liner", name: "Vinyl Liner Pools", signal: "stable", audience: ["builder","consumer"],
+    keywords: ["vinyl liner pool", "pool liner replacement", "vinyl pool cost", "above ground pool liner"],
+    sitemap: "/builder/pools/vinyl-liner · /products/vinyl-liner",
+    trendsQ: "vinyl+liner+pool,pool+liner+replacement,vinyl+pool+cost" },
+  { cat: "Pool Construction", catIcon: "🏗️", id:"above-ground", name: "Above Ground Pools", signal: "rising", audience: ["retail","consumer"],
+    keywords: ["above ground pool", "above ground pool installation", "semi inground pool", "above ground pool cost"],
+    sitemap: "/directory/swimming-pools/pools-above-ground",
+    trendsQ: "above+ground+pool,above+ground+pool+cost,semi+inground+pool" },
+  { cat: "Pool Construction", catIcon: "🏗️", id:"renovation", name: "Pool Renovation & Resurfacing", signal: "rising", audience: ["builder","service"],
+    keywords: ["pool renovation", "pool resurfacing", "pool remodel cost", "pool replastering", "pool deck renovation"],
+    sitemap: "/builder/renovation · /products/renovation",
+    trendsQ: "pool+renovation,pool+resurfacing,pool+remodel+cost" },
+  { cat: "Pool Construction", catIcon: "🏗️", id:"outdoor-living", name: "Outdoor Living & Pools", signal: "rising", audience: ["builder","consumer"],
+    keywords: ["pool outdoor kitchen", "pergola pool", "pool landscaping", "backyard pool design", "pool patio ideas"],
+    sitemap: "/builder/outdoor-living · /retail/outdoor-living",
+    trendsQ: "pool+outdoor+kitchen,pergola+pool,backyard+pool+design" },
+
+  // WATER CHEMISTRY
+  { cat: "Water Chemistry", catIcon: "🧪", id:"salt-system", name: "Salt Water / Chlorine Generation", signal: "rising", audience: ["builder","retail","service","consumer"],
+    keywords: ["salt water pool", "salt chlorine generator", "saltwater pool cost", "salt pool vs chlorine"],
+    sitemap: "/directory/chemicals-and-sanitizing-equipment/chlorinators-salt-water",
+    trendsQ: "salt+water+pool,salt+chlorine+generator,salt+pool+vs+chlorine" },
+  { cat: "Water Chemistry", catIcon: "🧪", id:"uv-ozone", name: "UV & Ozone Sanitization", signal: "rising", audience: ["builder","service","retail"],
+    keywords: ["UV pool sanitizer", "ozone pool system", "UV ozone pool", "alternative pool sanitizer"],
+    sitemap: "/directory/chemicals-and-sanitizing-equipment/uv-systems · /directory/chemicals-and-sanitizing-equipment/ozone-generators",
+    trendsQ: "UV+pool+sanitizer,ozone+pool+system,alternative+pool+sanitizer" },
+  { cat: "Water Chemistry", catIcon: "🧪", id:"cya", name: "Cyanuric Acid / Stabilizer", signal: "professional", audience: ["service","retail"],
+    keywords: ["cyanuric acid pool", "pool stabilizer", "CYA pool chemistry", "pool conditioner"],
+    sitemap: "/directory/chemicals-and-sanitizing-equipment/cyanuric-acid",
+    trendsQ: "cyanuric+acid+pool,pool+stabilizer,pool+conditioner" },
+  { cat: "Water Chemistry", catIcon: "🧪", id:"trichlor", name: "Chlorine Tablets & Supply", signal: "professional", audience: ["service","retail"],
+    keywords: ["chlorine tablets pool", "trichlor tablets", "pool chlorine supply", "pool chlorine shortage"],
+    sitemap: "/directory/chemicals-and-sanitizing-equipment/chlorine-tablets · /directory/chemicals-and-sanitizing-equipment/chlorine-dichlor-trichlor",
+    trendsQ: "chlorine+tablets+pool,trichlor+tablets,pool+chlorine+supply" },
+  { cat: "Water Chemistry", catIcon: "🧪", id:"water-testing", name: "Water Testing & Analysis", signal: "stable", audience: ["service","retail","consumer"],
+    keywords: ["pool water test", "pool water testing kit", "pool chemistry calculator", "pool water analysis"],
+    sitemap: "/service/water-testing · /products/water-testing · /retail/water-testing",
+    trendsQ: "pool+water+test,pool+water+testing+kit,pool+chemistry+calculator" },
+  { cat: "Water Chemistry", catIcon: "🧪", id:"algae", name: "Algae Treatment", signal: "seasonal", audience: ["service","retail","consumer"],
+    keywords: ["pool algae treatment", "green pool fix", "black algae pool", "pool algaecide"],
+    sitemap: "/directory/chemicals-and-sanitizing-equipment/algaecides",
+    trendsQ: "pool+algae+treatment,green+pool+fix,black+algae+pool" },
+
+  // EQUIPMENT
+  { cat: "Equipment", catIcon: "⚙️", id:"vsp", name: "Variable Speed Pumps", signal: "rising", audience: ["builder","service","retail"],
+    keywords: ["variable speed pool pump", "variable speed pump cost", "energy efficient pool pump", "VS pump pool"],
+    sitemap: "/products/pumps · /directory/equipment-pumps-filters-heaters-etc/pumps-pool",
+    trendsQ: "variable+speed+pool+pump,energy+efficient+pool+pump" },
+  { cat: "Equipment", catIcon: "⚙️", id:"heat-pump", name: "Pool Heat Pumps", signal: "rising", audience: ["builder","retail"],
+    keywords: ["pool heat pump", "heat pump pool heater", "electric pool heater", "heat pump vs gas heater"],
+    sitemap: "/directory/equipment-pumps-filters-heaters-etc/heat-pumps · /products/heaters",
+    trendsQ: "pool+heat+pump,heat+pump+pool+heater,electric+pool+heater" },
+  { cat: "Equipment", catIcon: "⚙️", id:"solar-heating", name: "Solar Pool Heating", signal: "emerging", audience: ["builder","consumer"],
+    keywords: ["solar pool heater", "solar pool heating", "pool solar panels", "solar pool cover"],
+    sitemap: "/directory/equipment-pumps-filters-heaters-etc/heaters-solar · /directory/equipment-pumps-filters-heaters-etc/solar-equipment",
+    trendsQ: "solar+pool+heater,solar+pool+heating,pool+solar+panels" },
+  { cat: "Equipment", catIcon: "⚙️", id:"filters", name: "Pool Filters & Filtration", signal: "stable", audience: ["service","retail"],
+    keywords: ["pool filter types", "sand filter vs cartridge", "DE pool filter", "pool filter cleaning"],
+    sitemap: "/products/filters · /directory/equipment-pumps-filters-heaters-etc/filters-pool",
+    trendsQ: "pool+filter+types,sand+filter+vs+cartridge,DE+pool+filter" },
+  { cat: "Equipment", catIcon: "⚙️", id:"lighting", name: "Pool Lighting & LED", signal: "rising", audience: ["builder","retail","consumer"],
+    keywords: ["LED pool lights", "color changing pool light", "pool LED lighting", "underwater pool light"],
+    sitemap: "/products/lighting · /builder/lighting",
+    trendsQ: "LED+pool+lights,color+changing+pool+light,underwater+pool+light" },
+
+  // AUTOMATION & TECH
+  { cat: "Automation & Smart Tech", catIcon: "📱", id:"pool-automation", name: "Pool Automation Systems", signal: "hot", audience: ["builder","service","consumer"],
+    keywords: ["pool automation system", "smart pool control", "pool control app", "remote pool control", "Hayward OmniLogic"],
+    sitemap: "/builder/automation · /service/automation · /directory/equipment-pumps-filters-heaters-etc/controls-programmable",
+    trendsQ: "pool+automation+system,smart+pool+control,pool+control+app" },
+  { cat: "Automation & Smart Tech", catIcon: "📱", id:"robotic-cleaner", name: "Robotic Pool Cleaners", signal: "hot", audience: ["retail","service","consumer"],
+    keywords: ["robotic pool cleaner", "best pool robot", "automatic pool cleaner", "pool vacuum robot"],
+    sitemap: "/retail/pool-cleaners · /directory/cleaning-and-service-equipment-and-supplies/automatic-pool-cleaners-robotic",
+    trendsQ: "robotic+pool+cleaner,best+pool+robot,automatic+pool+cleaner" },
+  { cat: "Automation & Smart Tech", catIcon: "📱", id:"smart-water", name: "Smart Water Monitoring", signal: "emerging", audience: ["builder","service","consumer"],
+    keywords: ["smart pool monitor", "pool water sensor", "AI pool chemistry", "connected pool system", "pool monitoring app"],
+    sitemap: "/directory/chemicals-and-sanitizing-equipment/sensors-water-chemistry",
+    trendsQ: "smart+pool+monitor,pool+water+sensor,connected+pool+system" },
+  { cat: "Automation & Smart Tech", catIcon: "📱", id:"pool-software", name: "Pool Service Software", signal: "professional", audience: ["service"],
+    keywords: ["pool service software", "pool route software", "service pro app", "pool business software"],
+    sitemap: "/service/business-operations/software · /retail/business-operations/software",
+    trendsQ: "pool+service+software,pool+route+software,pool+business+software" },
+
+  // SAFETY & COMPLIANCE
+  { cat: "Safety & Compliance", catIcon: "🛡️", id:"vgb", name: "VGB / Drain Cover Compliance", signal: "professional", audience: ["builder","service"],
+    keywords: ["VGB compliant drain cover", "pool drain cover replacement", "anti-vortex drain cover", "VGB pool safety"],
+    sitemap: "/directory/safety-and-education/drain-covers-antivortex · /directory/safety-and-education/drain-covers-grate",
+    trendsQ: "VGB+pool+drain+cover,anti-vortex+drain+cover,pool+drain+cover+replacement" },
+  { cat: "Safety & Compliance", catIcon: "🛡️", id:"safety-cover", name: "Pool Safety Covers", signal: "rising", audience: ["builder","retail","consumer"],
+    keywords: ["pool safety cover", "automatic pool cover", "winter pool cover", "mesh safety cover"],
+    sitemap: "/products/covers/safety · /directory/covers-and-liners/pool-covers-safety",
+    trendsQ: "pool+safety+cover,automatic+pool+cover,mesh+safety+cover" },
+  { cat: "Safety & Compliance", catIcon: "🛡️", id:"pool-fence", name: "Pool Fencing & Barriers", signal: "stable", audience: ["builder","consumer"],
+    keywords: ["pool fence", "pool fencing requirements", "removable pool fence", "pool barrier law"],
+    sitemap: "/directory/safety-and-education/fences",
+    trendsQ: "pool+fence,pool+fencing+requirements,removable+pool+fence" },
+  { cat: "Safety & Compliance", catIcon: "🛡️", id:"pool-alarm", name: "Pool Alarms & Safety Tech", signal: "emerging", audience: ["retail","consumer"],
+    keywords: ["pool alarm", "drowning detection pool", "pool safety alarm", "AI pool safety"],
+    sitemap: "/directory/safety-and-education/alarms-pool · /directory/safety-and-education/video-cameras-safety",
+    trendsQ: "pool+alarm,pool+safety+alarm,drowning+detection+pool" },
+  { cat: "Safety & Compliance", catIcon: "🛡️", id:"pool-lift", name: "ADA Pool Lifts", signal: "professional", audience: ["builder","service"],
+    keywords: ["ADA pool lift", "pool accessibility lift", "commercial pool lift", "handicap pool access"],
+    sitemap: "/directory/safety-and-education/lifts · /directory/safety-and-education/disability-aids",
+    trendsQ: "ADA+pool+lift,pool+accessibility+lift,commercial+pool+lift" },
+
+  // SERVICE OPERATIONS
+  { cat: "Service Operations", catIcon: "🔧", id:"pool-opening", name: "Pool Opening & Closing", signal: "seasonal", audience: ["service","consumer"],
+    keywords: ["pool opening service", "pool closing service", "pool winterizing", "how to open a pool"],
+    sitemap: "/service/winterizing",
+    trendsQ: "pool+opening+service,pool+closing+service,pool+winterizing" },
+  { cat: "Service Operations", catIcon: "🔧", id:"leak-detection", name: "Pool Leak Detection & Repair", signal: "stable", audience: ["service","consumer"],
+    keywords: ["pool leak detection", "pool leak repair", "how to find pool leak", "pool leak service"],
+    sitemap: "/products/leak-detection · /directory/cleaning-and-service-equipment-and-supplies/leak-detection",
+    trendsQ: "pool+leak+detection,pool+leak+repair,how+to+find+pool+leak" },
+  { cat: "Service Operations", catIcon: "🔧", id:"pool-replastering", name: "Replastering & Resurfacing", signal: "stable", audience: ["service","builder"],
+    keywords: ["pool replastering cost", "pool resurfacing", "pool plaster repair", "pool finish types"],
+    sitemap: "/directory/pool-building-parts-and-products/resurfacing-products-pool",
+    trendsQ: "pool+replastering+cost,pool+resurfacing,pool+plaster+repair" },
+  { cat: "Service Operations", catIcon: "🔧", id:"commercial-pool", name: "Commercial Pool Operations", signal: "professional", audience: ["service","builder"],
+    keywords: ["commercial pool service", "municipal pool management", "aquatic facility management", "HOA pool service"],
+    sitemap: "/builder/commercial · /directory/equipment-pumps-filters-heaters-etc/pool-equipment-commercial",
+    trendsQ: "commercial+pool+service,aquatic+facility+management,HOA+pool+service" },
+
+  // HOT TUBS & SPAS
+  { cat: "Hot Tubs & Spas", catIcon: "♨️", id:"hot-tub", name: "Hot Tubs", signal: "stable", audience: ["builder","retail","consumer"],
+    keywords: ["hot tub", "hot tub cost", "hot tub installation", "best hot tub brands", "hot tub vs spa"],
+    sitemap: "/builder/spas · /retail/spas · /directory/hot-tubs-and-saunas/spas-portable",
+    trendsQ: "hot+tub+cost,hot+tub+installation,best+hot+tub+brands" },
+  { cat: "Hot Tubs & Spas", catIcon: "♨️", id:"spa-covers", name: "Spa Covers & Accessories", signal: "stable", audience: ["retail","consumer"],
+    keywords: ["hot tub cover", "spa cover replacement", "hot tub cover lifter", "spa cover cost"],
+    sitemap: "/directory/hot-tubs-and-saunas/spa-covers",
+    trendsQ: "hot+tub+cover,spa+cover+replacement,hot+tub+cover+lifter" },
+  { cat: "Hot Tubs & Spas", catIcon: "♨️", id:"indoor-spa", name: "Indoor Spa & Steam", signal: "emerging", audience: ["builder","consumer"],
+    keywords: ["indoor swim spa", "steam bath home", "steam generator home", "indoor hot tub"],
+    sitemap: "/directory/hot-tubs-and-saunas/steam-baths · /directory/hot-tubs-and-saunas/steam-generators",
+    trendsQ: "indoor+swim+spa,steam+bath+home,indoor+hot+tub" },
+
+  // BUSINESS & MARKET
+  { cat: "Business & Market", catIcon: "📊", id:"pool-service-franchise", name: "Pool Service Business / Franchise", signal: "rising", audience: ["service"],
+    keywords: ["pool service business", "pool service franchise", "start pool company", "pool route for sale"],
+    sitemap: "/service/business-operations/management",
+    trendsQ: "pool+service+business,pool+service+franchise,pool+route+for+sale" },
+  { cat: "Business & Market", catIcon: "📊", id:"pool-financing", name: "Pool Financing", signal: "rising", audience: ["builder","consumer"],
+    keywords: ["pool financing", "pool loan", "how to finance a pool", "pool payment plans"],
+    sitemap: "/directory/business-services/financial-services",
+    trendsQ: "pool+financing,pool+loan,how+to+finance+a+pool" },
+  { cat: "Business & Market", catIcon: "📊", id:"pool-insurance", name: "Pool Insurance & Liability", signal: "professional", audience: ["service","builder"],
+    keywords: ["pool liability insurance", "pool contractor insurance", "pool service insurance"],
+    sitemap: "/directory/business-services/insurance",
+    trendsQ: "pool+liability+insurance,pool+contractor+insurance,pool+service+insurance" },
+  { cat: "Business & Market", catIcon: "📊", id:"pool-cost", name: "Pool Cost & ROI", signal: "hot", audience: ["consumer"],
+    keywords: ["how much does a pool cost", "inground pool cost 2024", "pool cost by type", "does a pool add value"],
+    sitemap: "/homeowners-diy/pools",
+    trendsQ: "how+much+does+a+pool+cost,inground+pool+cost,does+a+pool+add+value" },
+  { cat: "Business & Market", catIcon: "📊", id:"energy-efficiency", name: "Pool Energy Costs & Efficiency", signal: "rising", audience: ["service","consumer"],
+    keywords: ["pool energy costs", "how much does pool cost to run", "energy efficient pool", "pool electricity bill"],
+    sitemap: "/directory/equipment-pumps-filters-heaters-etc/energy-saving-equipment",
+    trendsQ: "pool+energy+costs,energy+efficient+pool,pool+electricity+bill" },
+];
+
+let currentAudienceFilter = 'all';
+let currentSignalFilter = null;
+let currentSearch = '';
+
+function buildTrendsUrl(query) {
+  return `https://trends.google.com/trends/explore?date=today%2012-m&geo=US&q=${query}`;
+}
+
+function getSignalLabel(signal) {
+  const map = { hot: 'Hot', rising: 'Rising', stable: 'Stable', emerging: 'Emerging', professional: 'Pro only', seasonal: 'Seasonal' };
+  return map[signal] || signal;
+}
+function getSignalClass(signal) {
+  const map = { hot: 'sb-hot', rising: 'sb-rising', stable: 'sb-stable', emerging: 'sb-emerging', professional: 'sb-professional', seasonal: 'sb-rising' };
+  return map[signal] || 'sb-emerging';
+}
+
+function renderClusters() {
+  const container = document.getElementById('clusters-container');
+  container.innerHTML = '';
+  
+  const categories = [...new Set(CLUSTERS.map(c => c.cat))];
+  let totalVisible = 0;
+
+  categories.forEach(cat => {
+    const clusters = CLUSTERS.filter(c => {
+      const audienceMatch = currentAudienceFilter === 'all' || c.audience.includes(currentAudienceFilter);
+      const signalMatch = !currentSignalFilter || c.signal === currentSignalFilter;
+      const searchMatch = !currentSearch || 
+        c.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+        c.keywords.some(k => k.toLowerCase().includes(currentSearch.toLowerCase()));
+      return c.cat === cat && audienceMatch && signalMatch && searchMatch;
+    });
+    
+    if (clusters.length === 0) return;
+    totalVisible += clusters.length;
+
+    const catEl = document.createElement('div');
+    catEl.className = 'category';
+    catEl.innerHTML = `
+      <div class="cat-header">
+        <span class="cat-icon">${clusters[0].catIcon}</span>
+        <span class="cat-title">${cat}</span>
+        <span class="cat-count">${clusters.length} cluster${clusters.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="cluster-grid">
+        ${clusters.map(c => `
+          <div class="cluster-card" id="cluster-${c.id}">
+            <div class="cluster-top">
+              <div class="cluster-name">${c.name}</div>
+              <span class="signal-badge ${getSignalClass(c.signal)}">${getSignalLabel(c.signal)}</span>
+            </div>
+            <div class="cluster-keywords">
+              ${c.keywords.map(k => `<span class="kw-tag" onclick="window.open('https://trends.google.com/trends/explore?date=today%2012-m&geo=US&q=${encodeURIComponent(k)}','_blank')">${k}</span>`).join('')}
+            </div>
+            <div class="cluster-footer">
+              ${c.audience.map(a => `<span class="audience-tag aud-${a}">${a}</span>`).join('')}
+              <a href="${buildTrendsUrl(c.trendsQ)}" target="_blank" class="trends-link">Compare on Trends ↗</a>
+            </div>
+            <div class="sitemap-ref">📂 ${c.sitemap}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(catEl);
+  });
+
+  document.getElementById('total-count').textContent = totalVisible;
+  document.getElementById('no-results').style.display = totalVisible === 0 ? 'block' : 'none';
+}
+
+function filterAudience(audience, btn) {
+  currentAudienceFilter = audience;
+  currentSignalFilter = null;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderClusters();
+}
+
+function filterSignal(signal, btn) {
+  if (currentSignalFilter === signal) {
+    currentSignalFilter = null;
+    btn.classList.remove('active');
+  } else {
+    currentSignalFilter = signal;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      if(b.textContent.includes('Hot') || b.textContent.includes('Rising') || b.textContent.includes('Emerging')) {
+        b.classList.remove('active');
+      }
+    });
+    btn.classList.add('active');
+  }
+  renderClusters();
+}
+
+function searchClusters(val) {
+  currentSearch = val;
+  renderClusters();
+}
+
+renderClusters();
+</script>
+</body>
+</html>
