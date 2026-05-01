@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pool & Spa Industry Signals — AQUA Magazine</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --aqua: #0096b4; --aqua-dark: #007a94; --aqua-light: #e0f5fa; --aqua-mid: #b3e8f2;
+    --navy: #0c2340; --teal: #0d9488; --amber: #d97706; --red: #dc2626; --green: #059669;
+    --text: #0c2340; --text-sec: #475569; --text-muted: #94a3b8;
+    --bg: #f8fafc; --white: #fff; --border: #e2e8f0;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.65; max-width: 680px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { background: var(--navy); padding: 22px 28px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .pub-name { font-size: 22px; font-weight: 800; color: #fff; }
+  .pub-tagline { font-size: 11px; font-weight: 600; color: var(--aqua-mid); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .issue-badge { background: var(--aqua); color: #fff; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
+
+  /* HERO */
+  .hero { background: var(--aqua-light); border-bottom: 3px solid var(--aqua); padding: 26px 28px 22px; }
+  .hero-eyebrow { font-size: 11px; font-weight: 700; color: var(--aqua); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; }
+  .hero-headline { font-size: 21px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 10px; }
+  .hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.65; margin-bottom: 14px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta-chip { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--white); border: 1.5px solid var(--aqua-mid); color: var(--aqua-dark); }
+
+  /* STAT ROW */
+  .stat-row { display: grid; grid-template-columns: repeat(3,1fr); background: var(--white); border-bottom: 1px solid var(--border); }
+  .stat-cell { padding: 16px 20px; border-right: 1px solid var(--border); text-align: center; }
+  .stat-cell:last-child { border-right: none; }
+  .stat-value { font-size: 22px; font-weight: 700; line-height: 1.1; margin-bottom: 3px; }
+  .stat-label { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+
+  /* CONTENT */
+  .content { padding: 0 28px; }
+
+  /* SECTION */
+  .section { padding: 26px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+  .section-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
+  .section-left { display: flex; align-items: center; gap: 10px; }
+  .section-icon { font-size: 18px; }
+  .section-title { font-size: 17px; font-weight: 700; color: var(--navy); }
+  .section-desc { font-size: 12px; color: var(--text-muted); }
+  .section-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.4px; }
+  .tag-hot { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+  .tag-watch { background: #fffbeb; color: var(--amber); border: 1px solid #fde68a; }
+  .tag-fading { background: #f1f5f9; color: var(--text-muted); border: 1px solid var(--border); }
+  .tag-forward { background: var(--aqua-light); color: var(--aqua-dark); border: 1px solid var(--aqua-mid); }
+
+  /* SIGNAL ITEMS */
+  .signal-item { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+  .signal-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .signal-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .momentum-pill { font-size: 12px; font-weight: 700; padding: 3px 11px; border-radius: 20px; }
+  .mp-hot { background: #fef2f2; color: var(--red); }
+  .mp-rising { background: #f0fdf4; color: var(--green); }
+  .mp-peaking { background: #fffbeb; color: var(--amber); }
+  .mp-fading { background: #f1f5f9; color: var(--text-muted); }
+  .mp-emerging { background: var(--aqua-light); color: var(--aqua-dark); }
+  .signal-data { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+  .data-point { font-weight: 700; color: var(--text-sec); }
+  .signal-title { font-size: 16px; font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 8px; }
+  .signal-body { font-size: 15px; color: var(--text-sec); line-height: 1.65; margin-bottom: 10px; }
+  .impact-box { background: var(--bg); border-left: 3px solid var(--aqua); border-radius: 0 8px 8px 0; padding: 11px 15px; }
+  .impact-label { font-size: 11px; font-weight: 700; color: var(--aqua-dark); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+  .impact-text { font-size: 14px; color: var(--text-sec); line-height: 1.6; }
+  .audience-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .aud-tag { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 10px; }
+  .aud-builder { background: #fff7ed; color: #c2410c; }
+  .aud-service { background: #f0fdf4; color: #166534; }
+  .aud-retail { background: #fdf4ff; color: #7e22ce; }
+
+  /* SPARKLINE INLINE */
+  .signal-meta-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .inline-spark { flex-shrink: 0; }
+
+  /* SPONSOR */
+  .sponsor-wrap { margin: 4px 0; }
+  .sponsor-label-bar { background: #f1f5f9; border: 1px solid var(--border); border-bottom: none; border-radius: 8px 8px 0 0; padding: 5px 18px; display: flex; align-items: center; justify-content: space-between; }
+  .sponsor-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .sponsor-body { background: linear-gradient(135deg, #e0f5fa, #f0fffe); border: 1px solid var(--aqua-mid); border-top: none; border-radius: 0 0 8px 8px; padding: 22px 24px; }
+  .sponsor-eyebrow { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+  .sponsor-headline { font-size: 17px; font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 8px; }
+  .sponsor-copy { font-size: 14px; color: var(--text-sec); line-height: 1.65; margin-bottom: 14px; }
+  .sponsor-cta { display: inline-block; background: var(--aqua); color: #fff; font-size: 14px; font-weight: 700; padding: 10px 22px; border-radius: 7px; text-decoration: none; }
+  .sponsor-name { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
+
+  /* ACTION CARDS */
+  .action-card { border-radius: 10px; border: 1.5px solid; padding: 18px 20px; margin-bottom: 10px; }
+  .ac-red { background: #fef2f2; border-color: #fecaca; }
+  .ac-amber { background: #fffbeb; border-color: #fde68a; }
+  .ac-aqua { background: var(--aqua-light); border-color: var(--aqua-mid); }
+  .action-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  .action-title { font-size: 16px; font-weight: 700; color: var(--navy); line-height: 1.35; }
+  .action-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+  .at-red { background: #fee2e2; color: var(--red); }
+  .at-amber { background: #fef3c7; color: var(--amber); }
+  .at-aqua { background: #cffafe; color: var(--aqua-dark); }
+  .action-body { font-size: 15px; color: var(--text-sec); line-height: 1.65; }
+
+  /* SUBSCRIBE */
+  .subscribe-section { background: var(--navy); padding: 30px 28px; text-align: center; }
+  .sub-headline { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.3; }
+  .sub-body { font-size: 15px; color: var(--aqua-mid); margin-bottom: 18px; line-height: 1.6; }
+  .sub-row { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+  .sub-input { flex: 1; padding: 12px 16px; border-radius: 8px; border: none; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; color: var(--navy); }
+  .sub-btn { background: var(--aqua); color: #fff; border: none; border-radius: 8px; padding: 12px 20px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; }
+  .sub-note { font-size: 12px; color: #64748b; margin-top: 10px; }
+
+  /* CHAT */
+  .chat-section { padding: 26px 28px; border-top: 1px solid var(--border); background: var(--white); }
+  .chat-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .chat-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; }
+  .chat-heading { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .chat-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; }
+  #chat-messages { background: var(--bg); border: 1px solid var(--border); border-radius: 10px 10px 0 0; padding: 14px 16px; min-height: 90px; max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .chat-input-row { display: flex; gap: 8px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; padding: 10px; background: var(--white); }
+  #chat-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; font-size: 14px; color: var(--navy); font-family: 'Inter', sans-serif; resize: none; outline: none; line-height: 1.5; }
+  #chat-input::placeholder { color: var(--text-muted); }
+  .chat-send { background: var(--aqua); border: none; border-radius: 7px; padding: 10px 18px; font-size: 14px; font-weight: 600; color: #fff; cursor: pointer; height: 42px; font-family: 'Inter', sans-serif; white-space: nowrap; }
+
+  /* FOOTER */
+  .report-footer { padding: 18px 28px; background: #f8fafc; border-top: 1px solid var(--border); text-align: center; }
+  .footer-pub { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .footer-links { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .footer-powered { font-size: 11px; color: #cbd5e1; margin-bottom: 6px; }
+  .footer-method { font-size: 11px; color: var(--text-muted); line-height: 1.6; max-width: 500px; margin: 0 auto; }
+
+  @media(max-width:600px) {
+    .content { padding: 0 20px; }
+    .hero { padding: 22px 20px 18px; }
+    .header { padding: 18px 20px; }
+    .pub-name { font-size: 20px; }
+    .hero-headline { font-size: 19px; }
+    .subscribe-section { padding: 26px 20px; }
+    .sub-row { flex-direction: column; }
+    .chat-section { padding: 22px 20px; }
+    .report-footer { padding: 18px 20px; }
+    .section-hdr { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="pub-name">AQUA</div>
+    <div class="pub-tagline">Pool &amp; Spa Industry Signals</div>
+  </div>
+  <div class="issue-badge">May 2026</div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Monthly Search Intelligence Brief</div>
+  <div class="hero-headline">Your customers' search behavior is shifting. Here's what it means for your business this month.</div>
+  <div class="hero-sub">Every month, AQUA tracks search demand across 52 topic clusters in the pool and spa market — what homeowners and professionals are researching, how it's changing, and what's coming next. This is not editorial coverage. It's data, translated into decisions.</div>
+  <div class="hero-meta">
+    <span class="meta-chip">52 clusters tracked</span>
+    <span class="meta-chip">18 gaining momentum</span>
+    <span class="meta-chip">Pool season opening</span>
+  </div>
+</div>
+
+<div class="stat-row">
+  <div class="stat-cell">
+    <div class="stat-value" style="color:var(--red)">+340%</div>
+    <div class="stat-label">Cold plunge search growth vs. last year</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value" style="color:var(--amber)">3 weeks</div>
+    <div class="stat-label">Until "pool cost" searches hit annual peak</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value" style="color:var(--green)">+67%</div>
+    <div class="stat-label">Robotic cleaner searches — pre-season buying intent</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- SECTION 1: RISING -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">📈</span>
+      <div>
+        <div class="section-title">What's Rising</div>
+        <div class="section-desc">Search clusters gaining the most momentum right now.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-hot">Act Now</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-hot">+340% YoY</span>
+      <span class="signal-data">Cold Plunge &amp; Contrast Therapy · <span class="data-point">12-month sustained climb</span></span>
+    </div>
+    <div class="signal-title">Homeowners aren't just curious about cold plunge anymore — they're ready to buy. And they're asking builders and retailers who aren't ready to answer.</div>
+    <div class="signal-body">Cold plunge and contrast therapy searches have tripled over the past 12 months. This isn't a spike driven by a single viral moment — it's a sustained climb that's still accelerating. The search pattern mirrors what happened with outdoor kitchens in 2018 and swim spas in 2020: a consumer behavior shift that the trade is always 12 to 18 months behind. The customers walking into your showroom or calling for a quote have already done their research. The question is whether you're ready to have the conversation.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">If cold plunge isn't part of your standard quote conversation, add it. Builders: position it as a natural add alongside spa or hot tub. Retailers: know your product options before a customer walks in knowing exactly what they want. Service pros: contrast therapy installations need ongoing chemistry management — that's a recurring service conversation.</div>
+    </div>
+    <div class="audience-row">
+      <span class="aud-tag aud-builder">Builders</span>
+      <span class="aud-tag aud-retail">Retailers</span>
+      <span class="aud-tag aud-service">Service</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-rising">+67% YoY</span>
+      <span class="signal-data">Robotic Pool Cleaners · <span class="data-point">Pre-season buying pattern</span></span>
+    </div>
+    <div class="signal-title">Robotic cleaner searches peak before pool season opens — the buying decision happens now, not when the pool is already green.</div>
+    <div class="signal-body">Searches for robotic pool cleaners follow a predictable pattern: they rise sharply in April and May as homeowners prepare to open, then plateau through summer. Right now is the highest-intent moment of the buying cycle — the consumer is actively researching before the need becomes urgent. This year's pre-season volume is up 67% over last May, suggesting a larger cohort of first-time buyers entering the category, likely people who purchased pools during the 2020 to 2022 boom and are now investing in maintenance equipment.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Retailers: floor space and staff knowledge for robotic cleaners needs to be ready now, not mid-June. If your team can't confidently compare the top three models, that sale goes to Amazon. Service pros: proactively recommending robotic cleaners to your established accounts is a revenue conversation you own — the customer is already researching it independently.</div>
+    </div>
+    <div class="audience-row">
+      <span class="aud-tag aud-retail">Retailers</span>
+      <span class="aud-tag aud-service">Service</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-rising">+45% YoY</span>
+      <span class="signal-data">Pool Automation Systems · <span class="data-point">Sustained 3-year build</span></span>
+    </div>
+    <div class="signal-title">Pool automation has been climbing for three years. It's no longer a luxury feature homeowners ask about — it's what they expect when they call you.</div>
+    <div class="signal-body">The automation trend is driven by two things happening simultaneously: rising electricity costs making scheduled pump operation financially meaningful, and a generation of pool owners who consider smartphone control a baseline expectation rather than an upgrade. Searches for "pool control app" and "smart pool system" are at all-time highs. The homeowner who just bought a pool in 2021 is now renovating their equipment pad — and automation is at the top of that list.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Builders: if automation isn't a standard package option in your proposals, you're behind where your customers' expectations are. Service pros: retrofitting automation on existing equipment pads is a strong upsell for spring service calls — lead with the energy savings, close with the convenience.</div>
+    </div>
+    <div class="audience-row">
+      <span class="aud-tag aud-builder">Builders</span>
+      <span class="aud-tag aud-service">Service</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-rising">+38% YoY</span>
+      <span class="signal-data">Fiberglass Pool Cost &amp; Installation · <span class="data-point">"Fiberglass vs gunite" at 5-year high</span></span>
+    </div>
+    <div class="signal-title">More homeowners are choosing fiberglass over gunite than at any point in the last five years. The comparison search is how they're making that decision.</div>
+    <div class="signal-body">The "fiberglass vs gunite" search query is at its highest volume in five years — which means a large portion of consumers currently planning pool projects haven't decided on construction type yet and are actively researching. Fiberglass is winning that comparison for a specific type of buyer: value-conscious, maintenance-aware, and timeline-sensitive. Builders who can speak fluently to that comparison — and who have the fiberglass product to back it — are capturing a growing share of first-call conversations.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Builders: the comparison conversation is happening before your first sales call. Having a clear, honest answer to "fiberglass vs gunite" for your specific market conditions — installation timeline, local soil, long-term maintenance — is the table stakes for the current buyer cohort.</div>
+    </div>
+    <div class="audience-row">
+      <span class="aud-tag aud-builder">Builders</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: SEASONAL PEAKS -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">⚡</span>
+      <div>
+        <div class="section-title">Approaching Peak — Act Before the Surge</div>
+        <div class="section-desc">Based on three years of seasonal search patterns in this market.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-watch">Time-Sensitive</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-peaking">Peaks May 15–25</span>
+      <span class="signal-data">Pool Opening · <span class="data-point">Ramping now, window is 3 weeks</span></span>
+    </div>
+    <div class="signal-title">The pool opening research window is the highest-intent moment of the year for service companies. It's open right now and closes fast.</div>
+    <div class="signal-body">Homeowners who search "pool opening service" are actively ready to hire — this isn't consideration, it's conversion intent. Search volume peaks in the third week of May every year based on three years of tracking, which means the research window opens two to three weeks before that. Companies whose information isn't easily findable in the next two weeks miss the hiring decision for a significant portion of this season's new customers.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Service pros: if your Google Business Profile, website, and pricing information aren't current and findable this week, you're invisible during the highest-intent search moment of the year. A simple seasonal landing page or updated Google listing takes an afternoon and captures business that would otherwise go to whoever shows up first.</div>
+    </div>
+    <div class="audience-row"><span class="aud-tag aud-service">Service</span></div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-peaking">Peaks in 3 weeks</span>
+      <span class="signal-data">"How much does a pool cost" · <span class="data-point">Historically peaks May 20 every year</span></span>
+    </div>
+    <div class="signal-title">The biggest consumer pool research moment of the year — when homeowners with summer intentions decide if they're actually buying — is three weeks away.</div>
+    <div class="signal-body">"How much does a pool cost" is the highest-volume query in the entire pool and spa keyword universe. It peaks in the third week of May across every prior year tracked, driven by homeowners who are making a real financial decision for the summer. The consumer who searches this query is not casually browsing — they're at the point of deciding whether to call a builder or not. Builders who show up in that research moment with credible, specific pricing information are setting the first-call agenda for the season.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do this month</div>
+      <div class="impact-text">Builders: updated pricing content on your website — specific ranges for your construction type and market, not "contact us for a quote" — captures buyers at the decision moment. The first call goes to the builder who already answered their question.</div>
+    </div>
+    <div class="audience-row"><span class="aud-tag aud-builder">Builders</span></div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- SPONSOR -->
+<div style="padding: 6px 28px;">
+  <div class="sponsor-wrap">
+    <div class="sponsor-label-bar">
+      <span class="sponsor-label">Sponsored by Orenda Technologies</span>
+      <span style="font-size:10px;color:#94a3b8;">AQUA Industry Signals · May 2026</span>
+    </div>
+    <div class="sponsor-body">
+      <div class="sponsor-eyebrow">Water Chemistry for Professionals</div>
+      <div class="sponsor-headline">Opening season is the highest-risk chemistry moment of the year. Don't guess.</div>
+      <div class="sponsor-copy">Spring startups are where chemistry errors compound — algae, scale, staining — because conditions are extreme and documentation is thin. The Orenda App gives service pros a precise LSI calculator, startup dosing sequences, and chemical order-of-operations built around how pool water actually behaves. 30,000+ pros use it every opening season.</div>
+      <a href="#" class="sponsor-cta">Try the Orenda App Free →</a>
+      <div class="sponsor-name">Orenda Technologies · orendatech.com</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- SECTION 3: FADING -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">📉</span>
+      <div>
+        <div class="section-title">What's Fading</div>
+        <div class="section-desc">Demand shifts that signal where attention has moved on.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-fading">Heads Up</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-fading">−23% YoY</span>
+      <span class="signal-data">Above Ground Pools · <span class="data-point">Pandemic boom fully unwound</span></span>
+    </div>
+    <div class="signal-title">The above-ground pool surge is over. The buyer who entered the market in 2020 has either upgraded or moved on.</div>
+    <div class="signal-body">Above-ground pool searches peaked in summer 2021 and have declined every year since. The 2020 to 2022 cohort of pandemic buyers was a historically unusual demand spike — not a structural shift in the market. The good news for the trade: many of those buyers are now three to four years into pool ownership and entering the renovation and equipment upgrade cycle. The product they bought has changed; the customer relationship doesn't have to.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to watch</div>
+      <div class="impact-text">Retailers holding significant above-ground inventory are swimming against a demand current. The conversation to have with your 2021 above-ground customers is now about liners, covers, pumps, and chemistry — not new pools. Service companies that added above-ground accounts during the boom should be deepening those relationships before a competitor does.</div>
+    </div>
+    <div class="audience-row">
+      <span class="aud-tag aud-retail">Retailers</span>
+      <span class="aud-tag aud-service">Service</span>
+    </div>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-fading">−31% YoY</span>
+      <span class="signal-data">Inflatable &amp; Entry-Level Portable Spas · <span class="data-point">Demand concentration moving upmarket</span></span>
+    </div>
+    <div class="signal-title">Entry-level spa demand is declining — but premium portable spa and contrast therapy demand is replacing it. The spa buyer has moved upmarket.</div>
+    <div class="signal-body">Inflatable spa and low-cost portable hot tub searches are down sharply from their 2021 peak. What's growing is searches for quality portable spas, contrast therapy installations, and sauna-plus-cold-plunge combinations — the wellness-oriented, higher-investment spa purchase. The customer hasn't left the category. They've graduated within it. The trade opportunity is following them there.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to watch</div>
+      <div class="impact-text">Retailers who built spa inventory around entry-price product are facing the wrong end of a demand shift. The contrast therapy and premium spa buyer has a larger budget and a more considered purchase process — they respond to expertise and trust more than price. That's the customer to build toward.</div>
+    </div>
+    <div class="audience-row">
+      <span class="aud-tag aud-retail">Retailers</span>
+      <span class="aud-tag aud-builder">Builders</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: FORWARD SIGNALS -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">🔭</span>
+      <div>
+        <div class="section-title">Forward Signals — 12 to 18 Months Out</div>
+        <div class="section-desc">Search terms crossing volume thresholds for the first time. Early enough to prepare.</div>
+      </div>
+    </div>
+    <span class="section-tag tag-forward">Watch</span>
+  </div>
+
+  <div class="signal-item">
+    <div class="signal-top">
+      <span class="momentum-pill mp-emerging">Crossing threshold</span>
+      <span class="signal-data">Natural &amp; Biofilter Swimming Pools · <span class="data-point">Shelter media crossover driving first-time searches</span></span>
+    </div>
+    <div class="signal-title">Natural pools are appearing in mainstream design media for the first time. Builder inquiry follows shelter media coverage by 12 to 18 months.</div>
+    <div class="signal-body">HGTV, Architectural Digest, and Pinterest are all featuring natural pools and swimming ponds in significant volume. When these concepts enter mainstream shelter media, consumer inquiry to builders follows predictably 12 to 18 months later as homeowners move from inspiration to planning. The search volume is still low in absolute terms — but the trajectory is clear, and the pattern is identical to how outdoor kitchens crossed from niche to mainstream. Builders who understand the category before the first customer call arrives are in the only defensible position.</div>
+    <div class="impact-box">
+      <div class="impact-label">What to do now</div>
+      <div class="impact-text">Builders: natural pools are a specialty product with specific biofiltration requirements, plant zone sizing, and chemistry management. Learning the category now — before customer inquiry — is a 12-month head start on a competitor who waits for the call.</div>
+    </div>
+    <div class="audience-row"><span class="aud-tag aud-builder">Builders</span></div>
+  </div>
+</div>
+
+<!-- THREE MOVES -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-left">
+      <span class="section-icon">✅</span>
+      <div>
+        <div class="section-title">Three Moves This Month</div>
+        <div class="section-desc">The highest-leverage actions from this month's data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card ac-red">
+    <div class="action-top">
+      <div class="action-title">Have a cold plunge answer before Memorial Day weekend</div>
+      <span class="action-tag at-red">This week</span>
+    </div>
+    <div class="action-body">Searches are at all-time highs and still climbing. The customer who walks in without a clear answer from you will find one from someone else. A 30-minute team briefing on what you offer, what installation looks like, and how you'd price it is the minimum investment before the season peaks.</div>
+  </div>
+
+  <div class="action-card ac-amber">
+    <div class="action-top">
+      <div class="action-title">Update your online presence before the "how much does a pool cost" peak — three weeks out</div>
+      <span class="action-tag at-amber">This month</span>
+    </div>
+    <div class="action-body">The highest-volume consumer query of the year peaks May 20. Builders who show up in that research moment with real pricing information earn the first call. Service pros whose Google listing is current earn the opening season booking. This is the one window where being easy to find converts directly to revenue.</div>
+  </div>
+
+  <div class="action-card ac-aqua">
+    <div class="action-top">
+      <div class="action-title">Start learning the natural pool category — inquiry is 12 to 18 months away</div>
+      <span class="action-tag at-aqua">This season</span>
+    </div>
+    <div class="action-body">The shelter media crossover has happened. Builder inquiry follows. The professionals who know this category when the first customer calls will own the early market. The ones who learn it in response will always be catching up.</div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- SUBSCRIBE -->
+<div class="subscribe-section">
+  <div class="sub-headline">Get Industry Signals every month. Free.</div>
+  <div class="sub-body">Search intelligence across 52 pool and spa clusters — what's rising, what's peaking, and what's coming — delivered the first week of every month.</div>
+  <div class="sub-row">
+    <input class="sub-input" type="email" placeholder="your@email.com">
+    <button class="sub-btn">Subscribe →</button>
+  </div>
+  <div class="sub-note">No spam. Unsubscribe any time. Published by AQUA Magazine.</div>
+</div>
+
+<!-- CHAT -->
+<div class="chat-section">
+  <div class="chat-hdr">
+    <div class="chat-dot"></div>
+    <div class="chat-heading">Ask about any signal in this brief</div>
+  </div>
+  <div class="chat-sub">What does rising fiberglass demand mean for your market? How should a service pro respond to the robotic cleaner trend? Ask anything.</div>
+  <div id="chat-messages">
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;">AQ</div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--text-sec);line-height:1.6;max-width:90%;">I have the full context of every signal in this brief — the data behind the numbers and what it means for different business types. Try: <span style="color:var(--aqua);cursor:pointer;font-weight:500;" onclick="fillQ('I\'m a pool builder in Texas — which signals matter most for my market this month?')">"I'm a builder in Texas — what matters most?"</span> or <span style="color:var(--aqua);cursor:pointer;font-weight:500;" onclick="fillQ('How do I start selling cold plunge if I\'ve never offered it before?')">"How do I start selling cold plunge?"</span></div>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Ask about any signal in this brief..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+    <button class="chat-send" onclick="sendQ()">Ask</button>
+  </div>
+</div>
+
+<div class="report-footer">
+  <div class="footer-pub">AQUA Magazine</div>
+  <div class="footer-links">aquamagazine.com · Pool &amp; Spa Industry Signals</div>
+  <div class="footer-powered">Intelligence powered by Mindful · mindful.pub</div>
+  <div class="footer-method">Data: Google Trends US, 52 keyword clusters derived from aquamagazine.com sitemap, rolling 12-month index, year-over-year comparison. Seasonal peak projections based on 3-year historical pattern analysis. May 2026.</div>
+</div>
+
+<script>
+const BRIEF_CONTEXT = `You are the intelligence assistant embedded in AQUA Magazine's Pool & Spa Industry Signals Brief for May 2026. This brief is powered by search demand data — Google Trends tracking across 52 keyword clusters in the pool and spa market. You are speaking to a pool and spa industry professional: a builder, retailer, or service pro.
+
+SEARCH SIGNALS IN THIS BRIEF:
+
+RISING:
+- Cold plunge & contrast therapy: +340% YoY. Sustained 12-month climb. Consumer intent shifting from curiosity to purchase. Builders, retailers, service pros all affected.
+- Robotic pool cleaners: +67% YoY. Pre-season buying pattern — peaks in May. First-time buyers entering category (2020-2022 pool purchasers now buying equipment).
+- Pool automation systems: +45% YoY. Sustained 3-year build. Energy costs + smartphone expectations driving it. Retrofit opportunity for service pros.
+- Fiberglass pool cost/installation: +38% YoY. "Fiberglass vs gunite" at 5-year high. Consumer choosing before the first sales call.
+
+APPROACHING SEASONAL PEAKS:
+- Pool opening service: peaks May 15-25. Highest-intent hiring moment of the year for service companies.
+- "How much does a pool cost": peaks historically May 20. Highest-volume consumer query in the entire keyword universe. Builder opportunity.
+
+FADING:
+- Above ground pools: -23% YoY. Pandemic boom fully unwound. 2021 buyers now in renovation/equipment upgrade cycle.
+- Inflatable/entry-level portable spas: -31% YoY. Demand moving upmarket to premium and contrast therapy.
+
+FORWARD SIGNALS (12-18 months):
+- Natural/biofilter swimming pools: crossing search volume threshold. Shelter media crossover (HGTV, AD, Pinterest). Builder inquiry follows 12-18 months behind media coverage.
+
+THREE ACTIONS:
+1. Have a cold plunge answer ready before Memorial Day — searches at all-time high
+2. Update online presence before May 20 peak — pool cost query peak
+3. Start learning natural pool category — inquiry coming in 12-18 months
+
+Tailor answers to the person's business type and region when they share it. Be direct and specific. Keep responses to 3-5 sentences where possible.`;
+
+async function sendQ() {
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addMsg(q, 'user');
+  const thinking = addMsg('...', 'bot');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        system: BRIEF_CONTEXT,
+        messages: [{role: 'user', content: q}]
+      })
+    });
+    const data = await res.json();
+    thinking.remove();
+    addMsg(data.content?.[0]?.text || 'No response.', 'bot');
+  } catch(e) {
+    thinking.remove();
+    addMsg('Unable to connect. Please try again.', 'bot');
+  }
+}
+function fillQ(t) { document.getElementById('chat-input').value = t; document.getElementById('chat-input').focus(); }
+function addMsg(text, role) {
+  const c = document.getElementById('chat-messages');
+  const w = document.createElement('div');
+  w.style.cssText = 'display:flex;gap:10px;align-items:flex-start;';
+  const av = document.createElement('div');
+  const isUser = role === 'user';
+  av.style.cssText = `width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;${isUser ? 'background:var(--aqua-light);color:var(--aqua-dark);' : 'background:var(--aqua);color:#fff;'}`;
+  av.textContent = isUser ? 'You' : 'AQ';
+  const b = document.createElement('div');
+  b.style.cssText = `border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.6;max-width:88%;white-space:pre-wrap;${isUser ? 'background:var(--aqua-light);color:var(--navy);margin-left:auto;' : 'background:var(--white);border:1px solid var(--border);color:var(--text-sec);'}`;
+  b.textContent = text;
+  if (isUser) w.style.flexDirection = 'row-reverse';
+  w.appendChild(av); w.appendChild(b);
+  c.appendChild(w);
+  c.scrollTop = c.scrollHeight;
+  return w;
+}
+document.getElementById('chat-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+</script>
+</body>
+</html>
