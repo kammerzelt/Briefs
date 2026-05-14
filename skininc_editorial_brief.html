@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skin Inc. Editorial Intelligence Brief — May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brand: #8b4b72; --brand-dark: #6d3a59; --brand-light: #fdf0f6; --brand-mid: #e8b8d4;
+  --navy: #1a1a2e; --amber: #d97706; --red: #dc2626; --green: #059669; --blue: #1d4ed8; --teal: #0d9488;
+  --text: #1a1a2e; --text-sec: #475569; --text-muted: #94a3b8;
+  --bg: #fafaf9; --white: #fff; --border: #e8e0e8;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+.page { max-width: 900px; margin: 0 auto; padding: 0 0 60px; }
+
+.header { background: var(--navy); padding: 22px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.header-pub { font-size: 22px; font-weight: 800; color: #fff; }
+.header-product { font-size: 11px; font-weight: 600; color: var(--brand-mid); letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
+.header-right { text-align: right; }
+.header-issue { font-size: 12px; color: #94a3b8; }
+.header-sub { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 3px; }
+
+.top-stats { background: var(--white); border-bottom: 1px solid var(--border); padding: 18px 32px; display: grid; grid-template-columns: repeat(5,1fr); }
+.stat-cell { padding: 6px 16px; border-right: 1px solid var(--border); }
+.stat-cell:first-child { padding-left: 0; }
+.stat-cell:last-child { border-right: none; }
+.stat-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+.stat-value { font-size: 19px; font-weight: 700; line-height: 1.2; }
+.stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.sv-brand { color: var(--brand); } .sv-red { color: var(--red); }
+.sv-amber { color: var(--amber); } .sv-green { color: var(--green); }
+
+.content { padding: 28px 32px; }
+
+.section { margin-bottom: 36px; }
+.section-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+.section-icon { font-size: 17px; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+.section-desc { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.sum-card { border-radius: 10px; padding: 14px 16px; border: 1.5px solid; }
+.sum-card.urgent { background: #fef2f2; border-color: #fecaca; }
+.sum-card.rising { background: #fffbeb; border-color: #fde68a; }
+.sum-card.emerging { background: var(--brand-light); border-color: var(--brand-mid); }
+.sum-card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px; }
+.sum-card.urgent .sum-card-title { color: var(--red); }
+.sum-card.rising .sum-card-title { color: var(--amber); }
+.sum-card.emerging .sum-card-title { color: var(--brand); }
+.sum-list { list-style: none; }
+.sum-list li { font-size: 12px; color: var(--text-sec); padding: 3px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.sum-list li:last-child { border-bottom: none; }
+
+.signal-row { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; display: grid; grid-template-columns: 110px 1fr 200px; gap: 20px; align-items: start; }
+.signal-row:hover { border-color: var(--brand-mid); }
+.signal-left { display: flex; flex-direction: column; gap: 6px; padding-top: 2px; }
+.sig-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 10px; text-align: center; }
+.sig-urgent { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+.sig-rising { background: #fffbeb; color: var(--amber); border: 1px solid #fde68a; }
+.sig-emerging { background: var(--brand-light); color: var(--brand); border: 1px solid var(--brand-mid); }
+.sig-source { font-size: 10px; color: var(--text-muted); line-height: 1.4; text-align: center; }
+.sig-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; line-height: 1.35; }
+.sig-body { font-size: 12px; color: var(--text-sec); line-height: 1.6; }
+.impl-block { margin-bottom: 10px; }
+.impl-block:last-child { margin-bottom: 0; }
+.impl-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 4px; }
+.impl-editorial { background: var(--brand-light); color: var(--brand); }
+.impl-audience { background: #eff6ff; color: var(--blue); }
+.impl-sales { background: #f0fdf4; color: var(--green); }
+.impl-text { font-size: 11px; color: var(--text-sec); line-height: 1.5; }
+
+.conf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.conf-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.conf-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.conf-title { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.35; }
+.conf-source { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.cs-fb { background: var(--brand-light); color: var(--brand); }
+.cs-reg { background: #fef3c7; color: #92400e; }
+.cs-science { background: #ecfdf5; color: #065f46; }
+.cs-biz { background: #eff6ff; color: var(--blue); }
+.conf-body { font-size: 12px; color: var(--text-sec); line-height: 1.55; }
+.conf-angle { font-size: 11px; color: var(--brand); margin-top: 6px; font-weight: 500; }
+
+.action-card { border-radius: 10px; border: 1.5px solid; padding: 18px 20px; margin-bottom: 10px; }
+.action-card.act-now { background: #fef2f2; border-color: #fecaca; }
+.action-card.act-soon { background: #fffbeb; border-color: #fde68a; }
+.action-card.act-strategic { background: var(--brand-light); border-color: var(--brand-mid); }
+.action-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 12px; }
+.action-priority { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.ap-now { background: #fee2e2; color: var(--red); }
+.ap-soon { background: #fef3c7; color: #92400e; }
+.ap-strategic { background: var(--brand-light); color: var(--brand); }
+.action-title { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.4; }
+.action-body { font-size: 12px; color: var(--text-sec); line-height: 1.6; margin-bottom: 10px; }
+.action-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+.meta-item { display: flex; flex-direction: column; gap: 1px; }
+.meta-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.meta-value { font-size: 12px; font-weight: 600; }
+.mv-red { color: var(--red); } .mv-amber { color: var(--amber); }
+.mv-brand { color: var(--brand); } .mv-green { color: var(--green); }
+
+.audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.aud-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; }
+.aud-card.opportunity { border-color: var(--brand-mid); }
+.aud-card.watch { border-color: #fde68a; }
+.aud-category { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 5px; }
+.aud-headline { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; line-height: 1.35; }
+.aud-body { font-size: 12px; color: var(--text-sec); line-height: 1.55; }
+.aud-signal { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.aud-tag { font-size: 11px; font-weight: 600; }
+.aud-context { font-size: 11px; color: var(--text-muted); }
+
+.method-note { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+.method-note strong { color: var(--text-sec); }
+
+.teaser-strip { background: var(--navy); border-radius: 10px; padding: 22px 26px; margin: 0 32px 32px; }
+.teaser-eyebrow { font-size: 10px; font-weight: 700; color: var(--brand-mid); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; }
+.teaser-headline { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 10px; }
+.teaser-body { font-size: 12px; color: #94a3b8; line-height: 1.7; }
+.teaser-link { color: #e8b8d4; font-weight: 600; text-decoration: none; }
+
+.chat-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 0 32px 32px; }
+.chat-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.chat-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-title { font-size: 12px; font-weight: 600; color: var(--navy); }
+.chat-sub { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
+#chat-messages { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-height: 70px; max-height: 320px; overflow-y: auto; background: var(--bg); }
+.chat-input-row { border-top: 1px solid var(--border); padding: 10px 14px; display: flex; gap: 8px; align-items: flex-end; background: var(--white); }
+#chat-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 8px 12px; font-size: 12px; color: var(--text); font-family: 'Inter', sans-serif; resize: none; outline: none; line-height: 1.5; }
+#chat-input:focus { border-color: var(--brand); }
+#chat-send { background: var(--brand); border: none; border-radius: 7px; padding: 8px 16px; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; height: 36px; }
+.chat-suggestion { font-size: 11px; color: var(--brand); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+
+.brief-footer { padding: 18px 32px; border-top: 1px solid var(--border); background: var(--white); display: flex; align-items: center; justify-content: space-between; }
+.footer-pub { font-size: 12px; font-weight: 600; color: var(--navy); }
+.footer-powered { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.footer-method { font-size: 10px; color: var(--text-muted); text-align: right; max-width: 400px; line-height: 1.5; }
+
+@media(max-width:680px){
+  .top-stats { grid-template-columns: repeat(3,1fr); }
+  .signal-row { grid-template-columns: 1fr; }
+  .summary-grid, .conf-grid, .audience-grid { grid-template-columns: 1fr; }
+  .content { padding: 20px; }
+  .header { padding: 18px 20px; }
+  .teaser-strip, .chat-wrap { margin-left: 20px; margin-right: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <div class="header-pub">Skin Inc.</div>
+    <div class="header-product">Editorial Intelligence Brief — Internal</div>
+  </div>
+  <div class="header-right">
+    <div class="header-issue">May 2026 · skininc.com</div>
+    <div class="header-sub">5 signal sources · Verified against skininc.com section taxonomy</div>
+  </div>
+</div>
+
+<div class="top-stats">
+  <div class="stat-cell">
+    <div class="stat-label">Signals tracked</div>
+    <div class="stat-value sv-brand">7</div>
+    <div class="stat-sub">This month</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">GLP-1 aesthetic patients</div>
+    <div class="stat-value sv-red">+137%</div>
+    <div class="stat-sub">2023 → 2024 growth</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Exosome enforcement</div>
+    <div class="stat-value sv-red">Active</div>
+    <div class="stat-sub">FDA warning letters 2024–25</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Scope of practice bills</div>
+    <div class="stat-value sv-amber">Multiple</div>
+    <div class="stat-sub">States — active 2025–26</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Men's aesthetics signal</div>
+    <div class="stat-value sv-brand">Rising</div>
+    <div class="stat-sub">Top 2026 medspa trend</div>
+  </div>
+</div>
+
+<div class="content">
+
+<div class="method-note">
+  <strong>Methodology:</strong> Skin Inc.'s section-level taxonomy URLs was reviewed alongside regulatory filings, FDA enforcement records, industry association updates, and published research. Coverage gap claims are at the section taxonomy level — individual articles on these topics may exist within broader sections. Signal strength reflects qualitative assessment of urgency and industry attention, not statistical search volume. All regulatory sources are publicly verifiable.
+</div>
+
+<div class="summary-grid">
+  <div class="sum-card urgent">
+    <div class="sum-card-title">🔴 Urgent — act this cycle</div>
+    <ul class="sum-list">
+      <li>Exosome FDA enforcement — estheticians face direct legal risk</li>
+      <li>GLP-1 skin consequences — 52% of patients concerned about face; no esthetician-specific protocol guide exists</li>
+    </ul>
+  </div>
+  <div class="sum-card rising">
+    <div class="sum-card-title">🟡 Rising — assign soon</div>
+    <ul class="sum-list">
+      <li>Scope of practice legislation — multiple active state bills</li>
+      <li>Men's aesthetics mainstream adoption accelerating</li>
+      <li>Medspa safety crisis — opportunity for compliant estheticians</li>
+    </ul>
+  </div>
+  <div class="sum-card emerging">
+    <div class="sum-card-title">🌸 Emerging — plan ahead</div>
+    <ul class="sum-list">
+      <li>Longevity + wellness service integration — regulatory risk</li>
+      <li>AI skin analysis — practitioner adoption guides needed</li>
+      <li>Face & Body show forward signal</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">📡</span>
+    <span class="section-title">Industry Signals — What's Moving Right Now</span>
+    <span class="section-desc">FDA enforcement · Research data · Regulatory filings · Industry surveys</span>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-urgent">Urgent</div>
+      <div class="sig-source">FDA warning<br>letters 2024–25<br>Multiple companies</div>
+    </div>
+    <div>
+      <div class="sig-title">FDA is actively enforcing against exosome products — estheticians offering them as add-ons face direct legal exposure</div>
+      <div class="sig-body">The FDA issued warning letters to Kimera Labs (2023), Chara Biologics (early 2025 — "CharaExo" amniotic fluid-derived exosome product), and Evolutionary Biologics (late 2024 — "EXO RNA™"). In every case the finding is the same: exosome products meet the definition of a drug and biological product requiring premarket review. No exosome product has completed full FDA drug approval as of early 2026. Estheticians and spa owners who have added exosome facials or topical exosome treatments as premium service upgrades may be operating with unapproved biologics — regardless of what the supplier claims on the label. The enforcement trend is accelerating, not pausing.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">A clear, Skin Inc.-specific explainer: what the FDA enforcement means for estheticians, how to evaluate supplier claims, what the difference is between a compliant and a non-compliant exosome product, and what to do if you're currently using one. This is precisely the kind of risk-mitigation content Skin Inc. is uniquely positioned to provide — and a topic where absence of guidance puts readers at legal risk.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-audience">Audience signal</span>
+        <div class="impl-text">Every esthetician who has added exosomes as a facial upgrade in the last two years needs this. The FDA enforcement timeline suggests urgency is not hypothetical.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-urgent">Urgent</div>
+      <div class="sig-source">AAD 2026<br>poster data ·<br>Dermatology Times</div>
+    </div>
+    <div>
+      <div class="sig-title">GLP-1 patients are arriving at esthetics suites with skin concerns their providers aren't equipped to address — 52% express concern about facial appearance</div>
+      <div class="sig-body">AAD 2026 poster data shows 52% of GLP-1-treated patients expressed concern about their facial appearance — primarily volume loss and skin laxity. 137% growth in GLP-1-treated aesthetic patients from 2023 to 2024. 32% of these patients were new to aesthetic practices, representing a direct acquisition opportunity for esthetic services. The clinical picture is specific: accelerated-appearing skin aging, barrier compromise, increased sensitivity, and in some cases hair loss. The treatment protocols for this client profile differ from standard facial protocols. Skin Inc.'s section taxonomy includes treatment, science, and wellness sections — but no dedicated GLP-1 skin consequences protocol section exists. The medspa and physician media have covered GLP-1 extensively from their angle. The esthetician-specific treatment guide has not been written.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">A protocol-level feature: how to assess, treat, and build a service menu for the GLP-1 client. Barrier repair, hydration-focused treatments, skin laxity options within esthetics scope, and when to refer. This is the piece that transforms a trend story into a clinical tool.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-audience">Audience signal</span>
+        <div class="impl-text">137% growth means these clients are already in esthetics suites. Readers need protocols now, not a trend overview they've already seen in consumer media.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-rising">Rising</div>
+      <div class="sig-source">AmSpa legal<br>updates tracker<br>2025–26</div>
+    </div>
+    <div>
+      <div class="sig-title">Scope of practice legislation for estheticians is actively moving in multiple states — in both directions</div>
+      <div class="sig-body">Multiple active state bills are expanding or restricting what licensed estheticians can do. Bills allowing estheticians to perform microneedling are progressing in some states. Master esthetician scope of practice expansion bills have been signed in others. New laser hair removal licensing categories are being created. Simultaneously, bills prohibiting estheticians from performing medical treatments are advancing in states where the medspa regulatory debate is intensifying. Skin Inc.'s sitemap has /business/regulatory as a section but scope of practice legislation is a recurring, fast-moving topic that typically receives episodic coverage rather than systematic tracking.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">A monthly or quarterly scope of practice legislative tracker — which states are expanding, which are restricting, and what it means practically — is the kind of structured recurring content that makes Skin Inc. a must-read reference for practicing estheticians navigating a changing regulatory landscape.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-audience">Audience signal</span>
+        <div class="impl-text">An esthetician in a state where the microneedling bill just passed needs to know. An esthetician in a state where a restriction bill is advancing needs to know. Both are in the same readership.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-rising">Rising</div>
+      <div class="sig-source">Multiple industry<br>surveys · IAPAM<br>2026</div>
+    </div>
+    <div>
+      <div class="sig-title">Men's aesthetics has moved from trend to mainstream — but esthetics content still treats it as a niche add-on rather than a primary growth category</div>
+      <div class="sig-body">Men's aesthetics is consistently identified as a top 2026 medspa trend across multiple industry surveys. More men are seeking subtle maintenance treatments as part of routine wellness rather than one-off event preparation. The purchasing behavior is different: men are less likely to browse or explore, more likely to come in with a specific outcome in mind. They respond to outcome language, not process language. Skin Inc. has dedicated sections — /treatment/men and /products/men — but the depth of coverage in these sections compared to their growth as a revenue category may not reflect the opportunity. The esthetics trade has been writing "men's skincare is growing" for five years. The piece that hasn't been written is the business case for building a men's service menu and how to market it without alienating existing clients.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">Practical business feature: how esthetics practices are structuring men's service menus, what marketing language converts, how appointment patterns differ, and what retail upsell looks like for male clients. Case study format would serve this well.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-sales">Ad sales</span>
+        <div class="impl-text">Men's skincare product companies seeking esthetician endorsement and professional channel distribution have a clear reason to sponsor men's-specific content.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-rising">Rising</div>
+      <div class="sig-source">Medical Expo<br>analysis · AmSpa<br>safety data 2026</div>
+    </div>
+    <div>
+      <div class="sig-title">The medspa safety crisis is a positioning opportunity for credentialed, compliant estheticians — and Skin Inc. hasn't framed it that way yet</div>
+      <div class="sig-body">An estimated 20,000+ medspas are operating across the US with minimal oversight. Pennsylvania Patient Safety Authority reported 11.4 incidents per 1,000 surgical encounters in 2024 — a 9.5% year-over-year increase. FDA enforcement against illegal injectable supply chains increased throughout 2025. In 2023 a patient died after an IV infusion at a medspa whose supervising physician was over 100 miles away. As patient sophistication grows and regulatory pressure increases, the licensed, trained, compliant esthetician is positioned as the trustworthy alternative in a market full of unregulated actors. Skin Inc. covers medspa and regulatory topics but typically from a compliance-obligation angle, not from a competitive positioning angle.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">The trust advantage: how licensed estheticians can communicate their credentials, training, and compliance as a competitive differentiator in a market where patients are increasingly aware of safety risks. Marketing, consultation language, and professional signaling — practical for every reader.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-audience">Audience signal</span>
+        <div class="impl-text">Shifts from "what estheticians must do to stay compliant" to "what estheticians can gain from being compliant." Different frame, more motivating read.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-emerging">Emerging</div>
+      <div class="sig-source">IAPAM April<br>2026 update ·<br>OpenLoop 2026</div>
+    </div>
+    <div>
+      <div class="sig-title">Longevity and wellness service integration is accelerating — but estheticians expanding into peptides, NAD, and HRT face legal risks that aren't being covered clearly</div>
+      <div class="sig-body">Medspas and increasingly esthetics practices are adding longevity services — peptide therapies, NAD infusions, hormone support, and nutraceutical protocols — as clients seek whole-body wellness rather than isolated aesthetic treatments. GLP-1 has been the gateway: patients introduced to medspas for weight management are exploring additional wellness services. Skin Inc. has /wellness/therapies and /wellness/health sections. What's missing is clear guidance on where the esthetics scope of practice ends and a medical license begins in the context of wellness services — the legal and regulatory line that, if crossed, puts a license at risk.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">What can estheticians actually offer in the wellness integration trend — and where is the bright legal line? Written in collaboration with a healthcare attorney, this is the protective guidance piece that every esthetician considering wellness expansion needs before they expand.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-audience">Audience signal</span>
+        <div class="impl-text">An esthetician who crosses into unauthorized medical practice doesn't just face regulatory sanction — they face license loss. The stakes make this a high-read topic.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div class="signal-left">
+      <div class="sig-badge sig-emerging">Emerging</div>
+      <div class="sig-source">OpenLoop ·<br>Multiple medspa<br>trend reports 2026</div>
+    </div>
+    <div>
+      <div class="sig-title">AI skin analysis tools are moving from novelty to clinical infrastructure — but the practitioner adoption guide for estheticians hasn't been written</div>
+      <div class="sig-body">AI-powered skin analysis for personalized treatment planning is consistently identified as a top 2026 medspa trend. Tools that analyze hydration, texture, microbiome markers, and pigmentation to generate customized protocol recommendations are moving from high-end medspas into mainstream esthetics practice. Skin Inc. covers /treatment/devices-tools and /science/research but the practical adoption guide — which AI tools are appropriate for esthetician use, what the consultation workflow looks like, how to communicate AI-generated analysis to clients — doesn't appear as a structured content node.</div>
+    </div>
+    <div>
+      <div class="impl-block">
+        <span class="impl-tag impl-editorial">Editorial angle</span>
+        <div class="impl-text">Practitioner-level adoption guide: tool comparison, consultation workflow integration, client communication language, and business case for AI skin analysis in an esthetics practice. Vendor-neutral guidance that builds trust with the readership.</div>
+      </div>
+      <div class="impl-block">
+        <span class="impl-tag impl-sales">Ad sales</span>
+        <div class="impl-text">AI skin analysis device and software companies seeking esthetician channel adoption have high willingness to sponsor credible practitioner-facing content.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">🎙️</span>
+    <span class="section-title">Conference & Event Forward Signals</span>
+    <span class="section-desc">Face & Body events · Industry association programming · 6–12 month leading indicators</span>
+  </div>
+
+  <div class="conf-grid">
+    <div class="conf-card">
+      <div class="conf-header">
+        <div class="conf-title">Face & Body — Skin Inc.'s own show is the editorial anchor no competitor can replicate</div>
+        <span class="conf-source cs-fb">Face & Body</span>
+      </div>
+      <div class="conf-body">Skin Inc. runs Face & Body regional events (Southeast, Midwest, Northern California, and the flagship). The pre-show editorial window — education previews, exhibitor technology spotlights, speaker session announcements — is uniquely owned by Skin Inc. No competitor can write the authoritative Face & Body preview. Readers planning their attendance make booth visit decisions weeks before arriving.</div>
+      <div class="conf-angle">→ Pre-show content reaches a larger research audience than anything published during the show. Exhibitor spotlight packages are the natural ad product.</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-header">
+        <div class="conf-title">GLP-1 protocol education is missing from esthetics CEU programming — conference sessions will drive demand for content</div>
+        <span class="conf-source cs-science">Science signal</span>
+      </div>
+      <div class="conf-body">As GLP-1 client protocols become a practitioner skill gap, continuing education programming will build around it. Conference sessions signal practitioner demand ahead of the editorial cycle. The esthetician who attends a GLP-1 skin consequences CEU session in June will be looking for reference content in July. Skin Inc. can publish ahead of the demand curve rather than chasing it.</div>
+      <div class="conf-angle">→ CEU content partnerships — webinars and structured learning modules built around GLP-1 protocols — are the natural extension of the editorial piece.</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-header">
+        <div class="conf-title">Scope of practice legislative hearings are creating a practitioner advocacy moment</div>
+        <span class="conf-source cs-reg">Regulatory 2026</span>
+      </div>
+      <div class="conf-body">State legislative hearings on esthetician scope are active now. Skin Inc. has an education section with association resources — but the moment when practitioners are most interested in legislative advocacy is when their own state bill is in committee. Real-time coverage of state-by-state legislative developments is the kind of content that drives direct newsletter engagement because readers in that state share it.</div>
+      <div class="conf-angle">→ State-specific legislative alerts as a newsletter feature — short, actionable, shareable — could drive significant list growth among association-affiliated readers.</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-header">
+        <div class="conf-title">Men's wellness movement reaching mainstream — demand building before treatment providers are ready</div>
+        <span class="conf-source cs-biz">Business signal</span>
+      </div>
+      <div class="conf-body">Male-targeted wellness content (skincare, aesthetics, grooming) is crossing from specialty media into mainstream channels. As men seek out esthetics services, they arrive with consumer media-driven expectations that practitioners may not be equipped to speak to fluently. The practitioner who understands the male client's decision-making process, consultation preferences, and outcome language is differentially positioned to retain that client beyond the first visit.</div>
+      <div class="conf-angle">→ A men's skincare business feature — client acquisition, consultation adaptation, retail upsell — is an undercovered practical topic across all esthetics trade media.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">✅</span>
+    <span class="section-title">Editorial Priorities — Three Moves This Cycle</span>
+    <span class="section-desc">Ranked by urgency, audience protection value, and competitive gap</span>
+  </div>
+
+  <div class="action-card act-now">
+    <div class="action-header">
+      <div class="action-title">Publish an exosome FDA enforcement explainer this week — readers are offering unapproved biologics and may not know it</div>
+      <div class="action-priority ap-now">This week</div>
+    </div>
+    <div class="action-body">FDA warning letters to exosome manufacturers are public record. The enforcement pattern is clear and accelerating. Estheticians who added exosome facials as a premium upgrade based on supplier claims may be operating outside the law — not because of malicious intent but because the regulatory landscape wasn't explained to them. Skin Inc. is exactly the publication that should explain it. The piece that protects readers is also the piece that builds lasting trust in the brand. A clear, practical guide — what the enforcement means, how to evaluate your current supplier, what to do next — is the highest-urgency editorial opportunity in this brief.</div>
+    <div class="action-meta">
+      <div class="meta-item"><div class="meta-label">Risk to readers</div><div class="meta-value mv-red">License exposure</div></div>
+      <div class="meta-item"><div class="meta-label">Competitive gap</div><div class="meta-value mv-red">Not covered clearly</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value mv-red">Explainer + checklist</div></div>
+      <div class="meta-item"><div class="meta-label">Source</div><div class="meta-value mv-red">FDA.gov · HOLT Law</div></div>
+    </div>
+  </div>
+
+  <div class="action-card act-soon">
+    <div class="action-header">
+      <div class="action-title">Assign the GLP-1 esthetic protocol guide now — 52% of these patients are concerned about their skin and their esthetician doesn't have a protocol yet</div>
+      <div class="action-priority ap-soon">This cycle</div>
+    </div>
+    <div class="action-body">GLP-1 coverage in trade media has been extensive from the medspa and physician angle. The esthetician protocol guide — what to assess, what to treat within esthetics scope, what to refer, how to build a GLP-1 skincare service menu — is essentially unwritten for Skin Inc.'s audience. The 137% growth in GLP-1 aesthetic patients means these clients are already sitting in esthetics suites. 32% are new to aesthetic practices entirely. The esthetician who gives them a protocol-informed experience retains a client who has money and motivation to spend. The esthetician who gives them a generic facial loses them to a medspa that has thought this through. Skin Inc. can be the resource that tips that outcome.</div>
+    <div class="action-meta">
+      <div class="meta-item"><div class="meta-label">Client growth</div><div class="meta-value mv-amber">+137% YoY</div></div>
+      <div class="meta-item"><div class="meta-label">Protocol gap</div><div class="meta-value mv-amber">Open across esthetics media</div></div>
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value mv-amber">Protocol guide + CE potential</div></div>
+    </div>
+  </div>
+
+  <div class="action-card act-strategic">
+    <div class="action-header">
+      <div class="action-title">Build a recurring scope of practice legislative tracker — and position it as the resource Skin Inc. owns that no consumer or medspa title can replicate</div>
+      <div class="action-priority ap-strategic">Strategic</div>
+    </div>
+    <div class="action-body">The legislative landscape for estheticians is moving on multiple fronts simultaneously — microneedling rights, master esthetician expansions, laser licensing, medspa restriction bills — in different states on different timelines. No single resource exists that tracks this systematically for the working esthetician. Skin Inc. has the readership, the association relationships through its education section, and the brand trust to own this. A monthly legislative brief — two paragraphs per active state, clear "what it means for you" framing — would be highly shareable within state esthetics associations and drive direct list growth. It's the kind of content that converts casual readers to subscribers and association partners to distribution amplifiers.</div>
+    <div class="action-meta">
+      <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value mv-brand">Monthly tracker</div></div>
+      <div class="meta-item"><div class="meta-label">Competitive moat</div><div class="meta-value mv-brand">High — esthetics-specific</div></div>
+      <div class="meta-item"><div class="meta-label">Distribution amplifier</div><div class="meta-value mv-brand">State associations</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+  <div class="section-title-row">
+    <span class="section-icon">👥</span>
+    <span class="section-title">Audience & Advertiser Intelligence</span>
+    <span class="section-desc">Where signal strength and audience opportunity intersect</span>
+  </div>
+
+  <div class="audience-grid">
+    <div class="aud-card opportunity">
+      <div class="aud-category">Protective content opportunity</div>
+      <div class="aud-headline">Exosome enforcement and scope of practice legislation together represent the highest-stakes regulatory moment for licensed estheticians in years</div>
+      <div class="aud-body">Both signals carry license-level consequences. The publication that explains these risks clearly — in plain language, with practical action steps — is the one practitioners will subscribe to, share with colleagues, and recommend to students. Protective content is also the highest-trust content. Skin Inc.'s credibility as a professional resource is directly built by covering the things that could hurt readers if they don't know about them.</div>
+      <div class="aud-signal"><span class="aud-tag mv-red">Urgent</span><span class="aud-context">License risk · High audience attention · Low competitive coverage</span></div>
+    </div>
+    <div class="aud-card opportunity">
+      <div class="aud-category">Revenue category opportunity</div>
+      <div class="aud-headline">GLP-1 clients and men's aesthetics together represent the two fastest-growing new client acquisition segments in esthetics — and both are underleveraged in Skin Inc.'s content mix</div>
+      <div class="aud-body">GLP-1 patients are arriving at esthetics suites as new clients who are motivated to invest in their appearance. Male aesthetic clients are converting from consumer media awareness to professional services. Both segments respond better to outcome-oriented, protocol-specific content than trend coverage. Building a content series around each — with advertiser adjacency to products targeting those client profiles — creates a clear sponsored content vehicle.</div>
+      <div class="aud-signal"><span class="aud-tag mv-amber">Rising</span><span class="aud-context">New client acquisition · Advertiser alignment · CE potential</span></div>
+    </div>
+    <div class="aud-card watch">
+      <div class="aud-category">Face & Body franchise reinforcement</div>
+      <div class="aud-headline">No competitor can write the authoritative Face & Body preview — the pre-show content window is Skin Inc.'s exclusive editorial moat</div>
+      <div class="aud-body">The Face & Body events are Skin Inc.'s owned property. Pre-show content — exhibitor technology previews, education session spotlights, featured speakers — reaches a research audience that is actively planning attendance. Exhibitor preview packages connecting to the editorial content are the natural sponsored product. The window for pre-show content to have maximum impact opens 6–8 weeks before each regional show.</div>
+      <div class="aud-signal"><span class="aud-tag mv-brand">Owned franchise</span><span class="aud-context">Exhibitor sponsorship · First-party audience reach</span></div>
+    </div>
+    <div class="aud-card watch">
+      <div class="aud-category">First-party data gap</div>
+      <div class="aud-headline">This brief identifies external signals — first-party data would show which topics Skin Inc.'s registered readers are already seeking</div>
+      <div class="aud-body">The signals here come from FDA filings, research data, and industry sources. A first-party layer — built on Skin Inc.'s own engagement data — would confirm which of these topics are already driving newsletter opens, CE module completions, and registration behavior among distinct reader segments (spa owners vs. solo practitioners vs. students). That's what converts editorial instinct into a defensible content strategy.</div>
+      <div class="aud-signal"><span class="aud-tag mv-brand">Opportunity</span><span class="aud-context">First-party data layer · Platform conversation</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="teaser-strip">
+  <div class="teaser-eyebrow">This is a proof of concept</div>
+  <div class="teaser-headline">Imagine this for every title in your portfolio, every month.</div>
+  <div class="teaser-body">Automated signal collection across FDA enforcement records, regulatory filings, research publications, association programming, and industry data — synthesized into a prioritized editorial brief your editors can act on. Not another dashboard to check. A report that tells you what's moving in your readers' world before they ask you about it, and shows you where your first-party engagement data confirms the opportunity.<br><br>The version you're reading was built entirely from public data. The next version is built on yours — which topics are driving CE completions, which content clusters convert casual readers to subscribers, where reader intent and advertiser interest intersect. That's what turns editorial intelligence into publishing strategy.<br><br><a href="https://mindful.pub" class="teaser-link">Learn about the full platform › mindful.pub</a></div>
+</div>
+
+<div style="padding: 0 32px 8px;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--border);">
+    <span style="font-size:17px;">💬</span>
+    <span style="font-size:15px;font-weight:700;color:var(--navy);">Ask about this brief</span>
+    <span style="font-size:11px;color:var(--text-muted);margin-left:auto;">Powered by Mindful Publishing Intelligence</span>
+  </div>
+</div>
+
+<div class="chat-wrap">
+  <div class="chat-header">
+    <div class="chat-dot"></div>
+    <div class="chat-title">Editorial Intelligence Assistant</div>
+    <div class="chat-sub">— Ask about any signal, gap, or what the first-party version would add for Skin Inc.</div>
+  </div>
+  <div id="chat-messages">
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <div style="width:24px;height:24px;border-radius:50%;background:var(--brand-light);border:1px solid var(--brand-mid);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--brand);flex-shrink:0;">PI</div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--text-sec);line-height:1.6;max-width:90%;">
+        I have full context on every signal in this brief. Try: <span class="chat-suggestion" onclick="fillQ('What makes the exosome story specifically a Skin Inc. story rather than a medspa story?')">What makes exosomes a Skin Inc. story specifically?</span> &nbsp;or&nbsp; <span class="chat-suggestion" onclick="fillQ('What would the first-party data version of this brief add for understanding the Skin Inc. audience?')">What would the first-party version add?</span>
+      </div>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Ask about any signal, gap, or recommendation..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+    <button id="chat-send" onclick="sendQ()">Ask</button>
+  </div>
+</div>
+
+<div class="brief-footer">
+  <div>
+    <div class="footer-pub">Skin Inc. · Editorial Intelligence Brief · May 2026</div>
+    <div class="footer-powered">Powered by Mindful · mindful.pub · sales@mindful.pub</div>
+  </div>
+  <div class="footer-method">Coverage gaps based on skininc.com section-level sitemap taxonomy. FDA enforcement data from public warning letters (FDA.gov). Regulatory legislative data from AmSpa legal tracker. GLP-1 statistics from AAD 2026 poster data via Dermatology Times. Signal strength is qualitative assessment. May 2026.</div>
+</div>
+
+</div>
+
+<script>
+const REPORT_CONTEXT = `You are the intelligence layer embedded in an Editorial Intelligence Brief for Skin Inc. magazine (skininc.com), a B2B trade publication for licensed estheticians, spa owners, and skin care professionals. The brief was produced by Parameter1 / Mindful Publishing Intelligence as a proof of concept.
+
+ABOUT THIS BRIEF:
+This is an internal editorial intelligence document. Coverage gaps are identified at the section taxonomy level from skininc.com's public sitemap. All regulatory sources and data points are publicly verifiable.
+
+ABOUT PARAMETER1 / MINDFUL:
+Parameter1 builds Mindful, a unified publishing intelligence platform for B2B niche publishers. The editorial intelligence brief is a proof of concept showing what becomes possible when external signals combine with a publisher's first-party engagement data.
+
+SIGNALS IN THIS BRIEF:
+
+1. FDA Exosome Enforcement [URGENT]
+- FDA warning letters to Kimera Labs (2023), Chara Biologics (early 2025 — CharaExo product), Evolutionary Biologics (late 2024 — EXO RNA product)
+- Finding in each case: exosome products meet definition of drug/biologic requiring premarket approval
+- No exosome product has completed full FDA drug approval as of early 2026
+- Estheticians offering exosome facials or topical treatments may be using unapproved biologics
+- License exposure for estheticians who are not aware of the regulatory status
+
+2. GLP-1 Skin Consequences — Esthetician Protocol Gap [URGENT]
+- 137% growth in GLP-1-treated aesthetic patients 2023→2024
+- 52% of GLP-1 patients concerned about facial appearance (AAD 2026 poster data)
+- 32% new to aesthetic practices — direct client acquisition opportunity
+- Skin manifestations: accelerated facial aging appearance, volume loss, skin laxity, barrier compromise, sensitivity, potential hair loss
+- Physician/medspa angle covered extensively; esthetician-specific protocol guide essentially unwritten
+- Clients are already in esthetics suites — practitioners need protocols now
+
+3. Scope of Practice Legislation [RISING]
+- Active bills in multiple states: microneedling rights for estheticians, master esthetician scope expansion, laser hair removal licensing, medspa restriction bills
+- Both expanding AND restricting directions simultaneously in different states
+- Skin Inc. has /business/regulatory section but coverage is episodic, not systematic
+- Monthly legislative tracker would be a defensible owned franchise
+
+4. Men's Aesthetics Mainstream Adoption [RISING]
+- Consistently identified as top 2026 medspa trend across multiple surveys
+- Male clients: more outcome-oriented, less exploratory in consultation, respond to outcome language not process language
+- Skin Inc. has /treatment/men and /products/men sections
+- Practical business guide for men's service menu building and marketing not yet written for esthetics audience
+
+5. Medspa Safety Crisis — Positioning Opportunity [RISING]
+- 20,000+ medspas operating with minimal oversight
+- Patient safety incidents up 9.5% YoY (Pennsylvania PSA 2024 data)
+- FDA enforcement against illegal injectable chains increasing
+- Licensed, compliant estheticians have trust advantage in this environment
+- Skin Inc. covers compliance as obligation; hasn't covered it as competitive positioning
+
+6. Longevity + Wellness Service Integration [EMERGING]
+- Peptides, NAD, HRT, nutraceuticals entering esthetics-adjacent practice
+- GLP-1 as gateway — patients exploring additional wellness services
+- Clear legal line between esthetics scope and medical practice not consistently covered
+- License risk if estheticians cross into unauthorized medical services
+
+7. AI Skin Analysis Tools [EMERGING]
+- Moving from novelty to clinical infrastructure in 2026
+- Skin Inc. has /treatment/devices-tools and /science/research sections
+- Practitioner adoption guide (workflow, client communication, vendor-neutral comparison) not yet structured as content
+
+THREE PRIORITIES:
+1. Exosome FDA enforcement explainer — this week, license protection content
+2. GLP-1 esthetic protocol guide — this cycle, first-mover on esthetician-specific angle
+3. Scope of practice legislative tracker — strategic, recurring owned franchise
+
+FACE & BODY SHOWS: Skin Inc. runs regional Face & Body events (Southeast, Midwest, Northern California, flagship). Pre-show content window is an exclusive editorial moat — no competitor can write the authoritative Face & Body preview.
+
+WHAT FIRST-PARTY DATA WOULD ADD: Which topics drive CE module completions, which content converts casual readers to newsletter subscribers, which signals are confirmed by reader engagement behavior, where advertiser interest and reader intent intersect by reader segment (solo practitioners vs. spa owners vs. students).
+
+Answer questions directly, specifically, and concisely. You're speaking to editorial leadership at a professional B2B esthetics trade publication.`;
+
+async function sendQ() {
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addMsg(q, 'user');
+  const thinking = addMsg('...', 'bot', true);
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: REPORT_CONTEXT,
+        messages: [{role:'user', content:q}]
+      })
+    });
+    const data = await res.json();
+    thinking.remove();
+    addMsg(data.content?.[0]?.text || 'No response received.', 'bot');
+  } catch(e) {
+    thinking.remove();
+    addMsg('Unable to reach the intelligence layer. Please try again.', 'bot');
+  }
+}
+function fillQ(t) { document.getElementById('chat-input').value = t; document.getElementById('chat-input').focus(); }
+function addMsg(text, role) {
+  const c = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:8px;align-items:flex-start;';
+  const av = document.createElement('div');
+  if (role==='user') {
+    av.style.cssText = 'width:24px;height:24px;border-radius:50%;background:#f0f9ff;border:1px solid #bae6fd;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#0369a1;flex-shrink:0;';
+    av.textContent = 'SI';
+  } else {
+    av.style.cssText = `width:24px;height:24px;border-radius:50%;background:var(--brand-light);border:1px solid var(--brand-mid);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--brand);flex-shrink:0;`;
+    av.textContent = 'PI';
+  }
+  const bubble = document.createElement('div');
+  const isUser = role==='user';
+  bubble.style.cssText = `border-radius:8px;padding:9px 13px;font-size:12px;line-height:1.6;max-width:90%;white-space:pre-wrap;${isUser?'background:#f0f9ff;border:1px solid #bae6fd;color:var(--text-sec);margin-left:auto;':'background:var(--white);border:1px solid var(--border);color:var(--text-sec);'}`;
+  bubble.textContent = text;
+  if (isUser) wrap.style.flexDirection='row-reverse';
+  wrap.appendChild(av); wrap.appendChild(bubble);
+  c.appendChild(wrap);
+  c.scrollTop = c.scrollHeight;
+  return wrap;
+}
+document.getElementById('chat-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+</script>
+</body>
+</html>
